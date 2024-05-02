@@ -12,8 +12,11 @@ const config: Config = {
         center: true,
         padding: '2rem',
         screens: {
-          '2xl': '1024px',
+          '2xl': '1440px',
         },
+      },
+      fontFamily: {
+        maison: ['var(--font-maison)'],
       },
     },
   },
