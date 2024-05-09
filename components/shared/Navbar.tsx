@@ -84,7 +84,7 @@ const Navbar = () => {
           <div className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-green-50">
             <HiSearch color="green" size={25} />
           </div>
-          <div className="rounded-full bg-green-50 p-2 font-bold text-green-700">
+          <div className="hidden rounded-full bg-green-50 p-2 font-bold text-green-700 md:block">
             <Link href="/login">Masuk/Daftar</Link>
           </div>
         </div>
