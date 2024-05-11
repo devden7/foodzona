@@ -3,6 +3,7 @@ import React from 'react';
 import './globals.css';
 import Navbar from '@/components/shared/Navbar';
 import localFont from 'next/font/local';
+import Footer from '@/components/shared/Footer';
 
 export const metadata: Metadata = {
   title: 'Food Zona',
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body className={`${maisonNeue.variable} font-sans`}>
         <Navbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );
