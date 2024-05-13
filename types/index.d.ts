@@ -34,3 +34,11 @@ export interface ValueList {
   imageUrl: string;
   backgroundColor: string;
 }
+
+export interface RecommendationsList {
+  id: string;
+  label: string;
+  imageUrl: string;
+  category: Categories[];
+  rating: number;
+}

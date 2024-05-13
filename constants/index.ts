@@ -4,6 +4,7 @@ import {
   TypeFoodList,
   RestaurantList,
   ValueList,
+  RecommendationsList,
 } from '@/types';
 
 export const navbarLists: NavbarList[] = [
@@ -269,5 +270,52 @@ export const valueList: ValueList[] = [
     description: 'Diantar dengan aman & cepat',
     imageUrl: '/assets/packing_illustration.png',
     backgroundColor: '#d97706',
+  },
+];
+
+export const recommendationsLists: RecommendationsList[] = [
+  {
+    id: '0',
+    label: 'Judul restoran 1, indonesia',
+    imageUrl: '/assets/makanan_satu.jpg',
+    category: [
+      { categoriesId: '0', categories: 'Nasi' },
+      { categoriesId: '1', categories: 'Bakmie' },
+      { categoriesId: '2', categories: 'Aneka nasi' },
+    ],
+    rating: 5.0,
+  },
+  {
+    id: '1',
+    label: 'Judul restoran 2, indonesia',
+    imageUrl: '/assets/makanan_dua.jpg',
+    category: [
+      { categoriesId: '0', categories: 'Bakso & soto' },
+      { categoriesId: '1', categories: 'Ayam & bebek' },
+      { categoriesId: '2', categories: 'Aneka nasi' },
+    ],
+    rating: 4.5,
+  },
+  {
+    id: '2',
+    label: 'Judul restoran 3, indonesia',
+    imageUrl: '/assets/makanan_tiga.jpg',
+    category: [
+      { categoriesId: '0', categories: 'Cepat saji' },
+      { categoriesId: '1', categories: 'Ayam & bebek' },
+      { categoriesId: '2', categories: 'Aneka nasi' },
+    ],
+    rating: 4.0,
+  },
+  {
+    id: '3',
+    label: 'Judul restoran 4, indonesia',
+    imageUrl: '/assets/makanan_satu.jpg',
+    category: [
+      { categoriesId: '0', categories: 'Nasi' },
+      { categoriesId: '1', categories: 'Bakmie' },
+      { categoriesId: '2', categories: 'Aneka nasi' },
+    ],
+    rating: 5.0,
   },
 ];
