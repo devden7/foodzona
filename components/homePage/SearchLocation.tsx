@@ -29,8 +29,7 @@ import {
 } from '@/components/ui/command';
 
 import { HiLocationMarker, HiChevronDown, HiOutlineX } from 'react-icons/hi';
-import { useState } from 'react';
-import { type } from 'os';
+import React, { useState } from 'react';
 
 interface Props {
   mediumScreen: number | undefined;
@@ -286,22 +285,19 @@ const SearchLocation = ({
                         heading="Location"
                         className=" flex flex-col gap-3"
                       >
-                        {dummyLocation.map((item) => {
-                          console.log(item);
-                          return (
-                            <CommandItem
-                              key={item.id}
-                              className="flex cursor-pointer items-center gap-3"
-                              onClick={() => {
-                                handlerSearchLocationDrawer(item);
-                                setIsOpen(false);
-                              }}
-                            >
-                              <HiLocationMarker size={20} />
-                              <div>{item.city}</div>
-                            </CommandItem>
-                          );
-                        })}
+                        {dummyLocation.map((item) => (
+                          <CommandItem
+                            key={item.id}
+                            className="flex cursor-pointer items-center gap-3"
+                            onClick={() => {
+                              handlerSearchLocationDrawer(item);
+                              setIsOpen(false);
+                            }}
+                          >
+                            <HiLocationMarker size={20} />
+                            <div>{item.city}</div>
+                          </CommandItem>
+                        ))}
                       </CommandGroup>
                     </CommandList>
                   </Command>
@@ -537,22 +533,19 @@ const SearchLocation = ({
                         heading="Location"
                         className=" flex flex-col gap-3"
                       >
-                        {dummyLocation.map((item) => {
-                          console.log(item);
-                          return (
-                            <CommandItem
-                              key={item.id}
-                              className="flex cursor-pointer items-center gap-3"
-                              onClick={() => {
-                                handlerSearchLocationDrawer(item);
-                                setIsOpen(false);
-                              }}
-                            >
-                              <HiLocationMarker size={20} />
-                              <div>{item.city}</div>
-                            </CommandItem>
-                          );
-                        })}
+                        {dummyLocation.map((item) => (
+                          <CommandItem
+                            key={item.id}
+                            className="flex cursor-pointer items-center gap-3"
+                            onClick={() => {
+                              handlerSearchLocationDrawer(item);
+                              setIsOpen(false);
+                            }}
+                          >
+                            <HiLocationMarker size={20} />
+                            <div>{item.city}</div>
+                          </CommandItem>
+                        ))}
                       </CommandGroup>
                     </CommandList>
                   </Command>

@@ -21,7 +21,6 @@ export default function Home() {
   const [isMoreBtn, setIsMoreBtn] = useState(false);
 
   const handlerSearchLocationDrawer = (value: any) => {
-    console.log(value);
     setSearchLocation(value.city);
   };
 
@@ -54,12 +53,9 @@ export default function Home() {
           ? 7
           : 5;
 
-  console.log(listFoodByScreen, mediumScreen);
-
   const categoryRestourant = restaurantLists.map((item: any) =>
     item.category.map((category: any) => category.categories).join(', ')
   );
-  console.log(categoryRestourant);
 
   const dummyLocation = [
     { city: 'Jakarta', id: 0 },

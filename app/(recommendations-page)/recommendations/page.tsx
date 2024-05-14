@@ -28,7 +28,6 @@ const Recommendations = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handlerSearchLocationDrawer = (value: any) => {
-    console.log(value);
     setSearchLocation(value.city);
   };
 

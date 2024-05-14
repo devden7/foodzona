@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { HiMenu, HiSearch, HiOutlineX } from 'react-icons/hi';
 
@@ -17,8 +17,33 @@ import { navbarLists } from '@/constants';
 
 const Navbar = () => {
   const pathname = usePathname();
+  const [mediumScreen, setMediumScreen] = useState<number | undefined>(
+    undefined
+  );
+
+  const sizeScreenHandler = () => {
+    setMediumScreen(window.innerWidth);
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sizeScreenHandler();
+    }
+
+    window.addEventListener('resize', sizeScreenHandler);
+
+    return () => {
+      window.removeEventListener('resize', sizeScreenHandler);
+    };
+  }, []);
+
+  if (typeof mediumScreen === 'undefined') {
+    return null;
+  }
   return (
-    <nav className="border-b-2 border-slate-100">
+    <nav
+      className={`helper-responsive relative z-50 border-b-2 border-slate-100 bg-white ${mediumScreen < 768 && pathname === '/login' ? 'hidden' : ''}`}
+    >
       <header className="container flex h-12 items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="md:hidden">
