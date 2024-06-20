@@ -68,7 +68,7 @@ const SearchLocation = ({
 
   return (
     <>
-      {type === 'Recommendations' && (
+      {type !== 'Homepage' && (
         <div className="absolute left-1/2 top-[80px] w-full -translate-x-1/2 -translate-y-1/2 px-2 md:top-[83px]  md:p-2 lg:left-[65%] lg:right-0 lg:top-[25px] lg:w-[310px] lg:p-0 xl:left-[70%]">
           <div>
             {mediumScreen !== undefined && mediumScreen < 768 && (
@@ -307,7 +307,7 @@ const SearchLocation = ({
           </div>
         </div>
       )}
-      {type !== 'Recommendations' && (
+      {type === 'Homepage' && (
         <div className="absolute left-1/2 top-[358px] z-50 w-[370px] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-3 shadow-md md:top-[460px] md:flex md:w-[450px] md:items-end md:gap-3 md:p-3  lg:top-[490px] lg:w-[500px] lg:py-7">
           <div>
             {mediumScreen !== undefined && mediumScreen < 768 && (

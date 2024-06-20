@@ -119,6 +119,7 @@ export default function Home() {
             handlerSearchLocationDrawer={handlerSearchLocationDrawer}
             setSearchLocation={setSearchLocation}
             setIsOpen={setIsOpen}
+            type="Homepage"
           />
         </div>
       </section>
