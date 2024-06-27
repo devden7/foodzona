@@ -15,6 +15,15 @@ import {
 } from '@/components/ui/drawer';
 import { navbarLists } from '@/constants';
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '../ui/button';
+
 const Navbar = () => {
   const pathname = usePathname();
   const [mediumScreen, setMediumScreen] = useState<number | undefined>(
@@ -112,6 +121,31 @@ const Navbar = () => {
           <div className="hidden rounded-full bg-green-50 p-2 font-bold text-green-700 md:block">
             <Link href="/login">Masuk/Daftar</Link>
           </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="flex size-10 items-center justify-center rounded-full bg-red-500 outline-none hover:bg-red-500 focus-visible:ring-0 focus-visible:ring-offset-0">
+                <span className="font-medium text-white">D</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuItem className="flex flex-col items-start gap-1 ">
+                <h4 className="font-semibold">Test</h4>
+                <p className="text-xs text-black/60">test@test.com</p>
+                <p className="text-xs text-black/60 md:mb-5 ">081234567890</p>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/orders" className="font-semibold">
+                  Orders
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Button className="p-0 font-semibold" variant="ghost">
+                  Log out
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
     </nav>
