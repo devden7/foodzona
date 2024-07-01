@@ -6,3 +6,7 @@ export const formNoPhoneSchema = z.object({
     .min(8, { message: 'Nomor HP tidak valid karena seharusnya 8-17 angka.' })
     .max(17, { message: 'Nomor HP tidak valid karena seharusnya 8-17 angka.' }),
 });
+
+export const formCreateStoreSchema = z.object({
+  storeName: z.string().min(3),
+});
