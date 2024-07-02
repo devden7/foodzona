@@ -322,10 +322,13 @@ const MyRestaurant = () => {
                       <h3 className="mb-3 line-clamp-2 font-semibold">
                         {item.label}
                       </h3>
-                      <div className="flex max-h-96 flex-wrap gap-2">
+                      <div className="mb-3 flex max-h-96 flex-wrap gap-2">
                         <p className="line-clamp-2 text-xs text-black/70 lg:line-clamp-1 lg:text-sm">
                           description food
                         </p>
+                      </div>
+                      <div>
+                        <p className="text-lg font-medium">10.000</p>
                       </div>
                     </div>
                   </div>
