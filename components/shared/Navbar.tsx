@@ -44,6 +44,7 @@ import { Input } from '@/components/ui/input';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const pathname = usePathname();
   const [mediumScreen, setMediumScreen] = useState<number | undefined>(
     undefined
@@ -201,7 +202,7 @@ const Navbar = () => {
           <div className="hidden rounded-full bg-green-50 p-2 font-bold text-green-700 md:block">
             <Link href="/login">Masuk/Daftar</Link>
           </div>
-          <DropdownMenu>
+          <DropdownMenu open={isOpenDropdown} onOpenChange={setIsOpenDropdown}>
             <DropdownMenuTrigger asChild>
               <Button className="flex size-10 items-center justify-center rounded-full bg-red-500 outline-none hover:bg-red-500 focus-visible:ring-0 focus-visible:ring-offset-0">
                 <span className="font-medium text-white">D</span>
@@ -214,12 +215,22 @@ const Navbar = () => {
                 <p className="text-xs text-black/60 md:mb-5 ">081234567890</p>
               </div>
               <DropdownMenuItem>
-                <Link href="/orders" className="font-semibold">
+                <Link
+                  href="/orders"
+                  className="size-full font-semibold"
+                  onClick={() => setIsOpenDropdown(false)}
+                >
                   Orders
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="font-semibold">
-                My Restaurant
+                <Link
+                  href="/my-restaurant"
+                  onClick={() => setIsOpenDropdown(false)}
+                  className="size-full"
+                >
+                  My Restaurant
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
