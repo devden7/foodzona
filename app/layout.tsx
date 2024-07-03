@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/components/shared/Navbar';
 import localFont from 'next/font/local';
 import Footer from '@/components/shared/Footer';
+import StickyCart from '@/components/shared/StickyCart';
 
 export const metadata: Metadata = {
   title: 'Food Zona',
@@ -38,6 +39,7 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <StickyCart />
       </body>
     </html>
   );
