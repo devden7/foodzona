@@ -1,11 +1,20 @@
 import { z } from 'zod';
 
-export const formNoPhoneSchema = z.object({
-  noPhone: z
-    .string()
-    .min(8, { message: 'Nomor HP tidak valid karena seharusnya 8-17 angka.' })
-    .max(17, { message: 'Nomor HP tidak valid karena seharusnya 8-17 angka.' }),
+export const formLoginSchema = z.object({
+  username: z.string().min(1),
+  password: z.string().min(6),
 });
+
+export const formRegisterSchema = z
+  .object({
+    username: z.string().min(1),
+    name: z.string().min(1),
+    password: z.string().min(6),
+  })
+  .refine((value) => !value.username.includes(' '), {
+    message: 'Jangan menggunakan spasi',
+    path: ['username'],
+  });
 
 export const formCreateStoreSchema = z.object({
   storeName: z.string().min(3),

@@ -1,5 +1,4 @@
 'use client';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
@@ -10,19 +9,19 @@ import {
   HiOutlineX,
   HiArrowSmLeft,
   HiQuestionMarkCircle,
-  HiOutlineChevronDown,
 } from 'react-icons/hi';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { formNoPhoneSchema } from '@/lib/validation';
+import { formLoginSchema, formRegisterSchema } from '@/lib/validation';
 
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import {
@@ -35,23 +34,34 @@ import {
 
 const Login = () => {
   const [isBtnLogin, setIsBtnLogin] = useState(false);
+  const [isBtnRegister, setIsBtnRegister] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formNoPhoneSchema>>({
-    resolver: zodResolver(formNoPhoneSchema),
+  const form = useForm<z.infer<typeof formLoginSchema>>({
+    resolver: zodResolver(formLoginSchema),
     defaultValues: {
-      noPhone: '',
+      username: '',
+      password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formNoPhoneSchema>) {
+  const formRegister = useForm<z.infer<typeof formRegisterSchema>>({
+    resolver: zodResolver(formRegisterSchema),
+    defaultValues: {
+      username: '',
+      name: '',
+      password: '',
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formLoginSchema>) {
     console.log(values);
   }
 
-  const {
-    formState: { isValid },
-  } = form;
+  function onSubmitRegister(values: z.infer<typeof formRegisterSchema>) {
+    console.log(values);
+  }
 
   return (
     <section>
@@ -66,7 +76,7 @@ const Login = () => {
       </div>
       <div className="container">
         <div className="h-screen px-1 py-2 md:flex md:items-center md:justify-center">
-          {!isBtnLogin && (
+          {!isBtnLogin && !isBtnRegister && (
             <div className="rounded-2xl bg-white md:max-w-[500px] md:p-5">
               <div className="flex items-center justify-between">
                 <div className="flex gap-3">
@@ -131,6 +141,13 @@ const Login = () => {
               >
                 Masuk
               </Button>
+
+              <Button
+                className="w-full rounded-full border-2 border-green-700 bg-white p-2 text-base text-green-700 hover:bg-green-200 md:mb-4 md:p-5 lg:text-lg"
+                onClick={() => setIsBtnRegister(true)}
+              >
+                Belum ada akun? Daftar dulu
+              </Button>
             </div>
           )}
 
@@ -164,58 +181,145 @@ const Login = () => {
                 </div>
                 <HiQuestionMarkCircle size={25} color="green" />
               </div>
-              <h4 className="mb-3 text-xl font-semibold">Masukkan nomor HP</h4>
+              <h4 className="mb-3 text-xl font-semibold">
+                Login ke akun gofood kamu
+              </h4>
 
               <p className="mb-5 md:max-w-[400px]">
                 Buat masuk ke akunmu atau daftar kalau kamu baru di Gojek.
               </p>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <div>
-                    <p className=" mb-2 font-bold">
-                      Nomor HP <span className="text-red-500">*</span>
-                    </p>
-                    <FormField
-                      control={form.control}
-                      name="noPhone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Badge className="mb-3  flex items-center gap-2 border-slate-100 bg-transparent hover:bg-transparent md:mb-20">
-                              <p className="text-2xl font-bold text-black">
-                                ID
-                              </p>
-                              <div className="flex items-center gap-1">
-                                <span className="text-lg text-black">+62</span>
-                                <HiOutlineChevronDown color="black" />
-                                <span className="text-black">|</span>
-                              </div>
-
-                              <Input
-                                placeholder="81323456789"
-                                className="remove-arrow border-0 bg-transparent p-2 text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                                onKeyDown={(e) => {
-                                  if (e.key === 'Backspace') {
-                                    return;
-                                  }
-
-                                  if (!/\d/g.test(e.key)) {
-                                    e.preventDefault();
-                                  }
-                                }}
-                                {...field}
-                              />
-                            </Badge>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem className="mb-3">
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                          <Input placeholder="username" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem className="mb-3">
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="password"
+                            {...field}
+                            type="password"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <Button
-                    disabled={!isValid}
                     type="submit"
-                    className={` w-full rounded-full bg-green-700 p-2 text-base disabled:bg-slate-500 disabled:text-black md:mb-4 md:p-5 lg:text-lg ${!isValid ? 'mt-4' : 'mt-0'}`}
+                    className="w-full rounded-full bg-green-700 p-2 text-base  md:mb-4 md:p-5 lg:text-lg"
+                  >
+                    Lanjut
+                  </Button>
+                </form>
+              </Form>
+            </div>
+          )}
+
+          {isBtnRegister && (
+            <div className="rounded-2xl bg-white md:max-w-[500px] md:p-5">
+              <div className="mb-5 mt-3 flex items-center justify-between md:mb-20 md:mt-0">
+                <div className="flex items-center gap-5 ">
+                  <HiArrowSmLeft
+                    size={25}
+                    color="green"
+                    onClick={() => setIsBtnRegister(false)}
+                    className="cursor-pointer"
+                  />
+                  <div className="flex items-center gap-3">
+                    <div className="size-7">
+                      <Image
+                        src="/assets/logo.png"
+                        alt="Logo App"
+                        width={100}
+                        height={100}
+                        className="size-full"
+                      />
+                    </div>
+                    <Link
+                      href="/"
+                      className="text-2xl font-bold tracking-wider"
+                    >
+                      gofood
+                    </Link>
+                  </div>
+                </div>
+                <HiQuestionMarkCircle size={25} color="green" />
+              </div>
+              <h4 className="mb-3 text-xl font-semibold">
+                Daftar akun go food baru
+              </h4>
+
+              <p className="mb-5 md:max-w-[400px]">
+                Buat masuk ke akunmu atau daftar kalau kamu baru di Gojek.
+              </p>
+              <Form {...formRegister}>
+                <form onSubmit={formRegister.handleSubmit(onSubmitRegister)}>
+                  <FormField
+                    control={formRegister.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem className="mb-3">
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                          <Input placeholder="username" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={formRegister.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="mb-3">
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="nama kamu"
+                            {...field}
+                            type="text"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={formRegister.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem className="mb-3">
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="password"
+                            {...field}
+                            type="password"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button
+                    type="submit"
+                    className="w-full rounded-full bg-green-700 p-2 text-base  md:mb-4 md:p-5 lg:text-lg"
                   >
                     Lanjut
                   </Button>
