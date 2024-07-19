@@ -1,6 +1,8 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -31,12 +33,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { registerUser } from '@/repositories/accountRepository';
 
 const Login = () => {
   const [isBtnLogin, setIsBtnLogin] = useState(false);
   const [isBtnRegister, setIsBtnRegister] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formLoginSchema>>({
     resolver: zodResolver(formLoginSchema),
@@ -59,8 +63,19 @@ const Login = () => {
     console.log(values);
   }
 
-  function onSubmitRegister(values: z.infer<typeof formRegisterSchema>) {
-    console.log(values);
+  async function onSubmitRegister(values: z.infer<typeof formRegisterSchema>) {
+    const response = await registerUser(values);
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
+
+    setIsBtnRegister(false);
+    setIsBtnLogin(true);
   }
 
   return (

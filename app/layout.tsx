@@ -5,6 +5,7 @@ import Navbar from '@/components/shared/Navbar';
 import localFont from 'next/font/local';
 import Footer from '@/components/shared/Footer';
 import StickyCart from '@/components/shared/StickyCart';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'Food Zona',
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className={`${maisonNeue.variable} font-sans`}>
         <Navbar />
         <main>{children}</main>
+        <Toaster />
         <Footer />
         <StickyCart />
       </body>
