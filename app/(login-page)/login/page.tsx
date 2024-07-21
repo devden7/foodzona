@@ -6,7 +6,7 @@ import { ToastAction } from '@/components/ui/toast';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   HiOutlineX,
   HiArrowSmLeft,
@@ -34,11 +34,13 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { registerUser } from '@/repositories/accountRepository';
+import { AuthContext } from '@/context/AuthContext';
 
 const Login = () => {
   const [isBtnLogin, setIsBtnLogin] = useState(false);
   const [isBtnRegister, setIsBtnRegister] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const AuthCtx = useContext(AuthContext);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -59,8 +61,9 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formLoginSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formLoginSchema>) {
+    AuthCtx?.login(values);
+    router.push('/');
   }
 
   async function onSubmitRegister(values: z.infer<typeof formRegisterSchema>) {
