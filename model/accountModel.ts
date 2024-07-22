@@ -7,7 +7,7 @@ export interface IReqRegisterAccount {
 export interface IDataResponse {
   username: string;
   name: string;
-  restaurant: string | null;
+  restaurant: string;
   token: string;
 }
 
@@ -17,9 +17,10 @@ export interface IReqLoginAccount {
 }
 
 export interface IReqContext {
-  isAuth: boolean;
+  isAuth: boolean | undefined;
   user: IDataResponse;
   login: (request: IReqLoginAccount) => void;
+  isLoggedIn: () => void;
 }
 
 export interface IResponse {

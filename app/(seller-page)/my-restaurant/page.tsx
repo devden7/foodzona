@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
 
@@ -34,9 +36,13 @@ import { formCreateFoodSchema } from '@/lib/validation';
 import { restaurantLists } from '@/constants';
 import Image from 'next/image';
 import { HiDotsVertical } from 'react-icons/hi';
+import { AuthContext } from '@/context/AuthContext';
 
 const MyRestaurant = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const authCtx = useContext(AuthContext);
 
   const form = useForm<z.infer<typeof formCreateFoodSchema>>({
     resolver: zodResolver(formCreateFoodSchema),
@@ -47,6 +53,19 @@ const MyRestaurant = () => {
       category: '',
     },
   });
+
+  useEffect(() => {
+    authCtx?.isLoggedIn();
+    if (!authCtx?.isAuth) {
+      router.push('/login');
+    } else {
+      setIsLoading(false);
+    }
+  }, [authCtx?.isAuth]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
     console.log(values);

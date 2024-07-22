@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import {
@@ -20,7 +20,13 @@ export const AuthContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedAuth = localStorage.getItem('isAuth');
+      const validToken = Cookies.get('token');
+      return !!(savedAuth === 'true' && validToken !== undefined);
+    }
+  });
   const [user, setUser] = useState<IDataResponse>({
     name: '',
     username: '',
@@ -38,8 +44,6 @@ export const AuthContextProvider = ({
         duration: 3000,
       });
     } else {
-      console.log(response);
-
       setUser((prev) => ({
         ...prev,
         name: response.data.name,
@@ -62,7 +66,7 @@ export const AuthContextProvider = ({
       resetAuth();
     } else {
       const decodedToken = jwtDecode(takeToken) as IDataResponse;
-      console.log(decodedToken);
+      setIsAuth(true);
       setUser((prev) => ({
         ...prev,
         name: decodedToken.name,
@@ -75,14 +79,11 @@ export const AuthContextProvider = ({
   const resetAuth = () => {
     localStorage.setItem('isAuth', 'false');
     Cookies.remove('token');
+    setIsAuth(false);
   };
 
-  useEffect(() => {
-    isLoggedIn();
-  }, []);
-
   return (
-    <AuthContext.Provider value={{ login, isAuth, user }}>
+    <AuthContext.Provider value={{ login, isLoggedIn, isAuth, user }}>
       {children}
     </AuthContext.Provider>
   );
