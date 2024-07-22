@@ -34,6 +34,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -56,6 +57,7 @@ const Navbar = () => {
     resolver: zodResolver(formCreateStoreSchema),
     defaultValues: {
       storeName: '',
+      city: '',
     },
   });
 
@@ -107,15 +109,38 @@ const Navbar = () => {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
                   <div>
-                    <p className=" mb-2 font-bold">Nama Restaurant</p>
                     <FormField
                       control={form.control}
                       name="storeName"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="mb-5">
+                          <FormLabel className=" mb-2 font-bold">
+                            Nama Restaurant
+                          </FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Nama restaurant kamu"
+                              type="text"
+                              className=" border-2 border-gray-200 bg-transparent p-2 text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem className="mb-5">
+                          <FormLabel className=" mb-2 font-bold">
+                            Kota Restaurant
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Kota restaurant"
                               type="text"
                               className="mb-3 border-2 border-gray-200 bg-transparent p-2 text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                               {...field}

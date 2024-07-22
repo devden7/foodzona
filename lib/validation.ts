@@ -17,7 +17,8 @@ export const formRegisterSchema = z
   });
 
 export const formCreateStoreSchema = z.object({
-  storeName: z.string().min(3),
+  storeName: z.string().min(3).max(50),
+  city: z.string().min(3).max(50),
 });
 
 export const formCreateFoodSchema = z.object({
