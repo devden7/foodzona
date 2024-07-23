@@ -47,7 +47,7 @@ import { z } from 'zod';
 import { formCreateStoreSchema } from '@/lib/validation';
 import { Input } from '@/components/ui/input';
 import { AuthContext } from '@/context/AuthContext';
-import { createRestaurant } from '@/repositories/accountRepository';
+import { createRestaurant } from '@/repositories/restaurantRepository';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -92,7 +92,11 @@ const Navbar = () => {
   }
 
   async function onSubmit(values: z.infer<typeof formCreateStoreSchema>) {
-    const response = await createRestaurant(values);
+    const response = await createRestaurant({
+      restaurantName: values.restaurantName,
+      city: values.city,
+      token: authCtx?.user.token,
+    });
 
     if (response.errors) {
       return toast({

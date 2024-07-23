@@ -72,6 +72,7 @@ export const AuthContextProvider = ({
         name: decodedToken.name,
         username: decodedToken.username,
         restaurant: decodedToken.restaurant,
+        token: takeToken,
       }));
     }
   };
