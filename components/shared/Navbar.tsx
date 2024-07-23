@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { HiMenu, HiSearch, HiOutlineX } from 'react-icons/hi';
 
 import {
@@ -52,6 +52,7 @@ const Navbar = () => {
     undefined
   );
   const authCtx = useContext(AuthContext);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formCreateStoreSchema>>({
     resolver: zodResolver(formCreateStoreSchema),
@@ -84,6 +85,11 @@ const Navbar = () => {
   function onSubmit(values: z.infer<typeof formCreateStoreSchema>) {
     console.log(values);
   }
+
+  const logoutBtnHandler = () => {
+    authCtx?.logout();
+    router.push('/login');
+  };
 
   return (
     <nav
@@ -193,7 +199,9 @@ const Navbar = () => {
                 <div className="ml-10 flex flex-col gap-4 text-lg font-semibold text-green-600">
                   <Link href="/">Beranda</Link>
                   <Link href="/recommendations">Rekomendasi</Link>
-                  {!authCtx?.isAuth && <Link href="/login">Masuk/Daftar</Link>}
+                  {!authCtx?.isAuth && pathname !== '/login' && (
+                    <Link href="/login">Masuk/Daftar</Link>
+                  )}
                 </div>
               </DrawerContent>
             </Drawer>
@@ -228,7 +236,7 @@ const Navbar = () => {
           <div className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-green-50">
             <HiSearch color="green" size={25} />
           </div>
-          {!authCtx?.isAuth && (
+          {!authCtx?.isAuth && pathname !== '/login' && (
             <div className="hidden rounded-full bg-green-50 p-2 font-bold text-green-700 md:block">
               <Link href="/login">Masuk/Daftar</Link>
             </div>
@@ -266,10 +274,11 @@ const Navbar = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Button className="p-0 font-semibold" variant="ghost">
-                  Log out
-                </Button>
+              <DropdownMenuItem
+                onClick={logoutBtnHandler}
+                className="size-full cursor-pointer"
+              >
+                Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

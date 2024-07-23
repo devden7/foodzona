@@ -20,6 +20,7 @@ export interface IReqContext {
   isAuth: boolean | undefined;
   user: IDataResponse;
   login: (request: IReqLoginAccount) => void;
+  logout: () => void;
   isLoggedIn: () => void;
 }
 
