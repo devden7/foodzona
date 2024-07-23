@@ -24,7 +24,7 @@ export interface IReqContext {
   isLoggedIn: () => void;
 }
 
-export interface IResponse {
-  data: IDataResponse;
+export interface IResponse<T> {
+  data: T;
   errors?: string;
 }

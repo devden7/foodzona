@@ -37,12 +37,17 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+
+import { ToastAction } from '@/components/ui/toast';
+import { toast } from '@/components/ui/use-toast';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { formCreateStoreSchema } from '@/lib/validation';
 import { Input } from '@/components/ui/input';
 import { AuthContext } from '@/context/AuthContext';
+import { createRestaurant } from '@/repositories/accountRepository';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +66,7 @@ const Navbar = () => {
   const form = useForm<z.infer<typeof formCreateStoreSchema>>({
     resolver: zodResolver(formCreateStoreSchema),
     defaultValues: {
-      storeName: '',
+      restaurantName: '',
       city: '',
     },
   });
@@ -86,8 +91,30 @@ const Navbar = () => {
     return null;
   }
 
-  function onSubmit(values: z.infer<typeof formCreateStoreSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formCreateStoreSchema>) {
+    const response = await createRestaurant(values);
+
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
+
+    toast({
+      description:
+        'The restaurant was successfully created, please log in again',
+      duration: 3000,
+    });
+    setIsOpen(false);
+    authCtx?.logout();
+    setTimeout(() => {
+      router.push('/login');
+      // window.location.reload();
+    }, 2000);
+    form.reset();
   }
 
   const logoutBtnHandler = () => {
@@ -121,7 +148,7 @@ const Navbar = () => {
                   <div>
                     <FormField
                       control={form.control}
-                      name="storeName"
+                      name="restaurantName"
                       render={({ field }) => (
                         <FormItem className="mb-5">
                           <FormLabel className=" mb-2 font-bold">
@@ -255,9 +282,8 @@ const Navbar = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="absolute right-0 w-56">
               <div className="flex flex-col items-start gap-1 pl-2 pt-2 focus:bg-white">
-                <h4 className="font-semibold">Test</h4>
-                <p className="text-xs text-black/60">test@test.com</p>
-                <p className="text-xs text-black/60 md:mb-5 ">081234567890</p>
+                <h4 className="font-semibold">{authCtx?.user.username}</h4>
+                <p className="text-xs text-black/60">{authCtx?.user.name}</p>
               </div>
               <DropdownMenuItem>
                 <Link

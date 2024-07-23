@@ -27,7 +27,7 @@ export const AuthContextProvider = ({
       return !!(savedAuth === 'true' && validToken !== undefined);
     }
   });
-  const [user, setUser] = useState<IDataResponse>({
+  const [user, setUser] = useState({
     name: '',
     username: '',
     restaurant: '',
