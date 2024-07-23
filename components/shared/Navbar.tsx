@@ -140,7 +140,7 @@ const Navbar = () => {
                   variant="outline"
                   className="h-0 border-none bg-green-700 p-5 text-white  hover:bg-green-800 hover:text-white"
                 >
-                  Buka restaurant
+                  Create restaurant
                 </Button>
               </DialogTrigger>
             </div>
@@ -285,7 +285,7 @@ const Navbar = () => {
               )}
             </DropdownMenuTrigger>
             <DropdownMenuContent className="absolute right-0 w-56">
-              <div className="flex flex-col items-start gap-1 pl-2 pt-2 focus:bg-white">
+              <div className="mb-3 flex flex-col items-start gap-1 pl-2 pt-2 focus:bg-white">
                 <h4 className="font-semibold">{authCtx?.user.username}</h4>
                 <p className="text-xs text-black/60">{authCtx?.user.name}</p>
               </div>
@@ -298,15 +298,17 @@ const Navbar = () => {
                   Orders
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="font-semibold">
-                <Link
-                  href="/my-restaurant"
-                  onClick={() => setIsOpenDropdown(false)}
-                  className="size-full"
-                >
-                  My Restaurant
-                </Link>
-              </DropdownMenuItem>
+              {authCtx?.user.restaurant !== null && (
+                <DropdownMenuItem className="font-semibold">
+                  <Link
+                    href="/my-restaurant"
+                    onClick={() => setIsOpenDropdown(false)}
+                    className="size-full"
+                  >
+                    My Restaurant
+                  </Link>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={logoutBtnHandler}
