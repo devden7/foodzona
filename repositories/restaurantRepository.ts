@@ -6,7 +6,6 @@ const API_URL = process.env.NEXT_PUBLIC_API;
 export const createRestaurant = async (
   request: IRestaurant
 ): Promise<IResponse<IRestaurant>> => {
-  console.log(request);
   const response = await fetch(`${API_URL}api/register-restaurant`, {
     method: 'POST',
     headers: {
