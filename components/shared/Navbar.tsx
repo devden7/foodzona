@@ -54,6 +54,10 @@ const Navbar = () => {
   const authCtx = useContext(AuthContext);
   const router = useRouter();
 
+  useEffect(() => {
+    authCtx?.isLoggedIn();
+  }, [authCtx?.isAuth]);
+
   const form = useForm<z.infer<typeof formCreateStoreSchema>>({
     resolver: zodResolver(formCreateStoreSchema),
     defaultValues: {
@@ -95,7 +99,7 @@ const Navbar = () => {
     <nav
       className={`relative z-50 border-b-2 border-slate-100 bg-white ${mediumScreen < 768 && pathname === '/login' ? 'hidden' : ''}`}
     >
-      {authCtx?.isAuth && (
+      {authCtx?.isAuth && authCtx.user.restaurant === null && (
         <div className="container flex items-center justify-between bg-red-500 py-2">
           <span className="text-sm font-medium"> Ingin menjual makanan ?</span>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
