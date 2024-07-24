@@ -21,8 +21,9 @@ import { ToastAction } from '@/components/ui/toast';
 interface Props {
   type: string;
   setIsOpen: (value: boolean) => void;
+  token: string;
 }
-const FormFood = ({ type, setIsOpen }: Props) => {
+const FormFood = ({ type, setIsOpen, token }: Props) => {
   const form = useForm<z.infer<typeof formCreateFoodSchema>>({
     resolver: zodResolver(formCreateFoodSchema),
     defaultValues: {
@@ -37,7 +38,10 @@ const FormFood = ({ type, setIsOpen }: Props) => {
   const fileRef = form.register('image');
 
   async function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
-    const response = await createFood(values);
+    const response = await createFood({
+      token,
+      ...values,
+    });
     if (response.errors) {
       return toast({
         variant: 'destructive',

@@ -10,4 +10,5 @@ export interface ICreateFood {
   price: number;
   category: string;
   image?: FileList | undefined;
+  token: string;
 }

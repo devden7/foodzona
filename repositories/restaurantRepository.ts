@@ -22,9 +22,7 @@ export const createFood = async (
   request: ICreateFood
 ): Promise<IResponse<IRestaurant>> => {
   const pickImage = request.image[0] !== undefined ? request.image[0] : '';
-  console.log(pickImage);
   const formData = new FormData();
-  console.log('/assets/no-image.jpeg');
 
   formData.append('foodName', request.foodName);
   formData.append('description', request.description);
@@ -34,6 +32,9 @@ export const createFood = async (
 
   const response = await fetch(`${API_URL}api/create-food`, {
     method: 'POST',
+    headers: {
+      Authorization: `Bearer ${request.token}`,
+    },
     body: formData,
   });
   const data = await response.json();

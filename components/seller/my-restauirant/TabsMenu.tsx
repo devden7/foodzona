@@ -13,7 +13,10 @@ import {
 import FormFood from './FormFood';
 import FoodList from './FoodList';
 
-const TabsMenu = () => {
+interface Props {
+  token: string;
+}
+const TabsMenu = ({ token }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,7 +32,7 @@ const TabsMenu = () => {
 
         <DialogContent className="flex w-3/4 flex-col items-start px-8">
           <DialogTitle>Menu</DialogTitle>
-          <FormFood type="Add food" setIsOpen={setIsOpen} />
+          <FormFood type="Add food" setIsOpen={setIsOpen} token={token} />
         </DialogContent>
       </Dialog>
       <FoodList isOpen={isOpen} setIsOpen={setIsOpen} />

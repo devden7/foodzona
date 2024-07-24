@@ -61,7 +61,7 @@ const MyRestaurant = () => {
                 </TabsList>
               </div>
               <TabsContent value="menu">
-                <TabsMenu />
+                <TabsMenu token={authCtx?.user.token} />
               </TabsContent>
               <TabsContent value="history-order">
                 <TabsHistoryOrder />
