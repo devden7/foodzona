@@ -1,5 +1,5 @@
 import { IResponse } from '@/model/accountModel';
-import { IRestaurant } from '@/model/restaurantModel';
+import { ICreateFood, IRestaurant } from '@/model/restaurantModel';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -13,6 +13,28 @@ export const createRestaurant = async (
       Authorization: `Bearer ${request.token}`,
     },
     body: JSON.stringify(request),
+  });
+  const data = await response.json();
+  return data;
+};
+
+export const createFood = async (
+  request: ICreateFood
+): Promise<IResponse<IRestaurant>> => {
+  const pickImage = request.image[0] !== undefined ? request.image[0] : '';
+  console.log(pickImage);
+  const formData = new FormData();
+  console.log('/assets/no-image.jpeg');
+
+  formData.append('foodName', request.foodName);
+  formData.append('description', request.description);
+  formData.append('price', request.price.toString());
+  formData.append('category', request.category);
+  formData.append('image', pickImage);
+
+  const response = await fetch(`${API_URL}api/create-food`, {
+    method: 'POST',
+    body: formData,
   });
   const data = await response.json();
   return data;

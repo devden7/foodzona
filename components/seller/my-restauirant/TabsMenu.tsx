@@ -29,7 +29,7 @@ const TabsMenu = () => {
 
         <DialogContent className="flex w-3/4 flex-col items-start px-8">
           <DialogTitle>Menu</DialogTitle>
-          <FormFood type="Add food" />
+          <FormFood type="Add food" setIsOpen={setIsOpen} />
         </DialogContent>
       </Dialog>
       <FoodList isOpen={isOpen} setIsOpen={setIsOpen} />

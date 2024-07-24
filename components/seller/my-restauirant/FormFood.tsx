@@ -14,24 +14,47 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 import { formCreateFoodSchema } from '@/lib/validation';
+import { createFood } from '@/repositories/restaurantRepository';
+import { toast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 interface Props {
   type: string;
+  setIsOpen: (value: boolean) => void;
 }
-const FormFood = ({ type }: Props) => {
+const FormFood = ({ type, setIsOpen }: Props) => {
   const form = useForm<z.infer<typeof formCreateFoodSchema>>({
     resolver: zodResolver(formCreateFoodSchema),
     defaultValues: {
       foodName: '',
       description: '',
-      price: undefined,
+      price: 0,
       category: '',
+      image: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
-    console.log(values);
+  const fileRef = form.register('image');
+
+  async function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
+    const response = await createFood(values);
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
+
+    toast({
+      description: 'Berhasil mempublish makanan',
+      duration: 3000,
+    });
+    form.reset();
+    setIsOpen(false);
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
@@ -110,14 +133,18 @@ const FormFood = ({ type }: Props) => {
               </FormItem>
             )}
           />
-
-          <div>
-            <Input
-              id="picture"
-              type="file"
-              className="border-2 border-gray-200"
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem className="mb-3 space-y-0">
+                <FormControl>
+                  <Input type="file" {...fileRef} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <Button
           type="submit"
