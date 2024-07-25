@@ -1,4 +1,5 @@
 import { IResponse } from '@/model/accountModel';
+import { responseCreateFood } from '@/model/foodModel';
 import { ICreateFood, IRestaurant } from '@/model/restaurantModel';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
@@ -20,7 +21,8 @@ export const createRestaurant = async (
 
 export const createFood = async (
   request: ICreateFood
-): Promise<IResponse<IRestaurant>> => {
+): Promise<IResponse<responseCreateFood>> => {
+  console.log(request.image);
   const pickImage = request.image[0] !== undefined ? request.image[0] : '';
   const formData = new FormData();
 

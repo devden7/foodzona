@@ -1,8 +1,3 @@
-import { useForm } from 'react-hook-form';
-
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-
 import {
   Form,
   FormField,
@@ -13,51 +8,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-import { formCreateFoodSchema } from '@/lib/validation';
-import { createFood } from '@/repositories/restaurantRepository';
-import { toast } from '@/components/ui/use-toast';
-import { ToastAction } from '@/components/ui/toast';
-
 interface Props {
+  onSubmit?: (value: any) => void;
   type: string;
-  setIsOpen: (value: boolean) => void;
-  token: string;
+  form?: any;
 }
-const FormFood = ({ type, setIsOpen, token }: Props) => {
-  const form = useForm<z.infer<typeof formCreateFoodSchema>>({
-    resolver: zodResolver(formCreateFoodSchema),
-    defaultValues: {
-      foodName: '',
-      description: '',
-      price: 0,
-      category: '',
-      image: '',
-    },
-  });
-
+const FormFood = ({ onSubmit, type, form }: Props) => {
   const fileRef = form.register('image');
-
-  async function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
-    const response = await createFood({
-      token,
-      ...values,
-    });
-    if (response.errors) {
-      return toast({
-        variant: 'destructive',
-        title: response.errors,
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-        duration: 3000,
-      });
-    }
-
-    toast({
-      description: 'Berhasil mempublish makanan',
-      duration: 3000,
-    });
-    form.reset();
-    setIsOpen(false);
-  }
 
   return (
     <Form {...form}>

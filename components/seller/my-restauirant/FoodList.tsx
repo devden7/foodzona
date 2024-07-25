@@ -14,39 +14,21 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import FormFood from './FormFood';
-import { getFoodRestaurant } from '@/repositories/restaurantRepository';
-import { useEffect, useState } from 'react';
+import { IDataFood } from '@/model/foodModel';
 
 interface Props {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  token: string;
+  onSubmit: (value?: any) => void;
+  data: IDataFood[];
 }
 
-interface data {
-  foodId: number;
-  name: string;
-  description: string;
-  price: string;
-  image: any;
-}
-
-const FoodList = ({ isOpen, setIsOpen, token }: Props) => {
-  const [data, setData] = useState<data[]>();
-
+const FoodList = ({ setIsOpen, onSubmit, isOpen, data }: Props) => {
   const API_URL = process.env.NEXT_PUBLIC_API;
-  const fetchData = async () => {
-    const results = await getFoodRestaurant(token);
-    setData(results.data.foods);
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className="mb-10 flex flex-wrap items-center gap-4 md:justify-between">
-      {data?.length === 0 && <p>No Food</p>}
-      {data?.map((item: data) => (
+      {data.length === 0 && <p>No Food</p>}
+      {data.map((item: IDataFood) => (
         <div
           key={item.foodId}
           className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
@@ -75,11 +57,7 @@ const FoodList = ({ isOpen, setIsOpen, token }: Props) => {
 
                   <DialogContent className="flex w-3/4 flex-col items-start px-8">
                     <DialogTitle>Menu</DialogTitle>
-                    <FormFood
-                      type="Edit food"
-                      setIsOpen={setIsOpen}
-                      token={token}
-                    />
+                    <FormFood type="Edit food" onSubmit={onSubmit} />
                   </DialogContent>
                 </Dialog>
                 <DropdownMenuItem className="cursor-pointer">

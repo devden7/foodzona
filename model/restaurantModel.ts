@@ -9,6 +9,6 @@ export interface ICreateFood {
   description: string;
   price: number;
   category: string;
-  image?: FileList | undefined;
+  image?: FileList | any;
   token: string;
 }
