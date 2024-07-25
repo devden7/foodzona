@@ -35,7 +35,7 @@ const TabsMenu = ({ token }: Props) => {
           <FormFood type="Add food" setIsOpen={setIsOpen} token={token} />
         </DialogContent>
       </Dialog>
-      <FoodList isOpen={isOpen} setIsOpen={setIsOpen} />
+      <FoodList isOpen={isOpen} setIsOpen={setIsOpen} token={token} />
     </>
   );
 };

@@ -40,3 +40,13 @@ export const createFood = async (
   const data = await response.json();
   return data;
 };
+
+export const getFoodRestaurant = async (token: string) => {
+  const response = await fetch(`${API_URL}api/restaurant-foods`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};

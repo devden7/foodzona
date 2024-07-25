@@ -7,7 +7,6 @@ import {
 import { HiDotsVertical } from 'react-icons/hi';
 import Image from 'next/image';
 
-import { restaurantLists } from '@/constants';
 import {
   Dialog,
   DialogContent,
@@ -15,24 +14,47 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import FormFood from './FormFood';
+import { getFoodRestaurant } from '@/repositories/restaurantRepository';
+import { useEffect, useState } from 'react';
 
 interface Props {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  token: string;
 }
 
-const FoodList = ({ isOpen, setIsOpen }: Props) => {
+interface data {
+  foodId: number;
+  name: string;
+  description: string;
+  price: string;
+  image: any;
+}
+
+const FoodList = ({ isOpen, setIsOpen, token }: Props) => {
+  const [data, setData] = useState<data[]>();
+
+  const API_URL = process.env.NEXT_PUBLIC_API;
+  const fetchData = async () => {
+    const results = await getFoodRestaurant(token);
+    setData(results.data.foods);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="mb-10 flex flex-wrap items-center gap-4 md:justify-between">
-      {restaurantLists.map((item) => (
+      {data?.length === 0 && <p>No Food</p>}
+      {data?.map((item: data) => (
         <div
-          key={item.id}
+          key={item.foodId}
           className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
         >
           <div className="relative h-40 w-48 overflow-hidden rounded-xl md:w-56 lg:h-[600px] lg:w-full">
             <Image
-              src={item.imageUrl}
-              alt={item.label}
+              src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+              alt={item.name}
               fill
               objectFit="cover"
               quality={100}
@@ -53,7 +75,11 @@ const FoodList = ({ isOpen, setIsOpen }: Props) => {
 
                   <DialogContent className="flex w-3/4 flex-col items-start px-8">
                     <DialogTitle>Menu</DialogTitle>
-                    <FormFood type="Edit food" />
+                    <FormFood
+                      type="Edit food"
+                      setIsOpen={setIsOpen}
+                      token={token}
+                    />
                   </DialogContent>
                 </Dialog>
                 <DropdownMenuItem className="cursor-pointer">
@@ -63,14 +89,14 @@ const FoodList = ({ isOpen, setIsOpen }: Props) => {
             </DropdownMenu>
           </div>
           <div className="size-full">
-            <h3 className="mb-3 line-clamp-2 font-semibold">{item.label}</h3>
+            <h3 className="mb-3 line-clamp-2 font-semibold">{item.name}</h3>
             <div className="mb-3 flex max-h-96 flex-wrap gap-2">
               <p className="line-clamp-2 text-xs text-black/70 lg:line-clamp-1 lg:text-sm">
-                description food
+                {item.description}
               </p>
             </div>
             <div>
-              <p className="text-lg font-medium">10.000</p>
+              <p className="text-lg font-medium">{item.price}</p>
             </div>
           </div>
         </div>
