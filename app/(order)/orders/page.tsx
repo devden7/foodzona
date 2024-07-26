@@ -1,22 +1,22 @@
 'use client';
 
-import { AuthContext } from '@/context/AuthContext';
-import React, { useContext, useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const OrdersPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const authCtx = useContext(AuthContext);
+  const { isAuth, isLoggedIn } = useAuth();
 
   useEffect(() => {
-    authCtx?.isLoggedIn();
-    if (!authCtx?.isAuth) {
+    isLoggedIn();
+    if (!isAuth) {
       router.push('/login');
     } else {
       setIsLoading(false);
     }
-  }, [authCtx?.isAuth]);
+  }, [isAuth]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -24,7 +24,7 @@ const OrdersPage = () => {
 
   return (
     <>
-      {authCtx?.isAuth ? (
+      {isAuth ? (
         <section className="mb-10 mt-7">
           <div className="container">
             <h2 className="mb-5 text-2xl font-semibold lg:text-3xl">History</h2>

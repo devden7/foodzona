@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -14,32 +14,32 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { AuthContext } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import TabsMenu from '@/components/seller/my-restauirant/TabsMenu';
 import TabsHistoryOrder from '@/components/seller/my-restauirant/TabsHistoryOrder';
 
 const MyRestaurant = () => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const authCtx = useContext(AuthContext);
+  const { isAuth, user, isLoggedIn } = useAuth();
 
   useEffect(() => {
-    authCtx?.isLoggedIn();
-    if (!authCtx?.isAuth) {
+    isLoggedIn();
+    if (!isAuth) {
       router.push('/login');
-    } else if (authCtx?.user.restaurant === null) {
+    } else if (user.restaurant === null) {
       router.push('/');
     } else {
       setIsLoading(false);
     }
-  }, [authCtx?.isAuth, authCtx?.user.restaurant]);
+  }, [isAuth, user.restaurant, user.token]);
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
   return (
     <>
-      {authCtx?.isAuth && authCtx?.user.restaurant !== null && (
+      {isAuth && user.restaurant !== null && (
         <section className="mb-10 mt-5">
           <div className="container">
             <Breadcrumb className="my-5">
@@ -50,7 +50,7 @@ const MyRestaurant = () => {
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem>{authCtx?.user.restaurant}</BreadcrumbItem>
+                <BreadcrumbItem>{user.restaurant}</BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
             <Tabs defaultValue="menu">
@@ -61,7 +61,7 @@ const MyRestaurant = () => {
                 </TabsList>
               </div>
               <TabsContent value="menu">
-                <TabsMenu token={authCtx?.user.token} />
+                <TabsMenu token={user.token} />
               </TabsContent>
               <TabsContent value="history-order">
                 <TabsHistoryOrder />

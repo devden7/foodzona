@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import {
@@ -92,4 +92,12 @@ export const AuthContextProvider = ({
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = (): IReqContext => {
+  const context = useContext(AuthContext);
+  if (context === null) {
+    throw new Error('Context is NULL');
+  }
+  return context;
 };

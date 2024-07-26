@@ -1,8 +1,9 @@
 export interface IDataFood {
-  foodId: number;
+  foodId: number | null;
   name: string;
   description: string;
-  price: string;
+  price: string | number;
+  category: string;
   image: string | null;
 }
 

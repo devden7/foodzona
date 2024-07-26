@@ -6,7 +6,7 @@ import { ToastAction } from '@/components/ui/toast';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   HiOutlineX,
   HiArrowSmLeft,
@@ -34,14 +34,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { registerUser } from '@/repositories/accountRepository';
-import { AuthContext } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
 const Login = () => {
   const [isBtnLogin, setIsBtnLogin] = useState(false);
   const [isBtnRegister, setIsBtnRegister] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const authCtx = useContext(AuthContext);
+  const { isAuth, login, isLoggedIn } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -63,7 +63,7 @@ const Login = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formLoginSchema>) {
-    authCtx?.login(values);
+    login(values);
     router.push('/');
   }
 
@@ -83,13 +83,13 @@ const Login = () => {
   }
 
   useEffect(() => {
-    authCtx?.isLoggedIn();
-    if (authCtx?.isAuth) {
+    isLoggedIn();
+    if (isAuth) {
       router.push('/');
     } else {
       setIsLoading(false);
     }
-  }, [authCtx?.isAuth]);
+  }, [isAuth]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -97,7 +97,7 @@ const Login = () => {
 
   return (
     <>
-      {!authCtx?.isAuth ? (
+      {!isAuth ? (
         <section>
           <div className="absolute right-0 top-12 -z-50 hidden h-screen w-full overflow-hidden md:block">
             <Image

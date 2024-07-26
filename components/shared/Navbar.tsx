@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { HiMenu, HiSearch, HiOutlineX } from 'react-icons/hi';
 
@@ -46,7 +46,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { formCreateStoreSchema } from '@/lib/validation';
 import { Input } from '@/components/ui/input';
-import { AuthContext } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { createRestaurant } from '@/repositories/restaurantRepository';
 
 const Navbar = () => {
@@ -56,12 +56,12 @@ const Navbar = () => {
   const [mediumScreen, setMediumScreen] = useState<number | undefined>(
     undefined
   );
-  const authCtx = useContext(AuthContext);
+  const { isAuth, user, isLoggedIn, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    authCtx?.isLoggedIn();
-  }, [authCtx?.isAuth]);
+    isLoggedIn();
+  }, [isAuth]);
 
   const form = useForm<z.infer<typeof formCreateStoreSchema>>({
     resolver: zodResolver(formCreateStoreSchema),
@@ -95,7 +95,7 @@ const Navbar = () => {
     const response = await createRestaurant({
       restaurantName: values.restaurantName,
       city: values.city,
-      token: authCtx?.user.token,
+      token: user.token,
     });
 
     if (response.errors) {
@@ -113,7 +113,7 @@ const Navbar = () => {
       duration: 3000,
     });
     setIsOpen(false);
-    authCtx?.logout();
+    logout();
     setTimeout(() => {
       router.push('/login');
       // window.location.reload();
@@ -122,7 +122,7 @@ const Navbar = () => {
   }
 
   const logoutBtnHandler = () => {
-    authCtx?.logout();
+    logout();
     router.push('/login');
   };
 
@@ -130,7 +130,7 @@ const Navbar = () => {
     <nav
       className={`relative z-50 border-b-2 border-slate-100 bg-white ${mediumScreen < 768 && pathname === '/login' ? 'hidden' : ''}`}
     >
-      {authCtx?.isAuth && authCtx.user.restaurant === null && (
+      {isAuth && user.restaurant === null && (
         <div className="container flex items-center justify-between bg-red-500 py-2">
           <span className="text-sm font-medium"> Ingin menjual makanan ?</span>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -234,7 +234,7 @@ const Navbar = () => {
                 <div className="ml-10 flex flex-col gap-4 text-lg font-semibold text-green-600">
                   <Link href="/">Beranda</Link>
                   <Link href="/recommendations">Rekomendasi</Link>
-                  {!authCtx?.isAuth && pathname !== '/login' && (
+                  {!isAuth && pathname !== '/login' && (
                     <Link href="/login">Masuk/Daftar</Link>
                   )}
                 </div>
@@ -271,14 +271,14 @@ const Navbar = () => {
           <div className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-green-50">
             <HiSearch color="green" size={25} />
           </div>
-          {!authCtx?.isAuth && pathname !== '/login' && (
+          {!isAuth && pathname !== '/login' && (
             <div className="hidden rounded-full bg-green-50 p-2 font-bold text-green-700 md:block">
               <Link href="/login">Masuk/Daftar</Link>
             </div>
           )}
           <DropdownMenu open={isOpenDropdown} onOpenChange={setIsOpenDropdown}>
             <DropdownMenuTrigger asChild>
-              {authCtx?.isAuth && (
+              {isAuth && (
                 <Button className="flex size-10 items-center justify-center rounded-full bg-red-500 outline-none hover:bg-red-500 focus-visible:ring-0 focus-visible:ring-offset-0">
                   <span className="font-medium text-white">D</span>
                 </Button>
@@ -286,8 +286,8 @@ const Navbar = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="absolute right-0 w-56">
               <div className="mb-3 flex flex-col items-start gap-1 pl-2 pt-2 focus:bg-white">
-                <h4 className="font-semibold">{authCtx?.user.username}</h4>
-                <p className="text-xs text-black/60">{authCtx?.user.name}</p>
+                <h4 className="font-semibold">{user.username}</h4>
+                <p className="text-xs text-black/60">{user.name}</p>
               </div>
               <DropdownMenuItem>
                 <Link
@@ -298,7 +298,7 @@ const Navbar = () => {
                   Orders
                 </Link>
               </DropdownMenuItem>
-              {authCtx?.user.restaurant !== null && (
+              {user.restaurant !== null && (
                 <DropdownMenuItem className="font-semibold">
                   <Link
                     href="/my-restaurant"
