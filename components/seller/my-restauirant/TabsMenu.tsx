@@ -20,8 +20,7 @@ const TabsMenu = ({ token }: Props) => {
 
   const fetchData = async () => {
     const results = await getFoodRestaurant(token);
-    console.log(results);
-    setData(results);
+    setData(results.data.foods);
   };
   useEffect(() => {
     fetchData();
