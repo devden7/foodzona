@@ -18,7 +18,7 @@ interface Props {
   idFood: number | null;
 
   setIsOpenEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  createNewFood: (value: IDataFood) => void;
+  updatedNewFood: (value: IDataFood) => void;
   editBtnHandler: (id: number | null) => void;
 }
 
@@ -28,8 +28,8 @@ const FoodList = ({
   item,
   idFood,
   setIsOpenEdit,
-  createNewFood,
   editBtnHandler,
+  updatedNewFood,
 }: Props) => {
   const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -40,7 +40,7 @@ const FoodList = ({
           <FormFood
             type="Edit"
             token={token}
-            createNewFood={createNewFood}
+            updatedNewFood={updatedNewFood}
             data={item}
           />
         </ResponsiveDialog>

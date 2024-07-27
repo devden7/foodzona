@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { formCreateFoodSchema } from '@/lib/validation';
 import { toast } from '@/components/ui/use-toast';
-import { ToastAction } from '@/components/ui/toast';
 import {
   Form,
   FormField,
@@ -16,16 +15,25 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { IDataFood } from '@/model/foodModel';
-import { createFood } from '@/repositories/restaurantRepository';
+import {
+  createFood,
+  updateFoodRestaurant,
+} from '@/repositories/restaurantRepository';
 
 interface Props {
   type: string;
   token: string;
   data?: IDataFood;
-  createNewFood: (data: IDataFood) => void;
+  createNewFood?: (data: IDataFood) => void;
+  updatedNewFood?: (data: IDataFood) => void;
 }
-const FormFood = ({ type, token, data, createNewFood }: Props) => {
-  console.log(data);
+const FormFood = ({
+  type,
+  token,
+  data,
+  createNewFood,
+  updatedNewFood,
+}: Props) => {
   const form = useForm<z.infer<typeof formCreateFoodSchema>>({
     resolver: zodResolver(formCreateFoodSchema),
     defaultValues: {
@@ -36,19 +44,42 @@ const FormFood = ({ type, token, data, createNewFood }: Props) => {
       image: data?.image || '',
     },
   });
-  async function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
+
+  const addFoodHandler = async (values: {
+    foodName: string;
+    description: string;
+    price: number;
+    category: string;
+    image?: any;
+  }) => {
     const response = await createFood({
       token,
       ...values,
     });
+    createNewFood?.(response.data.foods);
+  };
 
-    if (response.errors) {
-      return toast({
-        variant: 'destructive',
-        title: response.errors,
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-        duration: 3000,
-      });
+  const editFoodHanlder = async (values: {
+    foodName: string;
+    description: string;
+    price: number;
+    category: string;
+    image?: any;
+  }) => {
+    const response = await updateFoodRestaurant({
+      token,
+      foodId: data?.foodId,
+      ...values,
+    });
+    updatedNewFood?.(response.data.foods);
+  };
+
+  async function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
+    console.log(values);
+    if (type !== 'Edit') {
+      await addFoodHandler(values);
+    } else {
+      await editFoodHanlder(values);
     }
 
     toast({
@@ -56,7 +87,6 @@ const FormFood = ({ type, token, data, createNewFood }: Props) => {
       duration: 3000,
     });
 
-    createNewFood(response.data.foods);
     form.reset();
   }
 
@@ -123,23 +153,25 @@ const FormFood = ({ type, token, data, createNewFood }: Props) => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem className="mb-3 space-y-0">
-                <FormControl>
-                  <Input
-                    placeholder="Category food"
-                    type="text"
-                    className="border-2 border-gray-200 bg-transparent p-2 text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {type !== 'Edit' && (
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem className="mb-3 space-y-0">
+                  <FormControl>
+                    <Input
+                      placeholder="Category food"
+                      type="text"
+                      className="border-2 border-gray-200 bg-transparent p-2 text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}

@@ -20,7 +20,8 @@ const TabsMenu = ({ token }: Props) => {
 
   const fetchData = async () => {
     const results = await getFoodRestaurant(token);
-    setData(results.data.foods);
+    console.log(results);
+    setData(results);
   };
   useEffect(() => {
     fetchData();
@@ -29,6 +30,16 @@ const TabsMenu = ({ token }: Props) => {
   const createNewFood = (data: IDataFood) => {
     setData((prev) => [...prev, data]);
     setIsOpenAdd(false);
+  };
+
+  const updatedNewFood = (items: IDataFood) => {
+    setData((prev) => {
+      const newData = prev.map((item) =>
+        item.foodId === items.foodId ? { ...item, ...items } : item
+      );
+      return newData;
+    });
+    setIsOpenEdit(false);
   };
 
   const editBtnHandler = (id: number | null) => {
@@ -54,7 +65,7 @@ const TabsMenu = ({ token }: Props) => {
             item={item}
             idFood={idFood}
             setIsOpenEdit={setIsOpenEdit}
-            createNewFood={createNewFood}
+            updatedNewFood={updatedNewFood}
             editBtnHandler={editBtnHandler}
           />
         ))}
