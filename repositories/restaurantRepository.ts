@@ -75,3 +75,15 @@ export const updateFoodRestaurant = async (request: IInsertFood) => {
   const data = await response.json();
   return data;
 };
+
+export const deleteFoodRestaurant = async (foodId: number, token: string) => {
+  console.log(token);
+  const response = await fetch(`${API_URL}api/delete/${foodId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};

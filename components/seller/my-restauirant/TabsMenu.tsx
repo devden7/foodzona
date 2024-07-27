@@ -6,8 +6,12 @@ import { IDataFood } from '@/model/foodModel';
 
 import FormFood from './FormFood';
 import FoodList from './FoodList';
-import { getFoodRestaurant } from '@/repositories/restaurantRepository';
+import {
+  deleteFoodRestaurant,
+  getFoodRestaurant,
+} from '@/repositories/restaurantRepository';
 import ResponsiveDialog from './ResponsiveDialog';
+import { toast } from '@/components/ui/use-toast';
 
 interface Props {
   token: string;
@@ -41,6 +45,16 @@ const TabsMenu = ({ token }: Props) => {
     setIsOpenEdit(false);
   };
 
+  const deleteFoodHandler = async (foodId: number) => {
+    await deleteFoodRestaurant(foodId, token);
+
+    setData((prev) => prev.filter((item) => item.foodId !== foodId));
+    toast({
+      description: 'Berhasil menghapus makanan',
+      duration: 3000,
+    });
+  };
+
   const editBtnHandler = (id: number | null) => {
     if (id === null) {
       return;
@@ -66,6 +80,7 @@ const TabsMenu = ({ token }: Props) => {
             setIsOpenEdit={setIsOpenEdit}
             updatedNewFood={updatedNewFood}
             editBtnHandler={editBtnHandler}
+            deleteFoodHandler={deleteFoodHandler}
           />
         ))}
       </div>

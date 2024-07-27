@@ -20,6 +20,7 @@ interface Props {
   setIsOpenEdit: React.Dispatch<React.SetStateAction<boolean>>;
   updatedNewFood: (value: IDataFood) => void;
   editBtnHandler: (id: number | null) => void;
+  deleteFoodHandler: (id: number) => void;
 }
 
 const FoodList = ({
@@ -30,6 +31,7 @@ const FoodList = ({
   setIsOpenEdit,
   editBtnHandler,
   updatedNewFood,
+  deleteFoodHandler,
 }: Props) => {
   const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -70,7 +72,10 @@ const FoodList = ({
             >
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => deleteFoodHandler(item.foodId)}
+            >
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
