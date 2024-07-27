@@ -25,13 +25,14 @@ interface Props {
   createNewFood: (data: IDataFood) => void;
 }
 const FormFood = ({ type, token, data, createNewFood }: Props) => {
+  console.log(data);
   const form = useForm<z.infer<typeof formCreateFoodSchema>>({
     resolver: zodResolver(formCreateFoodSchema),
     defaultValues: {
       foodName: data?.name || '',
       description: data?.description || '',
       price: Number(data?.price) || 0,
-      category: data?.category || '',
+      category: data?.category[0] || '',
       image: data?.image || '',
     },
   });
@@ -122,25 +123,24 @@ const FormFood = ({ type, token, data, createNewFood }: Props) => {
             )}
           />
 
-          {type !== 'Edit' && (
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem className="mb-3 space-y-0">
-                  <FormControl>
-                    <Input
-                      placeholder="Category food"
-                      type="text"
-                      className="border-2 border-gray-200 bg-transparent p-2 text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem className="mb-3 space-y-0">
+                <FormControl>
+                  <Input
+                    placeholder="Category food"
+                    type="text"
+                    className="border-2 border-gray-200 bg-transparent p-2 text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="image"
