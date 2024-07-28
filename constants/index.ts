@@ -31,32 +31,12 @@ export const categoriesLists: CategoriesList[] = [
     imageUrl: '/assets/categories_terlaris.png',
     href: '/jakarta/restaurants/best_seller',
   },
-  // {
-  //   id: '2',
-  //   label: 'Menu hemat',
-  //   imageUrl: '/assets/categories_hemat.png',
-  // },
   {
     id: '2',
     label: 'Terfavorit',
     imageUrl: '/assets/categories_terfavorit.png',
     href: '/jakarta/restaurants/most_loved',
   },
-  // {
-  //   id: '4',
-  //   label: '24 jam',
-  //   imageUrl: '/assets/categories_24jam.png',
-  // },
-  // {
-  //   id: '5',
-  //   label: 'Menu sehat',
-  //   imageUrl: '/assets/categories_menusehat.png',
-  // },
-  // {
-  //   id: '6',
-  //   label: 'Pasti ada promo',
-  //   imageUrl: '/assets/categories_promo.png',
-  // },
 ];
 
 export const typeFoodLists: TypeFoodList[] = [
