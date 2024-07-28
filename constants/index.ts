@@ -23,37 +23,40 @@ export const categoriesLists: CategoriesList[] = [
     id: '0',
     label: 'Terdekat',
     imageUrl: '/assets/categories_terdekat.png',
+    href: '/jakarta/restaurants/near_me',
   },
   {
     id: '1',
     label: 'Terlaris',
     imageUrl: '/assets/categories_terlaris.png',
+    href: '/jakarta/restaurants/best_seller',
   },
+  // {
+  //   id: '2',
+  //   label: 'Menu hemat',
+  //   imageUrl: '/assets/categories_hemat.png',
+  // },
   {
     id: '2',
-    label: 'Menu hemat',
-    imageUrl: '/assets/categories_hemat.png',
-  },
-  {
-    id: '3',
     label: 'Terfavorit',
     imageUrl: '/assets/categories_terfavorit.png',
+    href: '/jakarta/restaurants/most_loved',
   },
-  {
-    id: '4',
-    label: '24 jam',
-    imageUrl: '/assets/categories_24jam.png',
-  },
-  {
-    id: '5',
-    label: 'Menu sehat',
-    imageUrl: '/assets/categories_menusehat.png',
-  },
-  {
-    id: '6',
-    label: 'Pasti ada promo',
-    imageUrl: '/assets/categories_promo.png',
-  },
+  // {
+  //   id: '4',
+  //   label: '24 jam',
+  //   imageUrl: '/assets/categories_24jam.png',
+  // },
+  // {
+  //   id: '5',
+  //   label: 'Menu sehat',
+  //   imageUrl: '/assets/categories_menusehat.png',
+  // },
+  // {
+  //   id: '6',
+  //   label: 'Pasti ada promo',
+  //   imageUrl: '/assets/categories_promo.png',
+  // },
 ];
 
 export const typeFoodLists: TypeFoodList[] = [
@@ -61,86 +64,103 @@ export const typeFoodLists: TypeFoodList[] = [
     id: '0',
     label: 'Martabak',
     imageUrl: '/assets/martabak.jpg',
+    href: '/jakarta/restaurants/martabak',
   },
   {
     id: '1',
     label: 'Bakso & soto',
     imageUrl: '/assets/bakso-soto.jpg',
+    href: '/jakarta/restaurants/soto_bakso_sop',
   },
   {
     id: '2',
     label: 'Roti',
     imageUrl: '/assets/roti.jpg',
+    href: '/jakarta/restaurants/roti',
   },
   {
     id: '3',
     label: 'Chinese',
     imageUrl: '/assets/chinese.jpg',
+    href: '/jakarta/restaurants/chinese',
   },
   {
     id: '4',
     label: 'Barat',
     imageUrl: '/assets/barat.jpg',
+    href: '/jakarta/restaurants/burger_sandwich_steak',
   },
   {
     id: '5',
     label: 'Cepat saji',
     imageUrl: '/assets/cepatsaji.jpg',
+    href: '/jakarta/restaurants/fastfood',
   },
   {
     id: '6',
     label: 'Jepang',
     imageUrl: '/assets/jepang.jpg',
+    href: '/jakarta/restaurants/japanese',
   },
   {
     id: '7',
     label: 'Jajanan',
     imageUrl: '/assets/jajanan.jpg',
+    href: '/jakarta/restaurants/snacks_jajanan',
   },
   {
     id: '8',
     label: 'Sate',
     imageUrl: '/assets/sate.jpg',
+    href: '/jakarta/restaurants/sate',
   },
   {
     id: '9',
     label: 'Pizza & pasta',
     imageUrl: '/assets/pizza-pasta.jpg',
+    href: '/jakarta/restaurants/pizza_pasta',
   },
   {
     id: '10',
     label: 'Bakmie',
     imageUrl: '/assets/bakmie.jpg',
+    href: '/jakarta/restaurants/bakmie',
   },
   {
     id: '11',
     label: 'Minuman',
     imageUrl: '/assets/minuman.jpg',
+    href: '/jakarta/restaurants/minuman',
   },
   {
     id: '12',
     label: 'Korea',
     imageUrl: '/assets/korea.jpg',
+    href: '/jakarta/restaurants/korean',
   },
   {
     id: '13',
     label: 'Seafood',
     imageUrl: '/assets/seafood.jpg',
+    href: '/jakarta/restaurants/seafood',
   },
   {
     id: '14',
     label: 'Kopi',
     imageUrl: '/assets/kopi.jpg',
+    href: '/jakarta/restaurants/coffee_shop',
   },
   {
     id: '15',
-    label: 'Jepang',
+    label: 'India',
     imageUrl: '/assets/india.jpg',
+    href: '/jakarta/restaurants/indian_food',
   },
   {
     id: '16',
     label: 'Timur tengah',
     imageUrl: '/assets/timur tengah.jpg',
+    href: '/jakarta/restaurants/middle_eastern',
   },
 ];
 

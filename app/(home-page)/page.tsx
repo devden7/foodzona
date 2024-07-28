@@ -3,14 +3,12 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import SearchLocation from '@/components/homePage/SearchLocation';
-import {
-  categoriesLists,
-  restaurantLists,
-  typeFoodLists,
-  valueList,
-} from '@/constants';
+import { restaurantLists, valueList } from '@/constants';
 import { Button } from '@/components/ui/button';
 import { HiStar } from 'react-icons/hi';
+import Link from 'next/link';
+import RecommendationMenuSection from '@/components/shared/RecommendationMenuSection';
+import CategoriesMenuSection from '@/components/shared/CategoriesMenuSection';
 
 export default function Home() {
   const [searchLocation, setSearchLocation] = useState('');
@@ -18,7 +16,6 @@ export default function Home() {
     undefined
   );
   const [isOpen, setIsOpen] = useState(false);
-  const [isMoreBtn, setIsMoreBtn] = useState(false);
 
   const handlerSearchLocationDrawer = (value: any) => {
     setSearchLocation(value.city);
@@ -44,15 +41,6 @@ export default function Home() {
     return null;
   }
 
-  const listFoodByScreen =
-    mediumScreen !== undefined && mediumScreen < 640
-      ? 17
-      : mediumScreen >= 640 && mediumScreen < 768
-        ? 8
-        : mediumScreen >= 768 && mediumScreen < 1024
-          ? 7
-          : 5;
-
   const categoryRestourant = restaurantLists.map((item: any) =>
     item.category.map((category: any) => category.categories).join(', ')
   );
@@ -77,7 +65,6 @@ export default function Home() {
         <div className="m-3 flex lg:m-0 lg:px-2 lg:py-1">
           <div
             className="relative h-[360px] w-[450px] grow overflow-hidden rounded-[30px] bg-red-500 sm:w-[600px] md:h-[414px] md:w-[730px] lg:h-[441px]"
-            // className="relative h-[360px] w-[450px] overflow-hidden rounded-[30px] bg-red-500 sm:w-[600px] md:h-[414px] md:w-[730px] md:bg-contain"
             style={{
               zIndex: -1,
             }}
@@ -130,25 +117,7 @@ export default function Home() {
             Belom ada ide? Mulai dari sini aja dulu
           </h2>
           <div className="mt-7">
-            <div className="grid grid-cols-3 gap-x-5 gap-y-12 md:grid-cols-4 lg:grid-cols-6">
-              {categoriesLists.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex aspect-square cursor-pointer flex-col items-center justify-center  text-sm font-semibold md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md"
-                >
-                  <div className="relative size-full items-center justify-center rounded-2xl border-2  border-slate-100 transition active:bg-slate-50 md:size-1/2 md:border-0 md:transition md:duration-500 lg:size-[70%]">
-                    <Image
-                      src={item.imageUrl}
-                      alt={item.label}
-                      height={60}
-                      width={60}
-                      className="absolute  left-1/2 top-1/2 max-h-full max-w-full -translate-x-1/2 -translate-y-1/2"
-                    />
-                  </div>
-                  <p className="mt-2">{item.label}</p>
-                </div>
-              ))}
-            </div>
+            <RecommendationMenuSection />
           </div>
         </div>
       </section>
@@ -158,39 +127,7 @@ export default function Home() {
             Aneka kuliner menarik
           </h2>
           <div className="mb-12 mt-7">
-            <div
-              className={`relative mb-12 grid grid-cols-3 gap-x-5 gap-y-8 overflow-hidden md:grid-cols-4 lg:grid-cols-6`}
-            >
-              {typeFoodLists.map((item, index) => (
-                <div
-                  key={item.id}
-                  className={`flex aspect-square cursor-pointer flex-col items-center justify-center text-sm font-semibold  transition-all duration-100 md:rounded-2xl md:border-2 md:border-slate-100 md:p-5 hover:md:bg-white hover:md:shadow-md ${index > listFoodByScreen && !isMoreBtn ? 'invisible absolute h-0 opacity-0' : 'visible opacity-100 '}`}
-                >
-                  <div className="relative size-full items-center justify-center overflow-hidden rounded-full transition active:bg-slate-50">
-                    <Image
-                      src={item.imageUrl}
-                      alt={item.label}
-                      height={200}
-                      width={200}
-                      quality={100}
-                      className="absolute left-1/2 top-1/2 size-full -translate-x-1/2 -translate-y-1/2"
-                    />
-                  </div>
-                  <p className="mt-2">{item.label}</p>
-                </div>
-              ))}
-            </div>
-
-            {mediumScreen !== undefined &&
-              mediumScreen >= 640 &&
-              !isMoreBtn && (
-                <Button
-                  className="absolute left-1/2 w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 md:w-1/4 lg:w-1/5 xl:w-[15%]"
-                  onClick={() => setIsMoreBtn((prev) => !prev)}
-                >
-                  Tampilkan kuliner lainnya
-                </Button>
-              )}
+            <CategoriesMenuSection mediumScreen={mediumScreen} />
           </div>
         </div>
       </section>
@@ -236,7 +173,9 @@ export default function Home() {
             ))}
           </div>
           <Button className="absolute left-1/2 w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5 xl:w-[15%]">
-            Tampilkan semua resto
+            <Link href="/bandung/restaurants/near_me" className="size-full">
+              Tampilkan semua resto
+            </Link>
           </Button>
         </div>
       </section>

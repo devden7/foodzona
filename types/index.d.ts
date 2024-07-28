@@ -7,12 +7,14 @@ export interface CategoriesList {
   id: string;
   label: string;
   imageUrl: string;
+  href: string;
 }
 
 export interface TypeFoodList {
   id: string;
   label: string;
   imageUrl: string;
+  href: string;
 }
 
 interface Categories {
