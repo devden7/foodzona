@@ -19,9 +19,16 @@ export interface IReqLoginAccount {
 export interface IReqContext {
   isAuth: boolean | undefined;
   user: IDataResponse;
+  location: string;
   login: (request: IReqLoginAccount) => void;
   logout: () => void;
   isLoggedIn: () => void;
+}
+
+export interface IFoodsLists {
+  city: string;
+  category: string;
+  limit?: number;
 }
 
 export interface IResponse<T> {

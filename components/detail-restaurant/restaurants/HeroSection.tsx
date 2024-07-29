@@ -1,7 +1,10 @@
 import HeroBanner from '@/components/shared/HeroBanner';
-import { notFound, useParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
-const HeroSection = () => {
+interface Props {
+  paramsId: string;
+}
+const HeroSection = ({ paramsId }: Props) => {
   const listsParamsId = [
     'near_me',
     'best_seller',
@@ -25,15 +28,14 @@ const HeroSection = () => {
     'middle_eastern',
   ];
 
-  const params = useParams();
-  const validParamsId = listsParamsId.includes(params.id as string);
+  const validParamsId = listsParamsId.includes(paramsId);
 
   if (!validParamsId) {
     return notFound();
   }
   return (
     <section>
-      {params.id === 'near_me' && (
+      {paramsId === 'near_me' && (
         <div>
           <HeroBanner
             src="/assets/terdekat-illustrasi.png"
@@ -44,7 +46,7 @@ const HeroSection = () => {
         </div>
       )}
 
-      {params.id === 'best_seller' && (
+      {paramsId === 'best_seller' && (
         <div>
           <HeroBanner
             src="/assets/best-seller-illustration.png"
@@ -55,7 +57,7 @@ const HeroSection = () => {
         </div>
       )}
 
-      {params.id === 'most_loved' && (
+      {paramsId === 'most_loved' && (
         <div>
           <HeroBanner
             src="/assets/most-loved-illustration.png"
@@ -66,7 +68,7 @@ const HeroSection = () => {
         </div>
       )}
 
-      {params.id === 'martabak' && (
+      {paramsId === 'martabak' && (
         <div>
           <HeroBanner
             src="/assets/martabak-illustration.png"
@@ -76,7 +78,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'soto_bakso_sop' && (
+      {paramsId === 'soto_bakso_sop' && (
         <div>
           <HeroBanner
             src="/assets/soto-bakso-llustration.png"
@@ -86,7 +88,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'roti' && (
+      {paramsId === 'roti' && (
         <div>
           <HeroBanner
             src="/assets/roti-illustration.png"
@@ -96,7 +98,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'chinese' && (
+      {paramsId === 'chinese' && (
         <div>
           <HeroBanner
             src="/assets/chinese-illustration.png"
@@ -106,7 +108,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'burger_sandwich_steak' && (
+      {paramsId === 'burger_sandwich_steak' && (
         <div>
           <HeroBanner
             src="/assets/steak-illustration.png"
@@ -116,7 +118,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'fastfood' && (
+      {paramsId === 'fastfood' && (
         <div>
           <HeroBanner
             src="/assets/fastfood-illustration.png"
@@ -126,7 +128,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'japanese' && (
+      {paramsId === 'japanese' && (
         <div>
           <HeroBanner
             src="/assets/japanese-illustration.png"
@@ -136,7 +138,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'snacks_jajanan' && (
+      {paramsId === 'snacks_jajanan' && (
         <div>
           <HeroBanner
             src="/assets/jajanan-illustration.png"
@@ -146,7 +148,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'sate' && (
+      {paramsId === 'sate' && (
         <div>
           <HeroBanner
             src="/assets/sate-illustration.png"
@@ -156,7 +158,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'pizza_pasta' && (
+      {paramsId === 'pizza_pasta' && (
         <div>
           <HeroBanner
             src="/assets/pizza-pasta-illustration.png"
@@ -166,7 +168,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'bakmie' && (
+      {paramsId === 'bakmie' && (
         <div>
           <HeroBanner
             src="/assets/bakmie-illustration.png"
@@ -176,7 +178,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'minuman' && (
+      {paramsId === 'minuman' && (
         <div>
           <HeroBanner
             src="/assets/minuman-illustration.png"
@@ -186,7 +188,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'korean' && (
+      {paramsId === 'korean' && (
         <div>
           <HeroBanner
             src="/assets/korean-illustration.png"
@@ -196,7 +198,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'seafood' && (
+      {paramsId === 'seafood' && (
         <div>
           <HeroBanner
             src="/assets/seafood-illustration.png"
@@ -206,7 +208,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'coffee_shop' && (
+      {paramsId === 'coffee_shop' && (
         <div>
           <HeroBanner
             src="/assets/coffe-illustration.png"
@@ -216,7 +218,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'indian_food' && (
+      {paramsId === 'indian_food' && (
         <div>
           <HeroBanner
             src="/assets/indian-food-illustration.png"
@@ -226,7 +228,7 @@ const HeroSection = () => {
           />
         </div>
       )}
-      {params.id === 'middle_eastern' && (
+      {paramsId === 'middle_eastern' && (
         <div>
           <HeroBanner
             src="/assets/middle-east-illustration.jpg"

@@ -34,6 +34,8 @@ export const AuthContextProvider = ({
     token: '',
   });
 
+  const [location, setLocation] = useState('Jakarta');
+
   const login = async (request: IReqLoginAccount) => {
     const response = await loginUser(request);
     if (response.errors) {
@@ -61,7 +63,7 @@ export const AuthContextProvider = ({
   const isLoggedIn = () => {
     const takeToken = Cookies.get('token');
     const getIsAuth = localStorage.getItem('isAuth');
-
+    const getLocation = localStorage.getItem('location');
     if (takeToken === undefined || getIsAuth !== 'true') {
       resetAuth();
     } else {
@@ -74,6 +76,10 @@ export const AuthContextProvider = ({
         restaurant: decodedToken.restaurant,
         token: takeToken,
       }));
+    }
+
+    if (!getLocation) {
+      localStorage.setItem('location', location);
     }
   };
 
@@ -88,7 +94,9 @@ export const AuthContextProvider = ({
   };
 
   return (
-    <AuthContext.Provider value={{ login, isLoggedIn, logout, isAuth, user }}>
+    <AuthContext.Provider
+      value={{ login, isLoggedIn, logout, isAuth, user, location }}
+    >
       {children}
     </AuthContext.Provider>
   );

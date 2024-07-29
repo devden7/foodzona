@@ -3,12 +3,14 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import SearchLocation from '@/components/homePage/SearchLocation';
-import { restaurantLists, valueList } from '@/constants';
+import { valueList } from '@/constants';
 import { Button } from '@/components/ui/button';
 import { HiStar } from 'react-icons/hi';
 import Link from 'next/link';
 import RecommendationMenuSection from '@/components/shared/RecommendationMenuSection';
 import CategoriesMenuSection from '@/components/shared/CategoriesMenuSection';
+import { getFoodLists } from '@/repositories/foodRepository';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Home() {
   const [searchLocation, setSearchLocation] = useState('');
@@ -16,6 +18,18 @@ export default function Home() {
     undefined
   );
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState();
+  const { location } = useAuth();
+  const API_URL = process.env.NEXT_PUBLIC_API;
+  const getFoodList = async () => {
+    const request = {
+      city: location,
+      category: 'near_me',
+      limit: 8,
+    };
+    const response = await getFoodLists(request);
+    setData(response.data);
+  };
 
   const handlerSearchLocationDrawer = (value: any) => {
     setSearchLocation(value.city);
@@ -26,6 +40,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    getFoodList();
     if (typeof window !== 'undefined') {
       sizeScreenHandler();
     }
@@ -41,10 +56,6 @@ export default function Home() {
     return null;
   }
 
-  const categoryRestourant = restaurantLists.map((item: any) =>
-    item.category.map((category: any) => category.categories).join(', ')
-  );
-
   const dummyLocation = [
     { city: 'Jakarta', id: 0 },
     { city: 'Surabaya', id: 1 },
@@ -59,6 +70,7 @@ export default function Home() {
     { city: 'Bogor', id: 10 },
     { city: 'Tasikmalaya', id: 11 },
   ];
+
   return (
     <>
       <section className=" mb-[75px] mt-3">
@@ -141,31 +153,31 @@ export default function Home() {
             penawaran terbaik kami di lokasimu!
           </p>
           <div className="mb-10 flex flex-wrap items-center justify-center gap-4 2xl:justify-between">
-            {restaurantLists.map((item, index) => (
+            {data?.map((item) => (
               <div
-                key={item.id}
+                key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
                 <div className="relative h-40 w-48 overflow-hidden rounded-xl bg-purple-500 md:w-56 lg:h-[600px] lg:w-full">
                   <Image
-                    src={item.imageUrl}
-                    alt={item.label}
+                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                    alt={item.name}
                     fill
                     objectFit="cover"
                     quality={100}
                   />
                   <div className="absolute left-1/2 top-[85%] z-50 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-medium text-black lg:left-[80%] lg:top-[90%]">
                     <HiStar color="orange" size={20} />
-                    <p>{item.rating.toFixed(1)}</p>
+                    <p>5.0 rating</p>
                   </div>
                 </div>
                 <div className="size-full">
                   <h3 className="mb-3 line-clamp-2 font-semibold">
-                    {item.label}
+                    {item.name}
                   </h3>
                   <div className="flex max-h-96 flex-wrap gap-2">
                     <p className="line-clamp-2 text-xs text-black/70 lg:line-clamp-1 lg:text-sm">
-                      {categoryRestourant[index]}
+                      {item.category[0]}
                     </p>
                   </div>
                 </div>
