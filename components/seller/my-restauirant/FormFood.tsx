@@ -75,7 +75,6 @@ const FormFood = ({
   };
 
   async function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
-    console.log(values);
     if (type !== 'Edit') {
       await addFoodHandler(values);
     } else {

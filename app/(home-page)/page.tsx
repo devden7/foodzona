@@ -11,6 +11,7 @@ import RecommendationMenuSection from '@/components/shared/RecommendationMenuSec
 import CategoriesMenuSection from '@/components/shared/CategoriesMenuSection';
 import { getFoodLists } from '@/repositories/foodRepository';
 import { useAuth } from '@/context/AuthContext';
+import { IResponseGetFoods } from '@/model/foodModel';
 
 export default function Home() {
   const [searchLocation, setSearchLocation] = useState('');
@@ -18,7 +19,7 @@ export default function Home() {
     undefined
   );
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState();
+  const [data, setData] = useState<IResponseGetFoods>();
   const { location } = useAuth();
   const API_URL = process.env.NEXT_PUBLIC_API;
   const getFoodList = async () => {
@@ -30,7 +31,6 @@ export default function Home() {
     const response = await getFoodLists(request);
     setData(response.data);
   };
-
   const handlerSearchLocationDrawer = (value: any) => {
     setSearchLocation(value.city);
   };
@@ -153,7 +153,7 @@ export default function Home() {
             penawaran terbaik kami di lokasimu!
           </p>
           <div className="mb-10 flex flex-wrap items-center justify-center gap-4 2xl:justify-between">
-            {data?.map((item) => (
+            {data?.foods.map((item) => (
               <div
                 key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"

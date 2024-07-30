@@ -1,5 +1,5 @@
 import {
-  IDataResponse,
+  IUserInfo,
   IReqLoginAccount,
   IReqRegisterAccount,
   IResponse,
@@ -8,7 +8,7 @@ const API_URL = process.env.NEXT_PUBLIC_API;
 
 export const registerUser = async (
   request: IReqRegisterAccount
-): Promise<IResponse<IDataResponse>> => {
+): Promise<IResponse<IUserInfo>> => {
   const response = await fetch(`${API_URL}api/register`, {
     method: 'POST',
     headers: {
@@ -22,7 +22,7 @@ export const registerUser = async (
 
 export const loginUser = async (
   request: IReqLoginAccount
-): Promise<IResponse<IDataResponse>> => {
+): Promise<IResponse<IUserInfo>> => {
   const response = await fetch(`${API_URL}api/login`, {
     method: 'POST',
     headers: {

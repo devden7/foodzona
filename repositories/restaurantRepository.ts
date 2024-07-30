@@ -1,12 +1,12 @@
 import { IResponse } from '@/model/accountModel';
-import { IInsertFood, responseCreateFood } from '@/model/foodModel';
-import { IRestaurant } from '@/model/restaurantModel';
+import { IReqInsertFood, IResponseCreateFood } from '@/model/foodModel';
+import { IReqCreateRestaurant } from '@/model/restaurantModel';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
 
 export const createRestaurant = async (
-  request: IRestaurant
-): Promise<IResponse<IRestaurant>> => {
+  request: IReqCreateRestaurant
+): Promise<IResponse<IReqCreateRestaurant>> => {
   const response = await fetch(`${API_URL}api/register-restaurant`, {
     method: 'POST',
     headers: {
@@ -20,8 +20,8 @@ export const createRestaurant = async (
 };
 
 export const createFood = async (
-  request: IInsertFood
-): Promise<IResponse<responseCreateFood>> => {
+  request: IReqInsertFood
+): Promise<IResponse<IResponseCreateFood>> => {
   const pickImage = request.image[0] !== undefined ? request.image[0] : '';
   const formData = new FormData();
 
@@ -53,10 +53,8 @@ export const getFoodRestaurant = async (token: string) => {
   return data;
 };
 
-export const updateFoodRestaurant = async (request: IInsertFood) => {
-  console.log(request);
+export const updateFoodRestaurant = async (request: IReqInsertFood) => {
   const pickImage = request.image[0] !== undefined ? request.image[0] : '';
-  console.log(pickImage);
   const formData = new FormData();
 
   formData.append('foodName', request.foodName);
@@ -77,7 +75,6 @@ export const updateFoodRestaurant = async (request: IInsertFood) => {
 };
 
 export const deleteFoodRestaurant = async (foodId: number, token: string) => {
-  console.log(token);
   const response = await fetch(`${API_URL}api/delete/${foodId}`, {
     method: 'DELETE',
     headers: {

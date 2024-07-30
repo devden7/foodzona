@@ -1,13 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import React from 'react';
 import { HiShoppingBag } from 'react-icons/hi';
 
 const StickyCart = () => {
-  const cart = useSelector((state) => state);
-  console.log(cart, 'CART');
+  const cart = useSelector((state) => state.cart);
   return (
     <div className=" sticky bottom-0 z-50 h-20 w-full bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
       <div className="flex h-full items-center justify-center">

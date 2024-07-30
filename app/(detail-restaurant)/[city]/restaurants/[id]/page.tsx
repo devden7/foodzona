@@ -15,13 +15,14 @@ import { HiStar } from 'react-icons/hi';
 import { getFoodLists } from '@/repositories/foodRepository';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { IResponseGetFoods } from '@/model/foodModel';
+import Link from 'next/link';
 
 const Restaurants = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<IResponseGetFoods>();
   const { location } = useAuth();
   const params = useParams();
   const API_URL = process.env.NEXT_PUBLIC_API;
-
   const getFoodList = async () => {
     const request = {
       city: location,
@@ -67,8 +68,9 @@ const Restaurants = () => {
             Terdekat
           </h2>
           <div className="mb-10 flex flex-wrap items-center justify-center gap-4 2xl:justify-between">
-            {data?.map((item) => (
-              <div
+            {data?.foods.map((item) => (
+              <Link
+                href={`/${location}/restaurant/${item.restaurantName.toLowerCase().replace(/ /g, '-')}`}
                 key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
@@ -95,7 +97,7 @@ const Restaurants = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

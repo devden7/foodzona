@@ -1,7 +1,8 @@
+import { IDataFood } from '@/model/foodModel';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface InitCart {
-  items: any[];
+  items: IDataFood[];
   totalQuantity: number;
 }
 
@@ -14,7 +15,9 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState: initCart,
   reducers: {
-    addItem(state, action) {},
+    addItem(state, action) {
+      const newItem = action.payload;
+    },
     deleteItem(state, action) {},
   },
 });

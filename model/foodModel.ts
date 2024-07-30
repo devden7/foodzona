@@ -5,9 +5,18 @@ export interface IDataFood {
   price: string | number;
   category: string;
   image: string | null;
+  restaurantName: string;
+  totalPrice?: number;
+  quantity: number;
 }
 
-export interface IInsertFood {
+export interface IResponseGetFoods {
+  foods: IDataFood[];
+  restaurantName?: string;
+  rating?: number;
+}
+
+export interface IReqInsertFood {
   foodId?: number;
   foodName: string;
   description: string;
@@ -17,6 +26,12 @@ export interface IInsertFood {
   token: string;
 }
 
-export interface responseCreateFood {
+export interface IResponseCreateFood {
   foods: IDataFood;
+}
+
+export interface IReqFoodsListsCategory {
+  city: string;
+  category: string;
+  limit?: number;
 }

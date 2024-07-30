@@ -4,7 +4,7 @@ export interface IReqRegisterAccount {
   password: string;
 }
 
-export interface IDataResponse {
+export interface IUserInfo {
   username: string;
   name: string;
   restaurant: string;
@@ -18,17 +18,11 @@ export interface IReqLoginAccount {
 
 export interface IReqContext {
   isAuth: boolean | undefined;
-  user: IDataResponse;
+  user: IUserInfo;
   location: string;
   login: (request: IReqLoginAccount) => void;
   logout: () => void;
   isLoggedIn: () => void;
-}
-
-export interface IFoodsLists {
-  city: string;
-  category: string;
-  limit?: number;
 }
 
 export interface IResponse<T> {

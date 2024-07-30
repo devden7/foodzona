@@ -3,11 +3,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
-import {
-  IDataResponse,
-  IReqContext,
-  IReqLoginAccount,
-} from '@/model/accountModel';
+import { IUserInfo, IReqContext, IReqLoginAccount } from '@/model/accountModel';
 import { loginUser } from '@/repositories/accountRepository';
 
 import { ToastAction } from '@/components/ui/toast';
@@ -34,7 +30,7 @@ export const AuthContextProvider = ({
     token: '',
   });
 
-  const [location, setLocation] = useState('Jakarta');
+  const [location, setLocation] = useState('jakarta');
 
   const login = async (request: IReqLoginAccount) => {
     const response = await loginUser(request);
@@ -67,7 +63,7 @@ export const AuthContextProvider = ({
     if (takeToken === undefined || getIsAuth !== 'true') {
       resetAuth();
     } else {
-      const decodedToken = jwtDecode(takeToken) as IDataResponse;
+      const decodedToken = jwtDecode(takeToken) as IUserInfo;
       setIsAuth(true);
       setUser((prev) => ({
         ...prev,
