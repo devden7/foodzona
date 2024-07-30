@@ -7,6 +7,7 @@ import Footer from '@/components/shared/Footer';
 import StickyCart from '@/components/shared/StickyCart';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthContextProvider } from '@/context/AuthContext';
+import Providers from '@/store/Providers';
 
 export const metadata: Metadata = {
   title: 'Food Zona',
@@ -39,11 +40,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${maisonNeue.variable} font-sans`}>
         <AuthContextProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Toaster />
-          <Footer />
-          <StickyCart />
+          <Providers>
+            <Navbar />
+            <main>{children}</main>
+            <Toaster />
+            <Footer />
+            <StickyCart />
+          </Providers>
         </AuthContextProvider>
       </body>
     </html>
