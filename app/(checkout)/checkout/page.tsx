@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
 import { IDataFood } from '@/model/foodModel';
-import { addItem } from '@/store/Cart/CartSlice';
+import { addItem, deleteItem } from '@/store/Cart/CartSlice';
 import {
   HiArrowSmLeft,
   HiClipboardList,
@@ -18,6 +18,10 @@ const Checkout = () => {
   const dispatch = useAppDispatch();
   const addBtnItemHandler = (item: IDataFood) => {
     dispatch(addItem(item));
+  };
+
+  const removeBtnItemHandler = (foodId: number) => {
+    dispatch(deleteItem(foodId));
   };
   return (
     <section className="my-7 mb-10">
@@ -48,7 +52,10 @@ const Checkout = () => {
               <div>
                 <div className="relative mb-4 size-24 rounded-xl bg-purple-500"></div>
                 <div className="mb-3 flex justify-between gap-2">
-                  <button className="flex size-6 items-center justify-center rounded-full border border-green-700">
+                  <button
+                    className="flex size-6 items-center justify-center rounded-full border border-green-700"
+                    onClick={() => removeBtnItemHandler(item.foodId)}
+                  >
                     <HiMinusSm color="green" />
                   </button>
                   <div>
