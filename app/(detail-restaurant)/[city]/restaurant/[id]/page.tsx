@@ -14,9 +14,11 @@ import {
 } from '@/components/ui/breadcrumb';
 import { HiStar } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
-import { IResponseGetFoods } from '@/model/foodModel';
+import { IDataFood, IResponseGetFoods } from '@/model/foodModel';
 import { getFoodListsDetail } from '@/repositories/foodRepository';
 import { useParams } from 'next/navigation';
+import { addItem } from '@/store/Cart/CartSlice';
+import { useAppDispatch } from '@/hooks/use-redux-hook';
 
 const DetailRestaurant = () => {
   const [data, setData] = useState<IResponseGetFoods>();
@@ -26,6 +28,7 @@ const DetailRestaurant = () => {
   );
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
+  const dispatch = useAppDispatch();
   const API_URL = process.env.NEXT_PUBLIC_API;
   const getFoodListDetail = async () => {
     const response = await getFoodListsDetail(params.id as string);
@@ -60,6 +63,9 @@ const DetailRestaurant = () => {
     return null;
   }
 
+  const cartBtnHandler = (item: IDataFood) => {
+    dispatch(addItem(item));
+  };
   return (
     <>
       <div className="container">
@@ -183,7 +189,10 @@ const DetailRestaurant = () => {
                 </div>
                 <p className="font-semibold lg:text-lg">{item.name}</p>
                 <p className="font-semibold lg:text-lg">{item.price}</p>
-                <Button className="rounded-full border border-green-700 bg-white text-green-700 hover:bg-green-200 xl:mt-4">
+                <Button
+                  className="rounded-full border border-green-700 bg-white text-green-700 hover:bg-green-200 xl:mt-4"
+                  onClick={() => cartBtnHandler(item)}
+                >
                   Add
                 </Button>
               </div>

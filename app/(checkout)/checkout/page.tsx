@@ -1,4 +1,7 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
+import { useAppSelector } from '@/hooks/use-redux-hook';
 import {
   HiArrowSmLeft,
   HiClipboardList,
@@ -7,6 +10,7 @@ import {
 } from 'react-icons/hi';
 
 const Checkout = () => {
+  const cartItems = useAppSelector((state) => state.items);
   return (
     <section className="my-7 mb-10">
       <div className="container">
@@ -21,26 +25,35 @@ const Checkout = () => {
             <HiClipboardList size={35} color="red" />
             <p className="font-semibold"> Pesanan kamu</p>
           </div>
-          <div className="mb-4 flex justify-between border-b-[1.5px] border-gray-200">
-            <div>
-              <p className="mb-3 font-semibold">NAMA MAKANAN </p>
-              <p>50.000</p>
-            </div>
-            <div>
-              <div className="relative mb-4 size-24 rounded-xl bg-purple-500"></div>
-              <div className="mb-3 flex justify-between gap-2">
-                <div className="flex size-6 items-center justify-center rounded-full border border-green-700">
-                  <HiMinusSm color="green" />
-                </div>
-                <div>
-                  <span>1</span>
-                </div>
-                <div className="flex size-6 items-center justify-center rounded-full border border-green-700">
-                  <HiPlusSm color="green" />
+          {cartItems.length === 0 && (
+            <p>Silahkan melakukan pemesanan makanan </p>
+          )}
+          {cartItems.map((item) => (
+            <div
+              key={item.foodId}
+              className="mb-4 flex justify-between border-b-[1.5px] border-gray-200"
+            >
+              <div>
+                <p className="mb-3 font-semibold">{item.name}</p>
+                <p>{item.price}</p>
+              </div>
+              <div>
+                <div className="relative mb-4 size-24 rounded-xl bg-purple-500"></div>
+                <div className="mb-3 flex justify-between gap-2">
+                  <div className="flex size-6 items-center justify-center rounded-full border border-green-700">
+                    <HiMinusSm color="green" />
+                  </div>
+                  <div>
+                    <span>1</span>
+                  </div>
+                  <div className="flex size-6 items-center justify-center rounded-full border border-green-700">
+                    <HiPlusSm color="green" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
+
           <div className="mb-3 flex justify-between">
             <div>
               <p className="font-semibold">Ada lagi pesanannya?</p>

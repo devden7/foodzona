@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
 import React from 'react';
 import { HiShoppingBag } from 'react-icons/hi';
+import { useAppSelector } from '@/hooks/use-redux-hook';
 
 const StickyCart = () => {
-  const cart = useSelector((state) => state.cart);
+  const totalQuantityCart = useAppSelector((state) => state.totalQuantity);
+
   return (
     <div className=" sticky bottom-0 z-50 h-20 w-full bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
       <div className="flex h-full items-center justify-center">
@@ -16,7 +17,7 @@ const StickyCart = () => {
             className="flex items-center justify-between text-sm font-medium text-white"
           >
             <div className="flex flex-col">
-              <span>1 Item</span>
+              <span>{totalQuantityCart} Item</span>
               <span className="text-xs">Nama restaurant</span>
             </div>
             <div className="flex items-center gap-2 ">
