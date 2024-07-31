@@ -1,7 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useAppSelector } from '@/hooks/use-redux-hook';
+import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
+import { IDataFood } from '@/model/foodModel';
+import { addItem } from '@/store/Cart/CartSlice';
 import {
   HiArrowSmLeft,
   HiClipboardList,
@@ -11,6 +13,12 @@ import {
 
 const Checkout = () => {
   const cartItems = useAppSelector((state) => state.items);
+  const finalPrice = useAppSelector((state) => state.finalPrice);
+
+  const dispatch = useAppDispatch();
+  const addBtnItemHandler = (item: IDataFood) => {
+    dispatch(addItem(item));
+  };
   return (
     <section className="my-7 mb-10">
       <div className="container">
@@ -40,15 +48,18 @@ const Checkout = () => {
               <div>
                 <div className="relative mb-4 size-24 rounded-xl bg-purple-500"></div>
                 <div className="mb-3 flex justify-between gap-2">
-                  <div className="flex size-6 items-center justify-center rounded-full border border-green-700">
+                  <button className="flex size-6 items-center justify-center rounded-full border border-green-700">
                     <HiMinusSm color="green" />
-                  </div>
+                  </button>
                   <div>
-                    <span>1</span>
+                    <span>{item.quantity}</span>
                   </div>
-                  <div className="flex size-6 items-center justify-center rounded-full border border-green-700">
+                  <button
+                    className="flex size-6 items-center justify-center rounded-full border border-green-700"
+                    onClick={() => addBtnItemHandler(item)}
+                  >
                     <HiPlusSm color="green" />
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>
@@ -58,7 +69,7 @@ const Checkout = () => {
             <div>
               <p className="font-semibold">Ada lagi pesanannya?</p>
               <p className="text-xs text-black/80">
-                Masih bisa nasmbah menu lain, ya.
+                Masih bisa nambah menu lain, ya.
               </p>
             </div>
             <Button
@@ -74,8 +85,8 @@ const Checkout = () => {
           <p className="mb-5 font-semibold">Ringkasan pembayaran</p>
 
           <div className="mb-2 flex justify-between">
-            <p>Harga</p>
-            <p>30.000</p>
+            {<p>Harga</p>}
+            <p>{finalPrice}</p>
           </div>
           <div className="flex justify-between">
             <p className="mb-4">Biaya penanganan dan pengiriman</p>
@@ -83,7 +94,7 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between  border-t-[1.5px] border-gray-200">
             <p className="text-sm font-semibold">Total pembayaran</p>
-            <p className="text-xl font-bold">41.000</p>
+            <p className="text-xl font-bold">{finalPrice + 11000}</p>
           </div>
         </div>
       </div>

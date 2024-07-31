@@ -4,7 +4,7 @@ import cartSlice from './Cart/CartSlice';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
-  key: 'root',
+  key: 'cart',
   storage,
 };
 
@@ -15,7 +15,7 @@ export const store = () => {
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
-        serializableCheck: false, // Menonaktifkan pemeriksaan serializable
+        serializableCheck: false,
       }),
   });
 };
