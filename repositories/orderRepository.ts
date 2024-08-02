@@ -18,3 +18,13 @@ export const createOrder = async (request: IReqOrder) => {
   const data = await response.json();
   return data;
 };
+
+export const getOrdersRestaurant = async (token: string) => {
+  const response = await fetch(`${API_URL}api/orders-restaurant`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};

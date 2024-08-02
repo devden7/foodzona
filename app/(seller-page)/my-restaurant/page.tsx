@@ -17,11 +17,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/context/AuthContext';
 import TabsMenu from '@/components/seller/my-restauirant/TabsMenu';
 import TabsHistoryOrder from '@/components/seller/my-restauirant/TabsHistoryOrder';
+import { getOrdersRestaurant } from '@/repositories/orderRepository';
 
 const MyRestaurant = () => {
+  const [data, setData] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { isAuth, user, isLoggedIn } = useAuth();
+
+  const fetchData = async () => {
+    const response = await getOrdersRestaurant(user.token);
+    setData(response);
+  };
 
   useEffect(() => {
     isLoggedIn();
@@ -30,6 +37,9 @@ const MyRestaurant = () => {
     } else if (user.restaurant === null) {
       router.push('/');
     } else {
+      if (user.token !== '') {
+        fetchData();
+      }
       setIsLoading(false);
     }
   }, [isAuth, user.restaurant, user.token]);
@@ -37,6 +47,7 @@ const MyRestaurant = () => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
+
   return (
     <>
       {isAuth && user.restaurant !== null && (
@@ -64,7 +75,7 @@ const MyRestaurant = () => {
                 <TabsMenu token={user.token} />
               </TabsContent>
               <TabsContent value="history-order">
-                <TabsHistoryOrder />
+                <TabsHistoryOrder data={data} />
               </TabsContent>
             </Tabs>
           </div>
