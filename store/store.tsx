@@ -4,6 +4,7 @@ import cartSlice from './Cart/CartSlice';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
+  timeout: 100,
   key: 'cart',
   storage,
 };

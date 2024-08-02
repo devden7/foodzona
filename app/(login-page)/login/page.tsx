@@ -39,7 +39,7 @@ import { useAuth } from '@/context/AuthContext';
 const Login = () => {
   const [isBtnLogin, setIsBtnLogin] = useState(false);
   const [isBtnRegister, setIsBtnRegister] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenLogin, setIsOpenLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { isAuth, login, isLoggedIn } = useAuth();
   const router = useRouter();
@@ -130,7 +130,7 @@ const Login = () => {
                         gofood
                       </Link>
                     </div>
-                    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                    <Dialog open={isOpenLogin} onOpenChange={setIsOpenLogin}>
                       <div>
                         <DialogTrigger asChild>
                           <button>

@@ -4,13 +4,13 @@ import { createSlice } from '@reduxjs/toolkit';
 interface InitCart {
   items: IDataFood[];
   totalQuantity: number;
-  finalPrice: number;
+  calcPriceItem: number;
 }
 
 const initCart: InitCart = {
   items: [],
   totalQuantity: 0,
-  finalPrice: 0,
+  calcPriceItem: 0,
 };
 
 const cartSlice = createSlice({
@@ -19,7 +19,6 @@ const cartSlice = createSlice({
   reducers: {
     addItem(state, action) {
       const newItem = action.payload;
-
       const checkingItem = state.items.find(
         (item) => item.foodId === newItem.foodId
       );
@@ -31,16 +30,18 @@ const cartSlice = createSlice({
           quantity: 1,
           totalPrice: newItem.price,
         });
-        state.finalPrice = state.finalPrice + newItem.price;
+        state.calcPriceItem = state.calcPriceItem + newItem.price;
       } else {
         checkingItem.quantity++;
         checkingItem.totalPrice = checkingItem.totalPrice + newItem.price;
-        state.finalPrice = state.finalPrice + newItem.price;
+        state.calcPriceItem = state.calcPriceItem + newItem.price;
       }
     },
     deleteItem(state, action) {
       const foodId = action.payload;
       const checkingItem = state.items.find((item) => item.foodId === foodId);
+      state.totalQuantity--;
+      state.calcPriceItem = state.calcPriceItem - Number(checkingItem?.price);
       if (checkingItem) {
         if (checkingItem.quantity === 1) {
           state.items = state.items.filter((item) => item.foodId !== foodId);
@@ -49,13 +50,14 @@ const cartSlice = createSlice({
           checkingItem.totalPrice =
             (checkingItem.totalPrice ?? 0) - Number(checkingItem.price);
         }
-        state.totalQuantity--;
-        state.finalPrice = state.finalPrice - Number(checkingItem.price);
       }
+    },
+    resetCart(state) {
+      return (state = initCart);
     },
   },
 });
 
-export const { addItem, deleteItem } = cartSlice.actions;
+export const { addItem, deleteItem, resetCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
