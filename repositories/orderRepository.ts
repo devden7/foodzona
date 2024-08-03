@@ -28,3 +28,14 @@ export const getOrdersRestaurant = async (token: string) => {
   const data = await response.json();
   return data;
 };
+
+export const deliveryFood = async (token: string, orderId: number) => {
+  const response = await fetch(`${API_URL}api/delivery-food/${orderId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};

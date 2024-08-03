@@ -23,14 +23,15 @@ interface Order {
 
 interface Props {
   data: Order[];
+  deliveryFoodBtnHandler: (orderId: number) => void;
 }
 
-const TabsHistoryOrder = ({ data }: Props) => {
+const TabsHistoryOrder = ({ data, deliveryFoodBtnHandler }: Props) => {
   return (
     <>
       <div className="flex flex-col gap-3 md:hidden">
         <div>
-          {data?.map((item: any) => (
+          {data?.map((item: Order) => (
             <div key={item.orderId}>
               <div className="rounded-t-2xl border border-b-0 border-gray-200 px-2 py-4">
                 <h4 className="font-semibold text-black/70">{item.username}</h4>
@@ -64,7 +65,12 @@ const TabsHistoryOrder = ({ data }: Props) => {
                   <Button className="mr-3" variant="outline">
                     Batalkan
                   </Button>
-                  <Button className=" bg-green-700">Kirim makanan</Button>
+                  <Button
+                    className=" bg-green-700"
+                    onClick={() => deliveryFoodBtnHandler(item.orderId)}
+                  >
+                    Kirim makanan
+                  </Button>
                 </div>
               </div>
             </div>
@@ -127,7 +133,12 @@ const TabsHistoryOrder = ({ data }: Props) => {
                       <Button className="mb-3 mr-3 xl:mb-0" variant="outline">
                         Batalkan
                       </Button>
-                      <Button className=" bg-green-700">Kirim makanan</Button>
+                      <Button
+                        className=" bg-green-700"
+                        onClick={() => deliveryFoodBtnHandler(item.orderId)}
+                      >
+                        Kirim makanan
+                      </Button>
                     </div>
                   </td>
                 </tr>

@@ -17,7 +17,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/context/AuthContext';
 import TabsMenu from '@/components/seller/my-restauirant/TabsMenu';
 import TabsHistoryOrder from '@/components/seller/my-restauirant/TabsHistoryOrder';
-import { getOrdersRestaurant } from '@/repositories/orderRepository';
+import {
+  getOrdersRestaurant,
+  deliveryFood,
+} from '@/repositories/orderRepository';
 
 const MyRestaurant = () => {
   const [data, setData] = useState<any>();
@@ -48,6 +51,11 @@ const MyRestaurant = () => {
     return <p>Loading...</p>;
   }
 
+  const deliveryFoodBtnHandler = async (orderId: number) => {
+    console.log('Delivery');
+    const response = await deliveryFood(user.token, orderId);
+    console.log(response);
+  };
   return (
     <>
       {isAuth && user.restaurant !== null && (
@@ -75,7 +83,10 @@ const MyRestaurant = () => {
                 <TabsMenu token={user.token} />
               </TabsContent>
               <TabsContent value="history-order">
-                <TabsHistoryOrder data={data} />
+                <TabsHistoryOrder
+                  data={data}
+                  deliveryFoodBtnHandler={deliveryFoodBtnHandler}
+                />
               </TabsContent>
             </Tabs>
           </div>
