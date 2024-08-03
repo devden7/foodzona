@@ -64,7 +64,15 @@ const DetailRestaurant = () => {
   }
 
   const cartBtnHandler = (item: IDataFood) => {
-    dispatch(addItem(item));
+    const request = {
+      foodId: item.foodId,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      image: item.image,
+      restaurantName: item.restaurantName,
+    };
+    dispatch(addItem(request));
   };
   return (
     <>

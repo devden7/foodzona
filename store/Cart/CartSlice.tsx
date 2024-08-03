@@ -28,12 +28,10 @@ const cartSlice = createSlice({
         state.items.push({
           ...newItem,
           quantity: 1,
-          totalPrice: newItem.price,
         });
         state.calcPriceItem = state.calcPriceItem + newItem.price;
       } else {
         checkingItem.quantity++;
-        checkingItem.totalPrice = checkingItem.totalPrice + newItem.price;
         state.calcPriceItem = state.calcPriceItem + newItem.price;
       }
     },
@@ -47,8 +45,6 @@ const cartSlice = createSlice({
           state.items = state.items.filter((item) => item.foodId !== foodId);
         } else {
           checkingItem.quantity--;
-          checkingItem.totalPrice =
-            (checkingItem.totalPrice ?? 0) - Number(checkingItem.price);
         }
       }
     },
