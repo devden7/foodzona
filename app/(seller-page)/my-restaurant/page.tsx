@@ -20,6 +20,7 @@ import TabsHistoryOrder from '@/components/seller/my-restauirant/TabsHistoryOrde
 import {
   getOrdersRestaurant,
   deliveryFood,
+  cancelFood,
 } from '@/repositories/orderRepository';
 
 const MyRestaurant = () => {
@@ -56,6 +57,11 @@ const MyRestaurant = () => {
     const response = await deliveryFood(user.token, orderId);
     console.log(response);
   };
+
+  const cancelFoodBtnHandler = async (orderId: number) => {
+    const response = await cancelFood(user.token, orderId);
+    console.log(response);
+  };
   return (
     <>
       {isAuth && user.restaurant !== null && (
@@ -86,6 +92,7 @@ const MyRestaurant = () => {
                 <TabsHistoryOrder
                   data={data}
                   deliveryFoodBtnHandler={deliveryFoodBtnHandler}
+                  cancelFoodBtnHandler={cancelFoodBtnHandler}
                 />
               </TabsContent>
             </Tabs>

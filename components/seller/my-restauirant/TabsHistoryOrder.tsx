@@ -24,9 +24,14 @@ interface Order {
 interface Props {
   data: Order[];
   deliveryFoodBtnHandler: (orderId: number) => void;
+  cancelFoodBtnHandler: (orderId: number) => void;
 }
 
-const TabsHistoryOrder = ({ data, deliveryFoodBtnHandler }: Props) => {
+const TabsHistoryOrder = ({
+  data,
+  deliveryFoodBtnHandler,
+  cancelFoodBtnHandler,
+}: Props) => {
   return (
     <>
       <div className="flex flex-col gap-3 md:hidden">
@@ -61,17 +66,23 @@ const TabsHistoryOrder = ({ data, deliveryFoodBtnHandler }: Props) => {
                     <span className="font-normal text-red-500">Closed</span>
                   </p>
                 </div>
-                <div>
-                  <Button className="mr-3" variant="outline">
-                    Batalkan
-                  </Button>
-                  <Button
-                    className=" bg-green-700"
-                    onClick={() => deliveryFoodBtnHandler(item.orderId)}
-                  >
-                    Kirim makanan
-                  </Button>
-                </div>
+                {item.status === 'Pending' && (
+                  <div>
+                    <Button
+                      className="mr-3"
+                      variant="outline"
+                      onClick={() => cancelFoodBtnHandler(item.orderId)}
+                    >
+                      Batalkan
+                    </Button>
+                    <Button
+                      className=" bg-green-700"
+                      onClick={() => deliveryFoodBtnHandler(item.orderId)}
+                    >
+                      Kirim makanan
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -129,17 +140,23 @@ const TabsHistoryOrder = ({ data, deliveryFoodBtnHandler }: Props) => {
                     </div>
                   </td>
                   <td className="w-1/5 rounded-r-2xl border-y-[1.5px] border-r-[1.5px] px-3 py-5">
-                    <div>
-                      <Button className="mb-3 mr-3 xl:mb-0" variant="outline">
-                        Batalkan
-                      </Button>
-                      <Button
-                        className=" bg-green-700"
-                        onClick={() => deliveryFoodBtnHandler(item.orderId)}
-                      >
-                        Kirim makanan
-                      </Button>
-                    </div>
+                    {item.status === 'Pending' && (
+                      <div>
+                        <Button
+                          className="mb-3 mr-3 xl:mb-0"
+                          variant="outline"
+                          onClick={() => cancelFoodBtnHandler(item.orderId)}
+                        >
+                          Batalkan
+                        </Button>
+                        <Button
+                          className=" bg-green-700"
+                          onClick={() => deliveryFoodBtnHandler(item.orderId)}
+                        >
+                          Kirim makanan
+                        </Button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

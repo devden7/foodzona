@@ -39,3 +39,14 @@ export const deliveryFood = async (token: string, orderId: number) => {
   const data = await response.json();
   return data;
 };
+
+export const cancelFood = async (token: string, orderId: number) => {
+  const response = await fetch(`${API_URL}api/cancel-food/${orderId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};
