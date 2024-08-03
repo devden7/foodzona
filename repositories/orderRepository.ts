@@ -50,3 +50,14 @@ export const cancelFood = async (token: string, orderId: number) => {
   const data = await response.json();
   return data;
 };
+
+export const getOrdersUser = async (token: string) => {
+  console.log(token);
+  const response = await fetch(`${API_URL}api/orders-user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};
