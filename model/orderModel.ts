@@ -26,3 +26,8 @@ export interface Order {
   totalQuantity: number;
   username: string;
 }
+
+export interface IRatingReq {
+  rating: number;
+  comment: string;
+}

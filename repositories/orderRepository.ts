@@ -1,4 +1,5 @@
-import { IReqOrder } from '@/model/orderModel';
+import { IResMessage } from '@/model/accountModel';
+import { IRatingReq, IReqOrder } from '@/model/orderModel';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -52,11 +53,27 @@ export const cancelFood = async (token: string, orderId: number) => {
 };
 
 export const getOrdersUser = async (token: string) => {
-  console.log(token);
   const response = await fetch(`${API_URL}api/orders-user`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  });
+  const data = await response.json();
+  return data;
+};
+
+export const reviewFood = async (
+  request: IRatingReq,
+  orderId: number,
+  token: string
+): Promise<IResMessage> => {
+  const response = await fetch(`${API_URL}api/review/${orderId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(request),
   });
   const data = await response.json();
   return data;

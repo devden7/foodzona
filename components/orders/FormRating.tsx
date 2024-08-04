@@ -15,7 +15,13 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '../ui/button';
 import { HiStar } from 'react-icons/hi';
-const FormRating = () => {
+import { reviewFood } from '@/repositories/orderRepository';
+interface Props {
+  orderId: number;
+  token: string;
+}
+const FormRating = ({ orderId, token }: Props) => {
+  console.log(orderId);
   const form = useForm<z.infer<typeof reviewFoodForm>>({
     resolver: zodResolver(reviewFoodForm),
     defaultValues: {
@@ -31,6 +37,8 @@ const FormRating = () => {
 
   async function onSubmit(values: z.infer<typeof reviewFoodForm>) {
     console.log(values);
+    const response = await reviewFood(values, orderId, token);
+    console.log(response);
   }
   return (
     <Form {...form}>

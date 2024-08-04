@@ -18,12 +18,12 @@ import FormRating from '@/components/orders/FormRating';
 const OrdersPage = () => {
   const [data, setData] = useState<Order[]>([]);
   const [isRatingBtn, setIsRatingBtn] = useState(false);
+  const [orderItemId, setOrderItemId] = useState<number | null>(null);
   // const [rating, setRating] = useState(0);
   const router = useRouter();
   const { isAuth, user, isLoggedIn } = useAuth();
   const fetchData = async () => {
     const response = await getOrdersUser(user.token);
-    console.log(response);
     setData(response.data);
   };
   useEffect(() => {
@@ -38,6 +38,11 @@ const OrdersPage = () => {
     }
   }, [isAuth, user.token]);
 
+  const btnReviewHandler = (id: number) => {
+    console.log('REVIEEW');
+    setOrderItemId(id);
+  };
+
   return (
     <>
       {isAuth ? (
@@ -45,28 +50,38 @@ const OrdersPage = () => {
           <div className="container">
             <h2 className="mb-5 text-2xl font-semibold lg:text-3xl">History</h2>
             <div className="flex flex-col gap-3 md:hidden">
-              <ResponsiveDialog isOpen={isRatingBtn} setIsOpen={setIsRatingBtn}>
-                <h4 className="text-xl">Rating Food</h4>
-                <FormRating />
-              </ResponsiveDialog>
               {data.map((item: Order) => (
-                <div key={item.orderId} className="">
+                <div key={item.orderId}>
+                  {item.orderId === orderItemId && (
+                    <ResponsiveDialog
+                      isOpen={isRatingBtn}
+                      setIsOpen={setIsRatingBtn}
+                    >
+                      <h4 className="text-xl">Rating Food</h4>
+                      <FormRating orderId={item.orderId} token={user.token} />
+                    </ResponsiveDialog>
+                  )}
                   <div className="relative rounded-t-2xl border border-b-0 border-gray-200 px-2 py-4 ">
-                    <DropdownMenu modal={false}>
-                      <DropdownMenuTrigger asChild>
-                        <div className="absolute right-[5%] top-[10%] z-50 flex cursor-pointer items-center gap-1 rounded-lg  p-1 text-sm font-medium text-black">
-                          <HiDotsVertical size={15} />
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="absolute -top-7 right-5">
-                        <DropdownMenuItem
-                          className="cursor-pointer"
-                          onClick={() => setIsRatingBtn(true)}
-                        >
-                          Beri rating
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    {item.status === 'Berhasil' && (
+                      <DropdownMenu modal={false}>
+                        <DropdownMenuTrigger asChild>
+                          <div className="absolute right-[5%] top-[10%] z-50 flex cursor-pointer items-center gap-1 rounded-lg  p-1 text-sm font-medium text-black">
+                            <HiDotsVertical size={15} />
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="absolute -top-7 right-5">
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setIsRatingBtn(true);
+                              btnReviewHandler(item.orderId);
+                            }}
+                          >
+                            Beri rating
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                     <h4 className="font-semibold text-black/70">
                       {item.restaurantName}, {item.restaurant.city_name}
                     </h4>
@@ -153,21 +168,26 @@ const OrdersPage = () => {
                       </td>
                       <td className="rounded-r-2xl border-y-[1.5px] border-r-[1.5px] px-3 py-5">
                         <div className="w-3">
-                          <DropdownMenu modal={false}>
-                            <DropdownMenuTrigger asChild>
-                              <div className=" z-50 flex cursor-pointer items-center">
-                                <HiDotsVertical size={15} />
-                              </div>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="absolute -top-7 right-5">
-                              <DropdownMenuItem
-                                className="cursor-pointer"
-                                onClick={() => setIsRatingBtn(true)}
-                              >
-                                Beri rating
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          {item.status === 'Berhasil' && (
+                            <DropdownMenu modal={false}>
+                              <DropdownMenuTrigger asChild>
+                                <div className=" z-50 flex cursor-pointer items-center">
+                                  <HiDotsVertical size={15} />
+                                </div>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent className="absolute -top-7 right-5">
+                                <DropdownMenuItem
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    setIsRatingBtn(true);
+                                    btnReviewHandler(item.orderId);
+                                  }}
+                                >
+                                  Beri rating
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          )}
                         </div>
                       </td>
                     </tr>

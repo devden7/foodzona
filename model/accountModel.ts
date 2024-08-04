@@ -29,3 +29,7 @@ export interface IResponse<T> {
   data: T;
   errors?: string;
 }
+
+export interface IResMessage {
+  message: string;
+}
