@@ -18,7 +18,7 @@ const ResponsiveDialog = ({ children, isOpen, type, setIsOpen }: Props) => {
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent>{children}</DialogContent>
+      <DialogContent hideCloseButton={true}>{children}</DialogContent>
     </Dialog>
   );
 };

@@ -30,7 +30,7 @@ export const AuthContextProvider = ({
     token: '',
   });
 
-  const [location, setLocation] = useState('jakarta');
+  const [location, setLocation] = useState('Jakarta');
 
   const login = async (request: IReqLoginAccount) => {
     const response = await loginUser(request);

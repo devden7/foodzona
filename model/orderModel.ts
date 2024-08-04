@@ -6,3 +6,23 @@ export interface IReqOrder {
   calcPriceItem: number;
   totalQuantity: number;
 }
+
+export interface OrderItem {
+  orderItemId: number;
+  foodNameOrder: string;
+}
+
+interface Restaurant {
+  city_name: string;
+}
+
+export interface Order {
+  orderId: number;
+  orderItem: OrderItem[];
+  restaurant: Restaurant;
+  restaurantName: string;
+  status: string;
+  totalPrice: number;
+  totalQuantity: number;
+  username: string;
+}

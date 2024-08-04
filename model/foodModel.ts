@@ -6,7 +6,6 @@ export interface IDataFood {
   category: string;
   image: string | null;
   restaurantName: string;
-  totalPrice?: number;
   quantity: number;
 }
 

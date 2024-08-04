@@ -31,7 +31,7 @@ const MyRestaurant = () => {
 
   const fetchData = async () => {
     const response = await getOrdersRestaurant(user.token);
-    setData(response);
+    setData(response.data);
   };
 
   useEffect(() => {

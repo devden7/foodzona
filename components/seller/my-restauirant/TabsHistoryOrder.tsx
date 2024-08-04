@@ -1,25 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-
-interface OrderItem {
-  orderItemId: number;
-  foodNameOrder: string;
-}
-
-interface Restaurant {
-  city_name: string;
-}
-
-interface Order {
-  orderId: number;
-  orderItem: OrderItem[];
-  restaurant: Restaurant;
-  restaurantName: string;
-  status: string;
-  totalPrice: number;
-  totalQuantity: number;
-  username: string;
-}
+import { Order } from '@/model/orderModel';
 
 interface Props {
   data: Order[];

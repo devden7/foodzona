@@ -4,33 +4,39 @@ import { useAuth } from '@/context/AuthContext';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getOrdersUser } from '@/repositories/orderRepository';
+import { HiDotsVertical } from 'react-icons/hi';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import ResponsiveDialog from '@/components/seller/my-restauirant/ResponsiveDialog';
+import { Order } from '@/model/orderModel';
+import FormRating from '@/components/orders/FormRating';
 
 const OrdersPage = () => {
-  const [data, setData] = useState<any>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<Order[]>([]);
+  const [isRatingBtn, setIsRatingBtn] = useState(false);
+  // const [rating, setRating] = useState(0);
   const router = useRouter();
   const { isAuth, user, isLoggedIn } = useAuth();
   const fetchData = async () => {
     const response = await getOrdersUser(user.token);
-    setData(response);
+    console.log(response);
+    setData(response.data);
   };
   useEffect(() => {
     isLoggedIn();
+    console.log('isRender');
     if (!isAuth) {
       router.push('/login');
     } else {
-      console.log('else');
       if (user.token !== '') {
-        console.log('user token');
         fetchData();
       }
-      setIsLoading(false);
     }
   }, [isAuth, user.token]);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <>
@@ -39,9 +45,28 @@ const OrdersPage = () => {
           <div className="container">
             <h2 className="mb-5 text-2xl font-semibold lg:text-3xl">History</h2>
             <div className="flex flex-col gap-3 md:hidden">
-              {data?.map((item) => (
-                <div key={item.orderId}>
-                  <div className="rounded-t-2xl border border-b-0 border-gray-200 px-2 py-4">
+              <ResponsiveDialog isOpen={isRatingBtn} setIsOpen={setIsRatingBtn}>
+                <h4 className="text-xl">Rating Food</h4>
+                <FormRating />
+              </ResponsiveDialog>
+              {data.map((item: Order) => (
+                <div key={item.orderId} className="">
+                  <div className="relative rounded-t-2xl border border-b-0 border-gray-200 px-2 py-4 ">
+                    <DropdownMenu modal={false}>
+                      <DropdownMenuTrigger asChild>
+                        <div className="absolute right-[5%] top-[10%] z-50 flex cursor-pointer items-center gap-1 rounded-lg  p-1 text-sm font-medium text-black">
+                          <HiDotsVertical size={15} />
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="absolute -top-7 right-5">
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => setIsRatingBtn(true)}
+                        >
+                          Beri rating
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                     <h4 className="font-semibold text-black/70">
                       {item.restaurantName}, {item.restaurant.city_name}
                     </h4>
@@ -83,10 +108,11 @@ const OrdersPage = () => {
                     <th>Restaurant</th>
                     <th>Order details</th>
                     <th>Total price</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((item) => (
+                  {data.map((item: Order) => (
                     <tr key={item.orderId}>
                       <td className="rounded-l-2xl border-y-[1.5px] border-l-[1.5px] px-3 py-5">
                         <div>
@@ -114,18 +140,34 @@ const OrdersPage = () => {
                           </span>
                         ))}
                       </td>
-                      <td className="w-1/6 rounded-r-2xl border-y-[1.5px] border-r-[1.5px] px-3 py-5">
+                      <td className="border-y-[1.5px] px-3  py-5">
                         <div>
-                          <span className="text-sm">
-                            {' '}
-                            IDR {item.totalPrice}
-                          </span>
+                          <span className="text-sm">IDR {item.totalPrice}</span>
                           <p className="text-xs font-medium text-black/80 xl:text-sm">
                             {item.totalQuantity} items -
                             <span className="font-normal text-red-500">
                               Closed
                             </span>
                           </p>
+                        </div>
+                      </td>
+                      <td className="rounded-r-2xl border-y-[1.5px] border-r-[1.5px] px-3 py-5">
+                        <div className="w-3">
+                          <DropdownMenu modal={false}>
+                            <DropdownMenuTrigger asChild>
+                              <div className=" z-50 flex cursor-pointer items-center">
+                                <HiDotsVertical size={15} />
+                              </div>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="absolute -top-7 right-5">
+                              <DropdownMenuItem
+                                className="cursor-pointer"
+                                onClick={() => setIsRatingBtn(true)}
+                              >
+                                Beri rating
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </td>
                     </tr>
@@ -136,7 +178,7 @@ const OrdersPage = () => {
           </div>
         </section>
       ) : null}
-      {data?.length === 0 && <p className="text-center">Tidak ada order</p>}
+      {data.length === 0 && <p className="text-center">Tidak ada order</p>}
     </>
   );
 };
