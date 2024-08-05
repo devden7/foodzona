@@ -84,3 +84,14 @@ export const deleteFoodRestaurant = async (foodId: number, token: string) => {
   const data = await response.json();
   return data;
 };
+
+export const addRecommendationFood = async (foodId: number, token: string) => {
+  const response = await fetch(`${API_URL}api/add-recommendation/${foodId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};

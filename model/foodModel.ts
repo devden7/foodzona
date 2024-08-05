@@ -9,6 +9,7 @@ export interface IDataFood {
   image: string | null;
   restaurantName: string;
   quantity: number;
+  isRecommendation: boolean;
 }
 
 export interface IResponseGetFoods {

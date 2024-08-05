@@ -11,6 +11,7 @@ import { IDataFood } from '@/model/foodModel';
 import { HiDotsVertical } from 'react-icons/hi';
 import ResponsiveDialog from './ResponsiveDialog';
 import FormFood from './FormFood';
+import { addRecommendationFood } from '@/repositories/restaurantRepository';
 interface Props {
   isOpenEdit: boolean;
   token: string;
@@ -35,6 +36,9 @@ const FoodList = ({
 }: Props) => {
   const API_URL = process.env.NEXT_PUBLIC_API;
 
+  const recommendationBtnHandler = async (foodId: number) => {
+    const response = await addRecommendationFood(foodId, token);
+  };
   return (
     <div className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2">
       {item.foodId === idFood && (
@@ -56,6 +60,11 @@ const FoodList = ({
           objectFit="cover"
           quality={100}
         />
+        {item.isRecommendation && (
+          <div className="absolute bottom-0 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center gap-1 rounded-full bg-red-500 px-5 py-1 text-sm font-medium text-black">
+            <span className="text-xs text-white">Best</span>
+          </div>
+        )}
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <div className="absolute left-[12%] top-[10%] z-50 flex -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center gap-1 rounded-lg bg-white p-1 text-sm font-medium text-black">
@@ -78,6 +87,14 @@ const FoodList = ({
             >
               Delete
             </DropdownMenuItem>
+            {!item.isRecommendation && (
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => recommendationBtnHandler(item.foodId)}
+              >
+                Rekomendasikan Makanan
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
