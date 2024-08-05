@@ -73,7 +73,9 @@ const StickyCart = () => {
                   >
                     <div className="flex flex-col">
                       <span>{totalQuantityCart} Item</span>
-                      <span className="text-xs">Nama restaurant</span>
+                      <span className="text-xs">
+                        {cartItems[0].restaurantName}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 ">
                       <p className="text-base">{calcPriceItem}</p>

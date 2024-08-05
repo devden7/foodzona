@@ -27,7 +27,6 @@ const Checkout = () => {
   const [isCart, setIsCart] = useState(true);
   const { isLoggedIn, isAuth } = useAuth();
   const cartItems = useAppSelector((state) => state.items);
-  console.log(cartItems);
   const calcPriceItem = useAppSelector((state) => state.calcPriceItem);
   const router = useRouter();
   const { location } = useAuth();
@@ -69,7 +68,7 @@ const Checkout = () => {
               <Dialog open={isCart} modal={true}>
                 <DialogContent
                   className="flex flex-col items-start px-8"
-                  hideCloseButton={false}
+                  hideCloseButton={true}
                 >
                   <DialogTitle>Tidak ada menu</DialogTitle>
                   <p>
@@ -78,7 +77,9 @@ const Checkout = () => {
                   </p>
                   <DialogClose asChild>
                     <Button className="rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg">
-                      Kembali ke halaman resto
+                      <Link href={`/${location}/restaurants`}>
+                        Kembali ke halaman resto
+                      </Link>
                     </Button>
                   </DialogClose>
                 </DialogContent>
@@ -87,7 +88,7 @@ const Checkout = () => {
             <div className="my-5">
               <div className="flex items-center gap-5 ">
                 <Link
-                  href={`/${location}/restaurant/${cartItems[0].restaurantName.toLowerCase().replace(/ /g, '-')}`}
+                  href={`/${location}/restaurant/${cartItems.length !== 0 ? cartItems[0].restaurantName.toLowerCase().replace(/ /g, '-') : ''}`}
                 >
                   <HiArrowSmLeft
                     size={25}
@@ -96,7 +97,7 @@ const Checkout = () => {
                   />
                 </Link>
                 <div className="text-lg font-semibold">
-                  {cartItems[0].restaurantName}
+                  {cartItems.length !== 0 ? cartItems[0].restaurantName : ''}
                 </div>
               </div>
             </div>

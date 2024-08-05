@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${maisonNeue.variable} font-sans`}>
+      <body className={`${maisonNeue.variable}`}>
         <AuthContextProvider>
           <Providers>
             <Navbar />

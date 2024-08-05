@@ -74,7 +74,10 @@ const DetailRestaurant = () => {
 
   const cartBtnHandler = (item: IDataFood) => {
     setIdFood(item.foodId);
-    if (item.restaurantName !== cartItems[0].restaurantName) {
+    if (
+      cartItems.length !== 0 &&
+      item.restaurantName !== cartItems[0].restaurantName
+    ) {
       setIsNotValidCart(true);
       return;
     }
