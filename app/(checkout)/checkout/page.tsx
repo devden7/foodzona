@@ -12,6 +12,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
 import { IDataFood } from '@/model/foodModel';
 import { addItem, deleteItem } from '@/store/Cart/CartSlice';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import {
@@ -26,8 +27,10 @@ const Checkout = () => {
   const [isCart, setIsCart] = useState(true);
   const { isLoggedIn, isAuth } = useAuth();
   const cartItems = useAppSelector((state) => state.items);
+  console.log(cartItems);
   const calcPriceItem = useAppSelector((state) => state.calcPriceItem);
   const router = useRouter();
+  const { location } = useAuth();
   const dispatch = useAppDispatch();
   const addBtnItemHandler = (item: IDataFood) => {
     const request = {
@@ -83,12 +86,18 @@ const Checkout = () => {
             )}
             <div className="my-5">
               <div className="flex items-center gap-5 ">
-                <HiArrowSmLeft
-                  size={25}
-                  color="green"
-                  className="cursor-pointer"
-                />
-                <div className="text-lg font-semibold">Nama restaurant</div>
+                <Link
+                  href={`/${location}/restaurant/${cartItems[0].restaurantName.toLowerCase().replace(/ /g, '-')}`}
+                >
+                  <HiArrowSmLeft
+                    size={25}
+                    color="green"
+                    className="cursor-pointer"
+                  />
+                </Link>
+                <div className="text-lg font-semibold">
+                  {cartItems[0].restaurantName}
+                </div>
               </div>
             </div>
             <div className="mb-6 rounded-xl p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">

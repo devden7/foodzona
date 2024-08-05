@@ -12,13 +12,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { HiStar } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { IDataFood, IResponseGetFoods } from '@/model/foodModel';
 import { getFoodListsDetail } from '@/repositories/foodRepository';
 import { useParams } from 'next/navigation';
-import { addItem } from '@/store/Cart/CartSlice';
-import { useAppDispatch } from '@/hooks/use-redux-hook';
+import { addItem, resetCart } from '@/store/Cart/CartSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { calcRating } from '@/lib/utils';
@@ -30,6 +32,9 @@ const DetailRestaurant = () => {
     undefined
   );
   const [isOpen, setIsOpen] = useState(false);
+  const cartItems = useAppSelector((state) => state.items);
+  const [isNotValidCart, setIsNotValidCart] = useState(false);
+  const [idFood, setIdFood] = useState<number | undefined>(undefined);
   const params = useParams();
   const dispatch = useAppDispatch();
   const { location } = useAuth();
@@ -68,6 +73,11 @@ const DetailRestaurant = () => {
   }
 
   const cartBtnHandler = (item: IDataFood) => {
+    setIdFood(item.foodId);
+    if (item.restaurantName !== cartItems[0].restaurantName) {
+      setIsNotValidCart(true);
+      return;
+    }
     const request = {
       foodId: item.foodId,
       name: item.name,
@@ -77,6 +87,25 @@ const DetailRestaurant = () => {
       restaurantName: item.restaurantName,
     };
     dispatch(addItem(request));
+  };
+
+  const yesBtnCartHandler = (item: IDataFood) => {
+    dispatch(resetCart());
+
+    const request = {
+      foodId: item.foodId,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      image: item.image,
+      restaurantName: item.restaurantName,
+    };
+    dispatch(addItem(request));
+    setIsNotValidCart(false);
+  };
+
+  const noBtnCartHandler = () => {
+    setIsNotValidCart(false);
   };
   return (
     <>
@@ -118,6 +147,7 @@ const DetailRestaurant = () => {
           </Breadcrumb>
         )}
       </div>
+
       <section className="mb-8 mt-16 lg:mt-3 2xl:mt-1">
         <div className={`${mediumScreen >= 1024 ? 'container' : ''}`}>
           <div className="flex gap-3 p-2 md:p-5 lg:p-0">
@@ -194,6 +224,34 @@ const DetailRestaurant = () => {
                 className="bd:border-slate-100 flex flex-col gap-2 sm:p-2 md:rounded-2xl md:border "
                 key={item.foodId}
               >
+                {isNotValidCart && idFood === item.foodId && (
+                  <Dialog open={isNotValidCart} modal={true}>
+                    <DialogContent
+                      className="flex flex-col items-start px-8"
+                      hideCloseButton={true}
+                    >
+                      <DialogTitle>Mau beli ganti resto ini aja?</DialogTitle>
+                      <p>
+                        Boleh, kok. Tapi, menu yang kamu pilih dari resto
+                        sebelumnya kami hapus, ya.
+                      </p>
+                      <div>
+                        <Button
+                          onClick={() => yesBtnCartHandler(item)}
+                          className="mr-2 rounded-full border-2 border-green-700 bg-white p-2 text-base text-green-700 hover:bg-green-200 md:mb-4 md:p-5 lg:text-lg"
+                        >
+                          Iya, ganti
+                        </Button>
+                        <Button
+                          onClick={() => noBtnCartHandler()}
+                          className="rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+                        >
+                          Gak jadi
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                )}
                 <div className="relative h-48 w-full overflow-hidden rounded-xl bg-green-500 md:h-40 lg:h-56">
                   <Image
                     src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
