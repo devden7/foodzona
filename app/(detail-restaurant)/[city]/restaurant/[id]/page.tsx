@@ -19,6 +19,9 @@ import { getFoodListsDetail } from '@/repositories/foodRepository';
 import { useParams } from 'next/navigation';
 import { addItem } from '@/store/Cart/CartSlice';
 import { useAppDispatch } from '@/hooks/use-redux-hook';
+import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
+import { calcRating } from '@/lib/utils';
 
 const DetailRestaurant = () => {
   const [data, setData] = useState<IResponseGetFoods>();
@@ -29,6 +32,7 @@ const DetailRestaurant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const dispatch = useAppDispatch();
+  const { location } = useAuth();
   const API_URL = process.env.NEXT_PUBLIC_API;
   const getFoodListDetail = async () => {
     const response = await getFoodListsDetail(params.id as string);
@@ -154,7 +158,6 @@ const DetailRestaurant = () => {
                   </svg>
                   Super Partner
                 </span>
-                <p className="md:text-lg">Fast food, snack, Beverages</p>
               </div>
             </div>
           </div>
@@ -168,11 +171,16 @@ const DetailRestaurant = () => {
               <span>
                 <HiStar color="orange" size={20} className="md:size-8" />
               </span>
-              <p className="font-medium md:text-xl">{data?.rating} </p>
+              <p className="font-medium md:text-xl">
+                {calcRating(data?.reviews)}
+              </p>
             </div>
-            <p className="font-semibold text-green-700 md:text-lg">
+            <Link
+              href={`/${location}/restaurant/${params.id}/reviews`}
+              className="font-semibold text-green-700 md:text-lg"
+            >
               See review
-            </p>
+            </Link>
           </div>
         </div>
       </section>

@@ -1,3 +1,5 @@
+import { dataReview } from './orderModel';
+
 export interface IDataFood {
   foodId: number;
   name: string;
@@ -12,7 +14,7 @@ export interface IDataFood {
 export interface IResponseGetFoods {
   foods: IDataFood[];
   restaurantName?: string;
-  rating?: number;
+  reviews?: dataReview[];
 }
 
 export interface IReqInsertFood {

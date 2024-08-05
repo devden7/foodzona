@@ -53,14 +53,11 @@ const MyRestaurant = () => {
   }
 
   const deliveryFoodBtnHandler = async (orderId: number) => {
-    console.log('Delivery');
     const response = await deliveryFood(user.token, orderId);
-    console.log(response);
   };
 
   const cancelFoodBtnHandler = async (orderId: number) => {
     const response = await cancelFood(user.token, orderId);
-    console.log(response);
   };
   return (
     <>

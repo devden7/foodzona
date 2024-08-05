@@ -31,3 +31,16 @@ export interface IRatingReq {
   rating: number;
   comment: string;
 }
+
+export interface userDate {
+  createAt: string;
+}
+export interface dataReview {
+  reviewId: number;
+  username: string;
+  comment: string;
+  rating: number;
+  restaurantName: string;
+  order: { createAt: string; orderItem: OrderItem[] };
+  user: userDate;
+}

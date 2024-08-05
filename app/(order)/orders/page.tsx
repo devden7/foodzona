@@ -28,7 +28,6 @@ const OrdersPage = () => {
   };
   useEffect(() => {
     isLoggedIn();
-    console.log('isRender');
     if (!isAuth) {
       router.push('/login');
     } else {
@@ -39,7 +38,6 @@ const OrdersPage = () => {
   }, [isAuth, user.token]);
 
   const btnReviewHandler = (id: number) => {
-    console.log('REVIEEW');
     setOrderItemId(id);
   };
 

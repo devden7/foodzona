@@ -21,7 +21,6 @@ interface Props {
   token: string;
 }
 const FormRating = ({ orderId, token }: Props) => {
-  console.log(orderId);
   const form = useForm<z.infer<typeof reviewFoodForm>>({
     resolver: zodResolver(reviewFoodForm),
     defaultValues: {
@@ -36,9 +35,7 @@ const FormRating = ({ orderId, token }: Props) => {
   };
 
   async function onSubmit(values: z.infer<typeof reviewFoodForm>) {
-    console.log(values);
     const response = await reviewFood(values, orderId, token);
-    console.log(response);
   }
   return (
     <Form {...form}>
