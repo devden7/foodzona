@@ -22,16 +22,21 @@ import {
   deliveryFood,
   cancelFood,
 } from '@/repositories/orderRepository';
+import { IDataFood } from '@/model/foodModel';
+import { getFoodRestaurant } from '@/repositories/restaurantRepository';
 
 const MyRestaurant = () => {
-  const [data, setData] = useState<any>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [dataOrderHistory, setDataOrderHistory] = useState<any>();
+  const [dataMenu, setDataMenu] = useState<IDataFood[]>([]);
+  // const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { isAuth, user, isLoggedIn } = useAuth();
 
   const fetchData = async () => {
-    const response = await getOrdersRestaurant(user.token);
-    setData(response.data);
+    const resultsMenu = await getFoodRestaurant(user.token);
+    setDataMenu(resultsMenu.data.foods);
+    const resultsOrderHistory = await getOrdersRestaurant(user.token);
+    setDataOrderHistory(resultsOrderHistory.data);
   };
 
   useEffect(() => {
@@ -44,13 +49,13 @@ const MyRestaurant = () => {
       if (user.token !== '') {
         fetchData();
       }
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   }, [isAuth, user.restaurant, user.token]);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
 
   const deliveryFoodBtnHandler = async (orderId: number) => {
     const response = await deliveryFood(user.token, orderId);
@@ -83,11 +88,15 @@ const MyRestaurant = () => {
                 </TabsList>
               </div>
               <TabsContent value="menu">
-                <TabsMenu token={user.token} />
+                <TabsMenu
+                  token={user.token}
+                  dataMenu={dataMenu}
+                  setDataMenu={setDataMenu}
+                />
               </TabsContent>
               <TabsContent value="history-order">
                 <TabsHistoryOrder
-                  data={data}
+                  data={dataOrderHistory}
                   deliveryFoodBtnHandler={deliveryFoodBtnHandler}
                   cancelFoodBtnHandler={cancelFoodBtnHandler}
                 />

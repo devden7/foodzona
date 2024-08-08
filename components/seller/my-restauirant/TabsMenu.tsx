@@ -1,42 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { IDataFood } from '@/model/foodModel';
 
 import FormFood from './FormFood';
 import FoodList from './FoodList';
-import {
-  deleteFoodRestaurant,
-  getFoodRestaurant,
-} from '@/repositories/restaurantRepository';
+import { deleteFoodRestaurant } from '@/repositories/restaurantRepository';
 import ResponsiveDialog from '../../shared/ResponsiveDialog';
 import { toast } from '@/components/ui/use-toast';
 
 interface Props {
   token: string;
+  dataMenu: IDataFood[];
+  setDataMenu: React.Dispatch<React.SetStateAction<IDataFood[]>>;
 }
-const TabsMenu = ({ token }: Props) => {
-  const [data, setData] = useState<IDataFood[]>([]);
+const TabsMenu = ({ token, dataMenu, setDataMenu }: Props) => {
   const [idFood, setIdFood] = useState<number | null>(null);
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
-  const fetchData = async () => {
-    const results = await getFoodRestaurant(token);
-    setData(results.data.foods);
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const createNewFood = (data: IDataFood) => {
-    setData((prev) => [...prev, data]);
+    setDataMenu((prev) => [...prev, data]);
     setIsOpenAdd(false);
   };
 
   const updatedNewFood = (items: IDataFood) => {
-    setData((prev) => {
+    setDataMenu((prev) => {
       const newData = prev.map((item) =>
         item.foodId === items.foodId ? { ...item, ...items } : item
       );
@@ -48,7 +38,7 @@ const TabsMenu = ({ token }: Props) => {
   const deleteFoodHandler = async (foodId: number) => {
     await deleteFoodRestaurant(foodId, token);
 
-    setData((prev) => prev.filter((item) => item.foodId !== foodId));
+    setDataMenu((prev) => prev.filter((item) => item.foodId !== foodId));
     toast({
       description: 'Berhasil menghapus makanan',
       duration: 3000,
@@ -63,14 +53,19 @@ const TabsMenu = ({ token }: Props) => {
   };
   return (
     <>
-      <ResponsiveDialog type="Add" isOpen={isOpenAdd} setIsOpen={setIsOpenAdd}>
+      <ResponsiveDialog
+        closeBtn={true}
+        type="Add"
+        isOpen={isOpenAdd}
+        setIsOpen={setIsOpenAdd}
+      >
         <FormFood type="Add" token={token} createNewFood={createNewFood} />
       </ResponsiveDialog>
 
       <div className="mb-10 flex flex-wrap items-center justify-start gap-4">
-        {data?.length === 0 && <p>No Food</p>}
+        {dataMenu.length === 0 && <p>No Food</p>}
 
-        {data?.map((item: IDataFood) => (
+        {dataMenu.map((item: IDataFood) => (
           <FoodList
             key={item.foodId}
             isOpenEdit={isOpenEdit}

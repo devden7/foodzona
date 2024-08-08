@@ -42,7 +42,11 @@ const FoodList = ({
   return (
     <div className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 md:last:border-b-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2">
       {item.foodId === idFood && (
-        <ResponsiveDialog isOpen={isOpenEdit} setIsOpen={setIsOpenEdit}>
+        <ResponsiveDialog
+          closeBtn={true}
+          isOpen={isOpenEdit}
+          setIsOpen={setIsOpenEdit}
+        >
           <FormFood
             type="Edit"
             token={token}
