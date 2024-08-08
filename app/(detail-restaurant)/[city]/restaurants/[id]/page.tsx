@@ -20,7 +20,7 @@ import Link from 'next/link';
 
 const Restaurants = () => {
   const [data, setData] = useState<IResponseGetFoods>();
-  const { location } = useAuth();
+  const { location, user } = useAuth();
   const params = useParams();
   const API_URL = process.env.NEXT_PUBLIC_API;
   const getFoodList = async () => {
@@ -35,6 +35,10 @@ const Restaurants = () => {
   useEffect(() => {
     getFoodList();
   }, []);
+
+  const filterData = data?.foods.filter(
+    (item) => item.restaurantName !== user.restaurant
+  );
   return (
     <>
       <HeroSection paramsId={params.id as string} />
@@ -67,14 +71,19 @@ const Restaurants = () => {
           <h2 className="mb-3 text-xl font-semibold md:mb-5 md:text-3xl">
             Terdekat
           </h2>
-          <div className="mb-10 flex flex-wrap items-center justify-center gap-4 2xl:justify-between">
-            {data?.foods.map((item) => (
+          <div className="mb-10 flex flex-wrap items-center justify-start gap-4">
+            {filterData?.length === 0 && (
+              <p className="w-full text-center font-medium">
+                Belum ada restaurant yang tersedia di kotamu
+              </p>
+            )}
+            {filterData?.map((item) => (
               <Link
                 href={`/${location}/restaurant/${item.restaurantName.toLowerCase().replace(/ /g, '-')}`}
                 key={item.foodId}
-                className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
+                className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 md:last:border-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
-                <div className="relative h-40 w-48 overflow-hidden rounded-xl bg-purple-500 md:w-56 lg:h-[600px] lg:w-full">
+                <div className="relative h-40 w-48 overflow-hidden rounded-xl md:w-56 lg:h-[600px] lg:w-full">
                   <Image
                     src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
                     alt={item.name}

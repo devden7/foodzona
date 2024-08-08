@@ -34,7 +34,7 @@ export interface IResponseCreateFood {
 }
 
 export interface IReqFoodsListsCategory {
-  city: string;
+  city: string | null;
   category: string;
   limit?: number;
 }

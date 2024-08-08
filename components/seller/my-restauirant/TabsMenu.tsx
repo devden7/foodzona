@@ -10,7 +10,7 @@ import {
   deleteFoodRestaurant,
   getFoodRestaurant,
 } from '@/repositories/restaurantRepository';
-import ResponsiveDialog from './ResponsiveDialog';
+import ResponsiveDialog from '../../shared/ResponsiveDialog';
 import { toast } from '@/components/ui/use-toast';
 
 interface Props {
@@ -67,7 +67,7 @@ const TabsMenu = ({ token }: Props) => {
         <FormFood type="Add" token={token} createNewFood={createNewFood} />
       </ResponsiveDialog>
 
-      <div className="mb-10 flex flex-wrap items-center gap-4 md:justify-between">
+      <div className="mb-10 flex flex-wrap items-center justify-start gap-4">
         {data?.length === 0 && <p>No Food</p>}
 
         {data?.map((item: IDataFood) => (

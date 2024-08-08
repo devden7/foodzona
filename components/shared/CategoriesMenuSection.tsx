@@ -1,23 +1,19 @@
+'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { typeFoodLists } from '@/constants';
 import { Button } from '../ui/button';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
-interface Props {
-  mediumScreen: number;
-}
-const CategoriesMenuSection = ({ mediumScreen }: Props) => {
+const CategoriesMenuSection = () => {
   const [isMoreBtn, setIsMoreBtn] = useState(false);
+  const isMobile = useMediaQuery('(min-width: 640px)');
+  const isTab = useMediaQuery('(min-width: 768px)');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
 
-  const listFoodByScreen =
-    mediumScreen !== undefined && mediumScreen < 640
-      ? 17
-      : mediumScreen >= 640 && mediumScreen < 768
-        ? 8
-        : mediumScreen >= 768 && mediumScreen < 1024
-          ? 7
-          : 5;
+  const listFoodByScreen = isDesktop ? 5 : isTab ? 7 : isMobile ? 8 : 17;
   return (
     <>
       <div
@@ -44,7 +40,7 @@ const CategoriesMenuSection = ({ mediumScreen }: Props) => {
         ))}
       </div>
 
-      {mediumScreen !== undefined && mediumScreen >= 640 && !isMoreBtn && (
+      {isMobile && !isMoreBtn && (
         <Button
           className="absolute left-1/2 w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 md:w-1/4 lg:w-1/5 xl:w-[15%]"
           onClick={() => setIsMoreBtn((prev) => !prev)}

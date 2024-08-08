@@ -30,7 +30,17 @@ export const AuthContextProvider = ({
     token: '',
   });
 
-  const [location, setLocation] = useState('jakarta');
+  const [location, setLocation] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const getLocation =
+        localStorage.getItem('location') !== null
+          ? localStorage.getItem('location')
+          : 'Jakarta';
+      return getLocation;
+    }
+
+    return 'Jakarta';
+  });
 
   const login = async (request: IReqLoginAccount) => {
     const response = await loginUser(request);
@@ -59,7 +69,7 @@ export const AuthContextProvider = ({
   const isLoggedIn = () => {
     const takeToken = Cookies.get('token');
     const getIsAuth = localStorage.getItem('isAuth');
-    const getLocation = localStorage.getItem('location');
+
     if (takeToken === undefined || getIsAuth !== 'true') {
       resetAuth();
     } else {
@@ -73,10 +83,6 @@ export const AuthContextProvider = ({
         token: takeToken,
       }));
     }
-
-    if (!getLocation) {
-      localStorage.setItem('location', location);
-    }
   };
 
   const resetAuth = () => {
@@ -89,9 +95,22 @@ export const AuthContextProvider = ({
     resetAuth();
   };
 
+  const changeLocation = (value: string) => {
+    setLocation(value);
+    localStorage.setItem('location', value);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ login, isLoggedIn, logout, isAuth, user, location }}
+      value={{
+        login,
+        isLoggedIn,
+        logout,
+        changeLocation,
+        isAuth,
+        user,
+        location,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -34,10 +34,13 @@ const DetailRestaurant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const cartItems = useAppSelector((state) => state.items);
   const [isNotValidCart, setIsNotValidCart] = useState(false);
+  const [isNotValidCartRecommendation, setIsNotValidCartRecommendation] =
+    useState(false);
+  const [isRestaurant, setIsRestaurant] = useState(false);
   const [idFood, setIdFood] = useState<number | undefined>(undefined);
   const params = useParams();
   const dispatch = useAppDispatch();
-  const { location } = useAuth();
+  const { location, user } = useAuth();
   const API_URL = process.env.NEXT_PUBLIC_API;
   const getFoodListDetail = async () => {
     const response = await getFoodListsDetail(params.id as string);
@@ -81,6 +84,12 @@ const DetailRestaurant = () => {
       setIsNotValidCart(true);
       return;
     }
+
+    if (item.restaurantName === user.restaurant) {
+      setIsNotValidCart(true);
+      setIsRestaurant(true);
+      return;
+    }
     const request = {
       foodId: item.foodId,
       name: item.name,
@@ -110,6 +119,11 @@ const DetailRestaurant = () => {
   const noBtnCartHandler = () => {
     setIsNotValidCart(false);
   };
+
+  const isRecommendationFood = data?.foods.filter(
+    (item) => item.isRecommendation === true
+  );
+
   return (
     <>
       <div className="container">
@@ -156,7 +170,7 @@ const DetailRestaurant = () => {
           <div className="flex gap-3 p-2 md:p-5 lg:p-0">
             <div className="relative size-16 overflow-hidden rounded-xl bg-green-500 md:size-24">
               <Image
-                src="/assets/makanan_tiga.jpg"
+                src={`${isRecommendationFood !== undefined && isRecommendationFood.length > 0 && isRecommendationFood[0].image !== null ? API_URL + 'images/' + isRecommendationFood[0].image : '/assets/no-image.jpeg'}`}
                 alt="Banner Restaurant"
                 fill
                 objectFit="cover"
@@ -220,61 +234,183 @@ const DetailRestaurant = () => {
 
       <section className="mb-8 mt-16">
         <div className="container">
-          <h2 className="mb-4 text-lg font-semibold">Makanan Tersedia</h2>
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-            {data?.foods.map((item) => (
-              <div
-                className="bd:border-slate-100 flex flex-col gap-2 sm:p-2 md:rounded-2xl md:border "
-                key={item.foodId}
-              >
-                {isNotValidCart && idFood === item.foodId && (
-                  <Dialog open={isNotValidCart} modal={true}>
-                    <DialogContent
-                      className="flex flex-col items-start px-8"
-                      hideCloseButton={true}
-                    >
-                      <DialogTitle>Mau beli ganti resto ini aja?</DialogTitle>
-                      <p>
-                        Boleh, kok. Tapi, menu yang kamu pilih dari resto
-                        sebelumnya kami hapus, ya.
-                      </p>
-                      <div>
-                        <Button
-                          onClick={() => yesBtnCartHandler(item)}
-                          className="mr-2 rounded-full border-2 border-green-700 bg-white p-2 text-base text-green-700 hover:bg-green-200 md:mb-4 md:p-5 lg:text-lg"
+          {isRecommendationFood !== undefined &&
+            isRecommendationFood.length > 0 && (
+              <div className="mb-5">
+                <h2 className="mb-4 text-lg font-semibold">Rekomendasi</h2>
+                <div>
+                  <div className="bd:border-slate-100 flex max-w-52 flex-col gap-2 sm:max-w-80 sm:p-2 md:rounded-2xl md:border ">
+                    {isNotValidCart && (
+                      <Dialog open={isNotValidCartRecommendation} modal={true}>
+                        <DialogContent
+                          className="flex flex-col items-start px-8"
+                          hideCloseButton={true}
                         >
-                          Iya, ganti
-                        </Button>
-                        <Button
-                          onClick={() => noBtnCartHandler()}
-                          className="rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
-                        >
-                          Gak jadi
-                        </Button>
+                          {!isRestaurant && (
+                            <DialogTitle>
+                              Mau beli ganti resto ini aja?
+                            </DialogTitle>
+                          )}
+                          {isRestaurant && <DialogTitle>Gagal</DialogTitle>}
+                          {!isRestaurant && (
+                            <p>
+                              Boleh, kok. Tapi, menu yang kamu pilih dari resto
+                              sebelumnya kami hapus, ya.
+                            </p>
+                          )}
+
+                          {isRestaurant && (
+                            <p>
+                              Hehe, kamu tidak bisa menambahkan product kamu
+                              sendiri ke dalam cart
+                            </p>
+                          )}
+                          <div className="w-52 bg-red-500">
+                            {!isRestaurant && (
+                              <Button
+                                onClick={() =>
+                                  yesBtnCartHandler(isRecommendationFood[0])
+                                }
+                                className="mr-2 rounded-full border-2 border-green-700 bg-white p-2 text-base text-green-700 hover:bg-green-200 md:mb-4 md:p-5 lg:text-lg"
+                              >
+                                Iya, ganti
+                              </Button>
+                            )}
+                            {!isRestaurant && (
+                              <Button
+                                onClick={() => noBtnCartHandler()}
+                                className="rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+                              >
+                                Gak jadi
+                              </Button>
+                            )}
+                            {isRestaurant && (
+                              <Button
+                                onClick={() => noBtnCartHandler()}
+                                className=" rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+                              >
+                                Oke
+                              </Button>
+                            )}
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                    <div className="relative h-48 w-full overflow-hidden rounded-xl bg-green-500 md:h-40 lg:h-56">
+                      <Image
+                        src={`${isRecommendationFood[0].image !== null ? API_URL + 'images/' + isRecommendationFood[0].image : '/assets/no-image.jpeg'}`}
+                        alt="makanan"
+                        fill
+                        objectFit="cover"
+                        quality={100}
+                      />
+                      <div className="absolute bottom-0 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center gap-1 rounded-full bg-red-500 px-5 py-1 text-sm font-medium text-black">
+                        <span className="text-xs text-white">Best</span>
                       </div>
-                    </DialogContent>
-                  </Dialog>
-                )}
-                <div className="relative h-48 w-full overflow-hidden rounded-xl bg-green-500 md:h-40 lg:h-56">
-                  <Image
-                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
-                    alt="makanan"
-                    fill
-                    objectFit="cover"
-                    quality={100}
-                  />
+                    </div>
+                    <p className="font-semibold lg:text-lg">
+                      {isRecommendationFood[0].name}
+                    </p>
+                    <p className="font-semibold lg:text-lg">
+                      {isRecommendationFood[0].price}
+                    </p>
+                    <Button
+                      className="rounded-full border border-green-700 bg-white text-green-700 hover:bg-green-200 xl:mt-4"
+                      onClick={() => cartBtnHandler(isRecommendationFood[0])}
+                    >
+                      Add
+                    </Button>
+                  </div>
                 </div>
-                <p className="font-semibold lg:text-lg">{item.name}</p>
-                <p className="font-semibold lg:text-lg">{item.price}</p>
-                <Button
-                  className="rounded-full border border-green-700 bg-white text-green-700 hover:bg-green-200 xl:mt-4"
-                  onClick={() => cartBtnHandler(item)}
-                >
-                  Add
-                </Button>
               </div>
-            ))}
-          </div>
+            )}
+          {data?.foods !== undefined && data?.foods.length > 1 && (
+            <div>
+              <h2 className="mb-4 text-lg font-semibold">Makanan Tersedia</h2>
+              <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+                {data?.foods
+                  .filter((item) => item.isRecommendation !== true)
+                  .map((item) => (
+                    <div
+                      className="bd:border-slate-100 flex flex-col gap-2 sm:p-2 md:rounded-2xl md:border "
+                      key={item.foodId}
+                    >
+                      {isNotValidCart && idFood === item.foodId && (
+                        <Dialog open={isNotValidCart} modal={true}>
+                          <DialogContent
+                            className="flex flex-col items-start px-8"
+                            hideCloseButton={true}
+                          >
+                            {!isRestaurant && (
+                              <DialogTitle>
+                                Mau beli ganti resto ini aja?
+                              </DialogTitle>
+                            )}
+                            {isRestaurant && <DialogTitle>Gagal</DialogTitle>}
+                            {!isRestaurant && (
+                              <p>
+                                Boleh, kok. Tapi, menu yang kamu pilih dari
+                                resto sebelumnya kami hapus, ya.
+                              </p>
+                            )}
+
+                            {isRestaurant && (
+                              <p>
+                                Hehe, kamu tidak bisa menambahkan product kamu
+                                sendiri ke dalam cart
+                              </p>
+                            )}
+                            <div>
+                              {!isRestaurant && (
+                                <Button
+                                  onClick={() => yesBtnCartHandler(item)}
+                                  className="mr-2 rounded-full border-2 border-green-700 bg-white p-2 text-base text-green-700 hover:bg-green-200 md:mb-4 md:p-5 lg:text-lg"
+                                >
+                                  Iya, ganti
+                                </Button>
+                              )}
+                              {!isRestaurant && (
+                                <Button
+                                  onClick={() => noBtnCartHandler()}
+                                  className="rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+                                >
+                                  Gak jadi
+                                </Button>
+                              )}
+                              {isRestaurant && (
+                                <Button
+                                  onClick={() => noBtnCartHandler()}
+                                  className="rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+                                >
+                                  Oke
+                                </Button>
+                              )}
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      )}
+                      <div className="relative h-48 w-full overflow-hidden rounded-xl bg-green-500 md:h-40 lg:h-56">
+                        <Image
+                          src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                          alt="makanan"
+                          fill
+                          objectFit="cover"
+                          quality={100}
+                        />
+                      </div>
+                      <p className="font-semibold lg:text-lg">{item.name}</p>
+                      <p className="font-semibold lg:text-lg">{item.price}</p>
+                      <Button
+                        className="rounded-full border border-green-700 bg-white text-green-700 hover:bg-green-200 xl:mt-4"
+                        onClick={() => cartBtnHandler(item)}
+                      >
+                        Add
+                      </Button>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </>

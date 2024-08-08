@@ -19,10 +19,11 @@ export interface IReqLoginAccount {
 export interface IReqContext {
   isAuth: boolean | undefined;
   user: IUserInfo;
-  location: string;
+  location: string | null;
   login: (request: IReqLoginAccount) => void;
   logout: () => void;
   isLoggedIn: () => void;
+  changeLocation: (value: string) => void;
 }
 
 export interface IResponse<T> {

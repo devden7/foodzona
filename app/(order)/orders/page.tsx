@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import ResponsiveDialog from '@/components/seller/my-restauirant/ResponsiveDialog';
+import ResponsiveDialog from '@/components/shared/ResponsiveDialog';
 import { Order } from '@/model/orderModel';
 import FormRating from '@/components/orders/FormRating';
 
