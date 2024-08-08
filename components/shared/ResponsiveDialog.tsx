@@ -10,9 +10,16 @@ interface Props {
   children: React.ReactNode;
   isOpen: boolean;
   type?: string;
+  closeBtn: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const ResponsiveDialog = ({ children, isOpen, type, setIsOpen }: Props) => {
+const ResponsiveDialog = ({
+  children,
+  isOpen,
+  type,
+  closeBtn,
+  setIsOpen,
+}: Props) => {
   const isTab = useMediaQuery('(min-width: 768px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   if (isDesktop && type === 'homepage') {
@@ -29,7 +36,7 @@ const ResponsiveDialog = ({ children, isOpen, type, setIsOpen }: Props) => {
             </Button>
           </DialogTrigger>
         )}
-        <DialogContent hideCloseButton={true}>{children}</DialogContent>
+        <DialogContent hideCloseButton={closeBtn}>{children}</DialogContent>
       </Dialog>
     );
   }
