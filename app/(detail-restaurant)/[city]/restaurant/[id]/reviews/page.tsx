@@ -14,7 +14,6 @@ const ReviewsUserf = () => {
   const params = useParams();
   const getRestaurantReviews = async () => {
     const response = await getFoodListsDetail(params.id as string);
-    console.log(response.data);
     setReviewsList(response.data.reviews);
     setRestaurantname(response.data.restaurantName);
   };

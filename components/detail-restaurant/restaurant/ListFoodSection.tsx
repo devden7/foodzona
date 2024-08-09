@@ -24,13 +24,11 @@ const ListFoodSection = ({ data }: Props) => {
   );
 
   const cartBtnHandler = (item: IDataFood) => {
-    console.log(item);
     setIdFood(item.foodId);
     if (
       cartItems.length !== 0 &&
       item.restaurantName !== cartItems[0].restaurantName
     ) {
-      console.log('NOT SAME');
       setIsNotValidCart(true);
       return;
     }

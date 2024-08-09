@@ -18,7 +18,6 @@ const FoodListCity = ({ data }: Props) => {
   const filterData = data?.foods.filter(
     (item) => item.restaurantName !== user.restaurant
   );
-  console.log(filterData);
   return (
     <section className="relative sm:mt-24">
       <div className="pl-4 2xl:container 2xl:w-[1200px]">

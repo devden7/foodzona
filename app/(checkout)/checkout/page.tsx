@@ -61,7 +61,6 @@ const Checkout = () => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
-  console.log(cartItems);
   return (
     <>
       {isAuth ? (

@@ -14,7 +14,6 @@ const InfoRating = ({ reviewsList }: Props) => {
   const params = useParams();
 
   const reviewNewest = reviewsList?.slice(-5);
-  console.log(reviewNewest);
   return (
     <section className="mb-8 mt-20 lg:mt-10">
       <div className="sm:container">
