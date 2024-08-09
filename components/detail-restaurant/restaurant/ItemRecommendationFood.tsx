@@ -14,11 +14,12 @@ const ItemRecommendationFood = ({ item, cartBtnHandler }: Props) => {
       <div className="bd:border-slate-100 flex max-w-52 flex-col gap-2 sm:max-w-80 sm:p-2 md:rounded-2xl md:border ">
         <div className="relative h-48 w-full overflow-hidden rounded-xl md:h-40 lg:h-56">
           <Image
+            className="object-cover"
             src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
             alt="makanan"
             fill
-            objectFit="cover"
-            quality={100}
+            sizes="50vw"
+            quality={90}
           />
           <div className="absolute bottom-0 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center gap-1 rounded-full bg-red-500 px-5 py-1 text-sm font-medium text-black">
             <span className="text-xs text-white">Best</span>

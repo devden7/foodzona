@@ -17,6 +17,7 @@ const HeroBanner = ({ src, alt, width, height, children }: Props) => {
         alt={alt}
         width={Number(width)}
         height={Number(height)}
+        priority={true}
       />
       {children}
     </div>

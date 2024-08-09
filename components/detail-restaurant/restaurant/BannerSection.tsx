@@ -20,8 +20,8 @@ const BannerSection = ({ isRecommendationFood, restaurantName }: Props) => {
               src={`${isRecommendationFood !== undefined && isRecommendationFood.length > 0 && isRecommendationFood[0].image !== null ? API_URL + 'images/' + isRecommendationFood[0].image : '/assets/no-image.jpeg'}`}
               alt="Banner Restaurant"
               fill
-              objectFit="cover"
-              className="absolute size-full"
+              sizes="50vw"
+              className="absolute object-cover"
             />
           </div>
           <div>

@@ -58,11 +58,12 @@ const FoodList = ({
 
       <div className="relative h-40 w-48 overflow-hidden rounded-xl md:w-56 lg:h-[600px] lg:w-full">
         <Image
+          className="object-cover"
           src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
           alt={item.name}
           fill
-          objectFit="cover"
-          quality={100}
+          sizes="100vw"
+          quality={90}
         />
         {item.isRecommendation && (
           <div className="absolute bottom-0 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center gap-1 rounded-full bg-red-500 px-5 py-1 text-sm font-medium text-black">

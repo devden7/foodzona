@@ -56,13 +56,13 @@ const Recommendations = () => {
             }}
           >
             <Image
+              className="object-cover"
               src={`${mediumScreen >= 768 ? '/assets/recommendations-desktop-illustration.jpg' : '/assets/recommendations-mobile-illustration.jpg'}`}
               alt="image hero"
               fill
-              objectFit="cover"
               quality={100}
               sizes="100vw"
-              className="w-full"
+              priority={true}
             />
 
             <div className="absolute top-[35%] overflow-visible pl-10 md:pl-16 lg:pl-7 2xl:pl-80">

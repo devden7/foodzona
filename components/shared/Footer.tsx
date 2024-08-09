@@ -30,9 +30,8 @@ const Footer = () => {
                 <Image
                   src="/assets/logo-hero.svg"
                   alt="Logo App"
-                  width={0}
-                  height={0}
-                  className="size-10"
+                  width={40}
+                  height={40}
                 />
               </div>
               <div>
@@ -102,10 +101,12 @@ const Footer = () => {
           </div>
           <div className="absolute inset-x-0 top-64 mb-5 h-[500px] sm:top-72 sm:h-[520px] md:left-[60%] md:top-8 md:h-[350px] lg:h-[470px]">
             <Image
+              className="object-contain"
               src="/assets/gofood-footer.png"
               alt="Logo App"
               fill
-              objectFit="contain"
+              sizes="50vw"
+              quality={100}
             />
           </div>
         </div>

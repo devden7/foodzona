@@ -123,11 +123,12 @@ const Checkout = () => {
                   <div>
                     <div className="relative mb-4 size-24 overflow-hidden rounded-xl">
                       <Image
+                        className="object-cover"
                         src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
                         alt="makanan"
                         fill
-                        objectFit="cover"
-                        quality={100}
+                        sizes="50vw"
+                        quality={90}
                       />
                     </div>
                     <div className="mb-3 flex justify-between gap-2">

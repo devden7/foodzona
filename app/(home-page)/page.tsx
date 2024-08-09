@@ -79,22 +79,23 @@ export default function Home() {
               {valueList.map((item) => (
                 <div
                   key={item.id}
-                  className={`flex items-center gap-4  rounded-2xl px-2 py-1 md:py-2 lg:flex-col lg:gap-10 lg:py-5`}
+                  className={`flex h-40 items-center gap-4 rounded-2xl p-2 lg:h-96 lg:flex-col`}
                   style={{
                     background: `${item.backgroundColor}`,
                   }}
                 >
-                  <div className="relative h-36 w-full grow overflow-hidden rounded-xl sm:h-[200px] md:max-h-[130px] xl:max-h-[200px] 2xl:max-h-[180px]">
+                  <div className="relative aspect-square size-full overflow-hidden rounded-xl md:max-h-[130px] lg:max-h-[150px] xl:max-h-[200px] 2xl:max-h-[180px]">
                     <Image
+                      className="object-contain"
                       src={item.imageUrl}
                       alt={item.description}
                       fill
-                      sizes="100vw"
+                      sizes="50vw"
                       quality={100}
                     />
                   </div>
-                  <div className="w-full lg:pb-20 lg:pl-5 ">
-                    <p className="mt-2 font-semibold text-white md:text-2xl xl:max-w-[200px]">
+                  <div className="w-full">
+                    <p className="mt-2 px-3 font-semibold text-white md:text-2xl xl:max-w-[200px]">
                       {item.description}
                     </p>
                   </div>

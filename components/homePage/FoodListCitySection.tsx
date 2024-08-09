@@ -42,11 +42,12 @@ const FoodListCity = ({ data }: Props) => {
             >
               <div className="relative h-40 w-48 overflow-hidden rounded-xl bg-purple-500 md:w-56 lg:h-[600px] lg:w-full">
                 <Image
+                  className="object-cover"
                   src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
                   alt={item.name}
                   fill
-                  objectFit="cover"
-                  quality={100}
+                  sizes="50vw"
+                  quality={90}
                 />
                 <div className="absolute left-1/2 top-[85%] z-50 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-medium text-black lg:left-[80%] lg:top-[90%]">
                   <HiStar color="orange" size={20} />

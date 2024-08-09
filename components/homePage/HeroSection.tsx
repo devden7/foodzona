@@ -17,12 +17,12 @@ export const HeroSection = () => {
           }}
         >
           <Image
+            className="object-cover"
             src={`${isTablet ? '/assets/hero.jpg' : '/assets/hero-mobile.jpg'}`}
             alt="logo hero"
             fill
-            objectFit="cover"
             quality={100}
-            sizes="100vw"
+            priority={true}
           />
 
           <div className="absolute left-1/2 top-[30%] z-50 -translate-x-1/2 -translate-y-1/2 gap-1 overflow-visible text-white md:mt-10 ">
