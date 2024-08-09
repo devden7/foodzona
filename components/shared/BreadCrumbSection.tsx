@@ -18,7 +18,6 @@ interface Props {
 const BreadCrumbSection = ({ pageName, restaurantName }: Props) => {
   const { location } = useAuth();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-  console.log(isDesktop);
   if (pageName === 'restaurant' && isDesktop) {
     return (
       <div className="container">
@@ -33,7 +32,7 @@ const BreadCrumbSection = ({ pageName, restaurantName }: Props) => {
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="hover:text-green-700"
-                href={`/${location?.toLocaleLowerCase()}`}
+                href={`/${location?.toLocaleLowerCase()}/restaurants`}
               >
                 {location}
               </BreadcrumbLink>

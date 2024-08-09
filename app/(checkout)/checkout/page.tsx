@@ -12,6 +12,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
 import { IDataFood } from '@/model/foodModel';
 import { addItem, deleteItem } from '@/store/Cart/CartSlice';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -24,10 +25,11 @@ import {
 
 const Checkout = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isCart, setIsCart] = useState(true);
+  const [isCart] = useState(true);
   const { isLoggedIn, isAuth } = useAuth();
   const cartItems = useAppSelector((state) => state.items);
   const calcPriceItem = useAppSelector((state) => state.calcPriceItem);
+  const API_URL = process.env.NEXT_PUBLIC_API;
   const router = useRouter();
   const { location } = useAuth();
   const dispatch = useAppDispatch();
@@ -59,6 +61,7 @@ const Checkout = () => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
+  console.log(cartItems);
   return (
     <>
       {isAuth ? (
@@ -119,7 +122,15 @@ const Checkout = () => {
                     <p>{item.price}</p>
                   </div>
                   <div>
-                    <div className="relative mb-4 size-24 rounded-xl bg-purple-500"></div>
+                    <div className="relative mb-4 size-24 overflow-hidden rounded-xl">
+                      <Image
+                        src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                        alt="makanan"
+                        fill
+                        objectFit="cover"
+                        quality={100}
+                      />
+                    </div>
                     <div className="mb-3 flex justify-between gap-2">
                       <button
                         className="flex size-6 items-center justify-center rounded-full border border-green-700"

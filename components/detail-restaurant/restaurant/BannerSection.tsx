@@ -15,7 +15,7 @@ const BannerSection = ({ isRecommendationFood, restaurantName }: Props) => {
     <section className="mb-8 mt-4 lg:mt-3 2xl:mt-1">
       <div className={`${isDekstop ? 'container' : ''}`}>
         <div className="flex gap-3 p-2 md:p-5 lg:p-0">
-          <div className="relative size-16 overflow-hidden rounded-xl bg-green-500 md:size-24">
+          <div className="relative size-16 overflow-hidden rounded-xl md:size-24">
             <Image
               src={`${isRecommendationFood !== undefined && isRecommendationFood.length > 0 && isRecommendationFood[0].image !== null ? API_URL + 'images/' + isRecommendationFood[0].image : '/assets/no-image.jpeg'}`}
               alt="Banner Restaurant"
