@@ -1,15 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import HeroSection from '@/components/detail-restaurant/restaurants/HeroSection';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+import HeroSection from '@/components/detail-restaurant/restaurants/id/HeroSection';
 import Image from 'next/image';
 import { HiStar } from 'react-icons/hi';
 import { getFoodLists } from '@/repositories/foodRepository';
@@ -17,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { IResponseGetFoods } from '@/model/foodModel';
 import Link from 'next/link';
+import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 
 const Restaurants = () => {
   const [data, setData] = useState<IResponseGetFoods>();
@@ -43,31 +36,8 @@ const Restaurants = () => {
     <>
       <HeroSection paramsId={params.id as string} />
       <section>
+        <BreadCrumbSection />
         <div className="container ">
-          <Breadcrumb className="my-5">
-            <BreadcrumbList className="text-black">
-              <BreadcrumbItem>
-                <BreadcrumbLink className="hover:text-green-700" href="/">
-                  Beranda
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  className="hover:text-green-700"
-                  href="/components"
-                >
-                  Kotamu
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage className="hover:text-green-700 ">
-                  Restoranmu
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
           <h2 className="mb-3 text-xl font-semibold md:mb-5 md:text-3xl">
             Terdekat
           </h2>

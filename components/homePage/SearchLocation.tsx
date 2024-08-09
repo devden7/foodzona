@@ -50,7 +50,7 @@ const SearchLocation = ({
   setIsOpen,
   type,
 }: Props) => {
-  const [isCommand, setIsCommand] = useState(false);
+  const [isCommand, setIsCommand] = useState(true);
   const dummyLocation = [
     { city: 'Jakarta', id: 0 },
     { city: 'Surabaya', id: 1 },
@@ -70,7 +70,7 @@ const SearchLocation = ({
     <>
       {type !== 'Homepage' && (
         <div className="absolute left-1/2 top-[80px] w-full -translate-x-1/2 -translate-y-1/2 px-2 md:top-[83px]  md:p-2 lg:left-[65%] lg:right-0 lg:top-[25px] lg:w-[310px] lg:p-0 xl:left-[70%]">
-          <div>
+          <div className="relative">
             {mediumScreen !== undefined && mediumScreen < 768 && (
               <Drawer>
                 <div>
@@ -244,7 +244,7 @@ const SearchLocation = ({
               )}
 
             {mediumScreen !== undefined && mediumScreen >= 1024 && (
-              <div className="relative">
+              <div className="absolute bg-red-500 z-50 -top-5 -right-5 mr-3">
                 <Badge
                   variant="outline"
                   className="flex h-10 items-center justify-between md:w-[300px]"
@@ -255,8 +255,7 @@ const SearchLocation = ({
                     <Input
                       type="text"
                       placeholder="Ketik lokasimu"
-                      className="rounded-full border-none border-slate-300 bg-transparent p-0 placeholder:text-xs placeholder:text-slate-800 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 lg:text-sm lg:placeholder:text-base
-            "
+                      className="rounded-full border-none border-slate-300 bg-transparent p-0 placeholder:text-xs placeholder:text-slate-800 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 lg:text-sm lg:placeholder:text-base"
                       value={searchLocation}
                       onChange={(e) => setSearchLocation(e.target.value)}
                     />

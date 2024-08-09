@@ -66,7 +66,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`relative z-50 border-b-2 border-slate-100 bg-white ${mediumScreen < 768 && pathname === '/login' ? 'hidden' : ''}`}
+      className={`relative  border-b-2 border-slate-100 bg-white ${mediumScreen < 768 && pathname === '/login' ? 'hidden' : ''}`}
     >
       <NavbarForm />
       <header className="container flex h-12 items-center justify-between">

@@ -4,14 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { useAuth } from '@/context/AuthContext';
@@ -24,11 +16,11 @@ import {
 } from '@/repositories/orderRepository';
 import { IDataFood } from '@/model/foodModel';
 import { getFoodRestaurant } from '@/repositories/restaurantRepository';
+import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 
 const MyRestaurant = () => {
   const [dataOrderHistory, setDataOrderHistory] = useState<any>();
   const [dataMenu, setDataMenu] = useState<IDataFood[]>([]);
-  // const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { isAuth, user, isLoggedIn } = useAuth();
 
@@ -49,13 +41,8 @@ const MyRestaurant = () => {
       if (user.token !== '') {
         fetchData();
       }
-      // setIsLoading(false);
     }
   }, [isAuth, user.restaurant, user.token]);
-
-  // if (isLoading) {
-  //   return <p>Loading...</p>;
-  // }
 
   const deliveryFoodBtnHandler = async (orderId: number) => {
     const response = await deliveryFood(user.token, orderId);
@@ -68,18 +55,11 @@ const MyRestaurant = () => {
     <>
       {isAuth && user.restaurant !== null && (
         <section className="mb-10 mt-5">
+          <BreadCrumbSection
+            pageName="seller"
+            restaurantName={user.restaurant}
+          />
           <div className="container">
-            <Breadcrumb className="my-5">
-              <BreadcrumbList className="text-black">
-                <BreadcrumbItem>
-                  <BreadcrumbLink className="hover:text-green-700" href="/">
-                    My-Restaurant
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>{user.restaurant}</BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
             <Tabs defaultValue="menu">
               <div className="flex justify-center">
                 <TabsList className="flex w-1/2 justify-center bg-white">

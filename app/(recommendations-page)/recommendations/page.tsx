@@ -5,19 +5,9 @@ import Image from 'next/image';
 
 import { HiStar } from 'react-icons/hi';
 
-import SearchLocation from '@/components/homePage/SearchLocation';
-
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-
 import { recommendationsLists } from '@/constants';
 import { Button } from '@/components/ui/button';
+import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 
 const Recommendations = () => {
   const [searchLocation, setSearchLocation] = useState('');
@@ -57,17 +47,6 @@ const Recommendations = () => {
 
   return (
     <>
-      <div className="container">
-        <SearchLocation
-          mediumScreen={mediumScreen}
-          searchLocation={searchLocation}
-          isOpen={isOpen}
-          handlerSearchLocationDrawer={handlerSearchLocationDrawer}
-          setSearchLocation={setSearchLocation}
-          setIsOpen={setIsOpen}
-          type="Recommendations"
-        />
-      </div>
       <section className="mb-8 mt-16 lg:mt-3 2xl:mt-1">
         <div className="m-3 flex lg:m-0 lg:px-2 lg:py-1">
           <div
@@ -101,30 +80,9 @@ const Recommendations = () => {
         </div>
       </section>
       <div className="container mb-10 2xl:w-[1300px]">
-        <Breadcrumb>
-          <BreadcrumbList className="text-black">
-            <BreadcrumbItem>
-              <BreadcrumbLink className="hover:text-green-700" href="/">
-                Beranda
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                className="hover:text-green-700"
-                href="/components"
-              >
-                Kotamu
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="hover:text-green-700 ">
-                Rekomendasi
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <div className="mb-10 2xl:w-[1300px]">
+          <BreadCrumbSection pageName="recommendation" />
+        </div>
       </div>
       <section className="mb-10 sm:mb-2">
         <div className="container 2xl:w-[1200px]">

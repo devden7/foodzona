@@ -2,20 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import SearchLocation from '@/components/homePage/SearchLocation';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-
 import { HiArrowSmLeft, HiStar } from 'react-icons/hi';
 import { getFoodListsDetail } from '@/repositories/foodRepository';
 import { useParams } from 'next/navigation';
 import { dataReview } from '@/model/orderModel';
 import { calcRating, convertIsoToDate } from '@/lib/utils';
-import { useAuth } from '@/context/AuthContext';
+import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 const ReviewsUserf = () => {
   const [searchLocation, setSearchLocation] = useState('');
   const [mediumScreen, setMediumScreen] = useState<number | undefined>(
@@ -23,13 +15,12 @@ const ReviewsUserf = () => {
   );
   const [isOpen, setIsOpen] = useState(false);
   const [reviewsList, setReviewsList] = useState<dataReview[] | undefined>();
-  const { location } = useAuth();
   const params = useParams();
   const getRestaurantReviews = async () => {
     const response = await getFoodListsDetail(params.id as string);
     setReviewsList(response.data.reviews);
   };
-
+  console.log(reviewsList);
   useEffect(() => {
     getRestaurantReviews();
   }, []);
@@ -71,37 +62,10 @@ const ReviewsUserf = () => {
           type="Detail Restaurant"
         />
 
-        {mediumScreen >= 1024 && (
-          <Breadcrumb className="my-5">
-            <BreadcrumbList className="text-black">
-              <BreadcrumbItem>
-                <BreadcrumbLink className="hover:text-green-700" href="/">
-                  Beranda
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  className="hover:text-green-700"
-                  href={`/${location}/restaurants`}
-                >
-                  {location}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  href={`/${location}/restaurant/${params.id}`}
-                  className="hover:text-green-700 "
-                >
-                  {reviewsList === undefined
-                    ? ''
-                    : reviewsList[0].restaurantName}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        )}
+        <BreadCrumbSection
+          pageName="restaurant"
+          restaurantName={reviewsList?.[0]?.restaurantName ?? ''}
+        />
       </div>
       <section className="mb-8 mt-20 lg:mt-10">
         <div className="sm:container">
