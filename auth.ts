@@ -23,7 +23,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, trigger, session, user }) {
+      if (trigger === 'update' && session.token && session.restaurant) {
+        token.restaurant = session.restaurant;
+        token.token = session.token;
+      }
       return { ...token, ...user };
     },
     async session({ session, token, user }) {

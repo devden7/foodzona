@@ -19,9 +19,13 @@ import { toast } from '../ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import ResponsiveDialog from '../shared/ResponsiveDialog';
 import { Session } from 'next-auth';
-import { signOut } from 'next-auth/react';
+import { UpdateSession } from 'next-auth/react';
 
-const NavbarForm = ({ session }: { session: Session | null }) => {
+interface Props {
+  session: Session | null;
+  update: UpdateSession;
+}
+const NavbarForm = ({ session, update }: Props) => {
   const [isOpenCreateStore, setIsOpenCreateStore] = useState(false);
   const form = useForm<z.infer<typeof formCreateStoreSchema>>({
     resolver: zodResolver(formCreateStoreSchema),
@@ -37,7 +41,10 @@ const NavbarForm = ({ session }: { session: Session | null }) => {
       city: values.city,
       token: session?.user.token,
     });
-
+    update({
+      token: response.data.token,
+      restaurant: response.data.restaurantName,
+    });
     if (response.errors) {
       return toast({
         variant: 'destructive',
@@ -52,7 +59,6 @@ const NavbarForm = ({ session }: { session: Session | null }) => {
       duration: 3000,
     });
     setIsOpenCreateStore(false);
-    signOut({ callbackUrl: '/login' });
     form.reset();
   }
   return (

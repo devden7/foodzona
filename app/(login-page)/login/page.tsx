@@ -68,7 +68,6 @@ const Login = () => {
       callbackUrl: '/',
       redirect: false,
     });
-    console.log(requestLogin);
     // login(values);
     router.push('/');
   }

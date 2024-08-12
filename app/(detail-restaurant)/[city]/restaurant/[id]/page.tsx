@@ -13,7 +13,6 @@ interface PropsParams {
 
 const DetailRestaurant = async ({ params }: PropsParams) => {
   const data = await getFoodListsDetail(params.id);
-  console.log(data.data);
 
   const isRecommendationFood = data?.data.foods.filter(
     (item) => item.isRecommendation === true

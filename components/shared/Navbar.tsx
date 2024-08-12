@@ -21,7 +21,7 @@ import { signOut, useSession } from 'next-auth/react';
 const Navbar = () => {
   const pathname = usePathname();
   const isTab = useMediaQuery('(min-width: 768px)');
-  const session = useSession();
+  const { data: session, update } = useSession();
 
   const logoutBtnHandler = () => {
     signOut({ callbackUrl: '/' });
@@ -31,7 +31,7 @@ const Navbar = () => {
     <nav
       className={`relative  border-b-2 border-slate-100 bg-white ${!isTab && pathname === '/login' ? 'hidden' : ''}`}
     >
-      <NavbarForm session={session.data} />
+      <NavbarForm session={session} update={update} />
       <header className="container flex h-12 items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="md:hidden">
@@ -62,7 +62,7 @@ const Navbar = () => {
                 <div className="ml-10 flex flex-col gap-4 text-lg font-semibold text-green-600">
                   <Link href="/">Beranda</Link>
                   <Link href="/recommendations">Rekomendasi</Link>
-                  {session.data === null && pathname !== '/login' && (
+                  {!session && pathname !== '/login' && (
                     <Link href="/login">Masuk/Daftar</Link>
                   )}
                 </div>
@@ -98,7 +98,7 @@ const Navbar = () => {
         <UserDropdown
           pathname={pathname}
           logoutBtnHandler={logoutBtnHandler}
-          session={session.data}
+          session={session}
         />
       </header>
     </nav>

@@ -28,7 +28,6 @@ const TabsMenu = ({ token, dataMenu }: Props) => {
   };
 
   const deleteFoodHandler = async (foodId: number) => {
-    console.log(foodId, token);
     await deleteFoodRestaurant(foodId, token);
 
     toast({

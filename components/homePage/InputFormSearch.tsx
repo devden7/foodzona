@@ -59,7 +59,6 @@ const InputFormSearch = ({ city, isBlur, setIsOpen, setIsBlur }: Props) => {
                 <CommandItem
                   key={item.id}
                   onSelect={(value) => {
-                    console.log(value);
                     dispatch(changeLocation(value));
                     setIsBlur(false);
                   }}
