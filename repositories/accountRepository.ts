@@ -4,6 +4,7 @@ import {
   IReqRegisterAccount,
   IResponse,
 } from '@/model/accountModel';
+
 const API_URL = process.env.NEXT_PUBLIC_API;
 
 export const registerUser = async (
@@ -20,9 +21,7 @@ export const registerUser = async (
   return data;
 };
 
-export const loginUser = async (
-  request: IReqLoginAccount
-): Promise<IResponse<IUserInfo>> => {
+export const loginUser = async (request: IReqLoginAccount) => {
   const response = await fetch(`${API_URL}api/login`, {
     method: 'POST',
     headers: {

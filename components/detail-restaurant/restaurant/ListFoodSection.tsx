@@ -3,25 +3,22 @@
 import { useState } from 'react';
 import { IDataFood, IResponseGetFoods } from '@/model/foodModel';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
-import { useAuth } from '@/context/AuthContext';
 import { addItem, resetCart } from '@/store/Cart/CartSlice';
 import ListDetailFood from './ListDetailFood';
 import ItemRecommendationFood from './ItemRecommendationFood';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   data: IResponseGetFoods | undefined;
   isRecommendationFood: IDataFood[] | undefined;
 }
-const ListFoodSection = ({ data }: Props) => {
+const ListFoodSection = ({ data, isRecommendationFood }: Props) => {
   const [idFood, setIdFood] = useState<number | undefined>();
   const [isNotValidCart, setIsNotValidCart] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
-  const { user } = useAuth();
-  const cartItems = useAppSelector((state) => state.items);
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const { data: session } = useSession();
   const dispatch = useAppDispatch();
-  const isRecommendationFood = data?.foods.filter(
-    (item) => item.isRecommendation === true
-  );
 
   const cartBtnHandler = (item: IDataFood) => {
     setIdFood(item.foodId);
@@ -33,7 +30,7 @@ const ListFoodSection = ({ data }: Props) => {
       return;
     }
 
-    if (item.restaurantName === user.restaurant) {
+    if (item.restaurantName === session?.user.restaurant) {
       setIsNotValidCart(true);
       setIsRestaurant(true);
       return;

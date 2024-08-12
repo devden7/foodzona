@@ -1,8 +1,11 @@
-import { useAuth } from '@/context/AuthContext';
+'use client';
+
+import { useAppSelector } from '@/hooks/use-redux-hook';
 import Image from 'next/image';
 
 const BannerSection = () => {
-  const { location } = useAuth();
+  const location = useAppSelector((state) => state.location.city);
+  console.log(location);
   return (
     <section>
       <div className="m-3 flex lg:m-0 lg:px-2 lg:py-1">

@@ -12,8 +12,8 @@ export interface IUserInfo {
 }
 
 export interface IReqLoginAccount {
-  username: string;
-  password: string;
+  username: string | unknown;
+  password: string | unknown;
 }
 
 export interface IReqContext {

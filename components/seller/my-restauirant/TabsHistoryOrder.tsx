@@ -1,18 +1,26 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Order } from '@/model/orderModel';
+import { cancelFood, deliveryFood } from '@/repositories/orderRepository';
+import { Session } from 'next-auth';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   data: Order[];
-  deliveryFoodBtnHandler: (orderId: number) => void;
-  cancelFoodBtnHandler: (orderId: number) => void;
+  session: Session;
 }
 
-const TabsHistoryOrder = ({
-  data,
-  deliveryFoodBtnHandler,
-  cancelFoodBtnHandler,
-}: Props) => {
+const TabsHistoryOrder = ({ data, session }: Props) => {
+  const router = useRouter();
+  const deliveryFoodBtnHandler = async (orderId: number) => {
+    await deliveryFood(session.user.token, orderId);
+    router.refresh();
+  };
+
+  const cancelFoodBtnHandler = async (orderId: number) => {
+    await cancelFood(session.user.token, orderId);
+    router.refresh();
+  };
   return (
     <>
       <div className="flex flex-col gap-3 md:hidden">

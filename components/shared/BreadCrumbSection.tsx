@@ -8,15 +8,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { useAuth } from '@/context/AuthContext';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { useAppSelector } from '@/hooks/use-redux-hook';
 
 interface Props {
   pageName?: string;
   restaurantName?: string;
 }
 const BreadCrumbSection = ({ pageName, restaurantName }: Props) => {
-  const { location } = useAuth();
+  const location = useAppSelector((state) => state.location.city);
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   if (pageName === 'restaurant' && isDesktop) {
     return (

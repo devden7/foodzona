@@ -1,3 +1,5 @@
+'use client';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,18 +9,18 @@ import {
 import ResponsiveDialog from '../shared/ResponsiveDialog';
 import FormRating from './FormRating';
 import { Order } from '@/model/orderModel';
-import { useAuth } from '@/context/AuthContext';
 import { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { Session } from 'next-auth';
 
 interface Props {
   data: Order[];
+  session: Session;
 }
-const ListsOrder = ({ data }: Props) => {
+const ListsOrder = ({ data, session }: Props) => {
   const [isRatingBtn, setIsRatingBtn] = useState(false);
   const [orderItemId, setOrderItemId] = useState<number | null>(null);
-  const { user } = useAuth();
   const isTab = useMediaQuery('(min-width: 768px)');
   const btnReviewHandler = (id: number) => {
     setOrderItemId(id);
@@ -37,7 +39,10 @@ const ListsOrder = ({ data }: Props) => {
                 >
                   <div className="p-3">
                     <h4 className="text-xl">Rating Food</h4>
-                    <FormRating orderId={item.orderId} token={user.token} />
+                    <FormRating
+                      orderId={item.orderId}
+                      token={session.user.token}
+                    />
                   </div>
                 </ResponsiveDialog>
               )}
@@ -87,8 +92,7 @@ const ListsOrder = ({ data }: Props) => {
                 <div>
                   <p className="font-medium">IDR {item.totalPrice}</p>
                   <p className="text-xs font-medium text-black/80">
-                    {item.totalQuantity} items -
-                    <span className="font-normal text-red-500">Closed</span>
+                    {item.totalQuantity} items
                   </p>
                 </div>
               </div>
@@ -119,7 +123,10 @@ const ListsOrder = ({ data }: Props) => {
                     >
                       <div className="p-3">
                         <h4 className="text-xl">Rating Food</h4>
-                        <FormRating orderId={item.orderId} token={user.token} />
+                        <FormRating
+                          orderId={item.orderId}
+                          token={session.user.token}
+                        />
                       </div>
                     </ResponsiveDialog>
                   )}
@@ -153,8 +160,7 @@ const ListsOrder = ({ data }: Props) => {
                     <div>
                       <span className="text-sm">IDR {item.totalPrice}</span>
                       <p className="text-xs font-medium text-black/80 xl:text-sm">
-                        {item.totalQuantity} items -
-                        <span className="font-normal text-red-500">Closed</span>
+                        {item.totalQuantity} items
                       </p>
                     </div>
                   </td>

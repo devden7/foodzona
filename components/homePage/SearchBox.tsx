@@ -7,13 +7,19 @@ import InputFormSearch from './InputFormSearch';
 import { ScrollArea } from '../ui/scroll-area';
 import { HiLocationMarker, HiOutlineX } from 'react-icons/hi';
 import Link from 'next/link';
-import { useAuth } from '@/context/AuthContext';
+import { changeLocation } from '@/store/Location/LocationSlice';
+import { useAppDispatch } from '@/hooks/use-redux-hook';
 
-const SearchBox = () => {
+interface Props {
+  location: string;
+}
+
+const SearchBox = ({ location }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isBlur, setIsBlur] = useState(false);
 
-  const { location, changeLocation } = useAuth();
+  const dispatch = useAppDispatch();
+
   const data = [
     { city: 'Jakarta', id: 0 },
     { city: 'Surabaya', id: 1 },
@@ -57,7 +63,7 @@ const SearchBox = () => {
                   className="flex cursor-pointer items-center gap-3 p-5 hover:bg-slate-100"
                   onClick={() => {
                     setIsOpen(false);
-                    changeLocation(item.city);
+                    dispatch(changeLocation(item.city));
                   }}
                 >
                   <HiLocationMarker className="text-slate-900" size={20} />
@@ -78,7 +84,6 @@ const SearchBox = () => {
               <InputFormSearch
                 isBlur={isBlur}
                 city={location}
-                changeLocation={changeLocation}
                 setIsOpen={setIsOpen}
                 setIsBlur={setIsBlur}
               />

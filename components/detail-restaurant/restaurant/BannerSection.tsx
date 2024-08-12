@@ -8,9 +8,10 @@ interface Props {
   isRecommendationFood: IDataFood[] | undefined;
   restaurantName: string | undefined;
 }
+const API_URL = process.env.NEXT_PUBLIC_API;
+
 const BannerSection = ({ isRecommendationFood, restaurantName }: Props) => {
   const isDekstop = useMediaQuery('(min-width: 1024px)');
-  const API_URL = process.env.NEXT_PUBLIC_API;
   return (
     <section className="mb-8 mt-4 lg:mt-3 2xl:mt-1">
       <div className={`${isDekstop ? 'container' : ''}`}>

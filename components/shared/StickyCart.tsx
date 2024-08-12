@@ -7,18 +7,18 @@ import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 import { createOrder } from '@/repositories/orderRepository';
-import { useAuth } from '@/context/AuthContext';
 import { toast } from '../ui/use-toast';
 import { ToastAction } from '../ui/toast';
 import { resetCart } from '@/store/Cart/CartSlice';
+import { useSession } from 'next-auth/react';
 
 const StickyCart = () => {
-  const { isAuth, user } = useAuth();
+  const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
-  const cartItems = useAppSelector((state) => state.items);
-  const totalQuantityCart = useAppSelector((state) => state.totalQuantity);
-  const calcPriceItem = useAppSelector((state) => state.calcPriceItem);
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const totalQuantityCart = useAppSelector((state) => state.cart.totalQuantity);
+  const calcPriceItem = useAppSelector((state) => state.cart.calcPriceItem);
   const dispatch = useAppDispatch();
 
   const submitOrderHandler = async () => {
@@ -27,7 +27,10 @@ const StickyCart = () => {
       calcPriceItem,
       items: cartItems,
     };
-    const response = await createOrder({ token: user.token, ...request });
+    const response = await createOrder({
+      token: session?.user.token,
+      ...request,
+    });
 
     if (response.errors) {
       toast({
@@ -49,7 +52,8 @@ const StickyCart = () => {
   };
 
   const handlerAuthBtn = () => {
-    if (!isAuth) {
+    if (!session) {
+      router.push('/login');
       return toast({
         description: 'Silahkan untuk melakukan login',
         duration: 3000,

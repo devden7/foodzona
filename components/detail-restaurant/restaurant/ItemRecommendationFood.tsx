@@ -1,14 +1,16 @@
 import { Button } from '@/components/ui/button';
 import { IDataFood } from '@/model/foodModel';
 import Image from 'next/image';
+import process from 'process';
 import React from 'react';
 
 interface Props {
   item: IDataFood;
   cartBtnHandler: (value: IDataFood) => void;
 }
+const API_URL = process.env.NEXT_PUBLIC_API;
+
 const ItemRecommendationFood = ({ item, cartBtnHandler }: Props) => {
-  const API_URL = process.env.NEXT_PUBLIC_API;
   return (
     <div>
       <div className="bd:border-slate-100 flex max-w-52 flex-col gap-2 sm:max-w-80 sm:p-2 md:rounded-2xl md:border ">

@@ -1,18 +1,15 @@
 'use client';
-import { useAuth } from '@/context/AuthContext';
 import { calcRating } from '@/lib/utils';
 import { IResponseGetFoods } from '@/model/foodModel';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import { HiStar } from 'react-icons/hi';
 
 interface Props {
   data: IResponseGetFoods | undefined;
+  params: { city: string; id: string };
 }
 
-const Reviews = ({ data }: Props) => {
-  const params = useParams();
-  const { location } = useAuth();
+const Reviews = ({ data, params }: Props) => {
   return (
     <div className="mb-8 mt-16">
       <div className="container">
@@ -26,7 +23,7 @@ const Reviews = ({ data }: Props) => {
             </p>
           </div>
           <Link
-            href={`/${location}/restaurant/${params.id}/reviews`}
+            href={`/${params.city}/restaurant/${params.id}/reviews`}
             className="font-semibold text-green-700 md:text-lg"
           >
             See review

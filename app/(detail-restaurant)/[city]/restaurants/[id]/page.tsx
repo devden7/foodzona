@@ -1,37 +1,28 @@
-'use client';
-
-import { useParams } from 'next/navigation';
 import HeroSection from '@/components/detail-restaurant/restaurants/id/HeroSection';
 import Image from 'next/image';
 import { HiStar } from 'react-icons/hi';
 import { getFoodLists } from '@/repositories/foodRepository';
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { IResponseGetFoods } from '@/model/foodModel';
 import Link from 'next/link';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 
-const Restaurants = () => {
-  const [data, setData] = useState<IResponseGetFoods>();
-  const { location, user } = useAuth();
-  const params = useParams();
-  const API_URL = process.env.NEXT_PUBLIC_API;
-  const getFoodList = async () => {
-    const request = {
-      city: location,
-      category: params.id as string,
-    };
-    const response = await getFoodLists(request);
-    setData(response.data);
+const API_URL = process.env.NEXT_PUBLIC_API;
+
+interface PropsParams {
+  params: {
+    city: string;
+    id: string;
+  };
+}
+const Restaurants = async ({ params }: PropsParams) => {
+  const request = {
+    city: params.city,
+    category: params.id as string,
   };
 
-  useEffect(() => {
-    getFoodList();
-  }, []);
+  const data = await getFoodLists(request);
 
-  const filterData = data?.foods.filter(
-    (item) => item.restaurantName !== user.restaurant
-  );
+  const filterData = data?.data.foods.filter((item) => item);
+
   return (
     <>
       <HeroSection paramsId={params.id as string} />
@@ -49,7 +40,7 @@ const Restaurants = () => {
             )}
             {filterData?.map((item) => (
               <Link
-                href={`/${location}/restaurant/${item.restaurantName.toLowerCase().replace(/ /g, '-')}`}
+                href={`/${params.city}/restaurant/${item.restaurantName.toLowerCase().replace(/ /g, '-')}`}
                 key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 md:last:border-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >

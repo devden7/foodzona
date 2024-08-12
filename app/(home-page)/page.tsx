@@ -7,14 +7,17 @@ import { Button } from '@/components/ui/button';
 import RecommendationMenuSection from '@/components/shared/RecommendationMenuSection';
 import CategoriesMenuSection from '@/components/shared/CategoriesMenuSection';
 import { getFoodLists } from '@/repositories/foodRepository';
-import { useAuth } from '@/context/AuthContext';
 import { IResponseGetFoods } from '@/model/foodModel';
 import FoodListCity from '@/components/homePage/FoodListCitySection';
 import { HeroSection } from '@/components/homePage/HeroSection';
+import { useAppSelector } from '@/hooks/use-redux-hook';
+import { useSession } from 'next-auth/react';
 
 export default function Home() {
   const [data, setData] = useState<IResponseGetFoods>();
-  const { location } = useAuth();
+  const { data: session } = useSession();
+  const location = useAppSelector((state) => state.location.city);
+
   const getFoodList = async () => {
     const request = {
       city: location,
@@ -46,7 +49,7 @@ export default function Home() {
 
   return (
     <>
-      <HeroSection />
+      <HeroSection location={location} />
 
       <section className="relative mb-[75px]">
         <div className="container pt-12 2xl:w-[1200px]">
@@ -68,7 +71,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <FoodListCity data={data} />
+      <FoodListCity data={data} session={session} location={location} />
       <section className="mb-[75px]">
         <div className="container 2xl:w-[1200px]">
           <h2 className="pt-14 text-[21px] font-semibold md:text-center md:text-3xl lg:pt-28">

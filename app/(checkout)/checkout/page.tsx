@@ -8,10 +8,10 @@ import {
   DialogContent,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useAuth } from '@/context/AuthContext';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
 import { IDataFood } from '@/model/foodModel';
 import { addItem, deleteItem } from '@/store/Cart/CartSlice';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -23,16 +23,23 @@ import {
   HiPlusSm,
 } from 'react-icons/hi';
 
+const API_URL = process.env.NEXT_PUBLIC_API;
+
 const Checkout = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [isCart] = useState(true);
-  const { isLoggedIn, isAuth } = useAuth();
-  const cartItems = useAppSelector((state) => state.items);
-  const calcPriceItem = useAppSelector((state) => state.calcPriceItem);
-  const API_URL = process.env.NEXT_PUBLIC_API;
-  const router = useRouter();
-  const { location } = useAuth();
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const calcPriceItem = useAppSelector((state) => state.cart.calcPriceItem);
+  const location = useAppSelector((state) => state.location.city);
   const dispatch = useAppDispatch();
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      router.push('/login');
+    }
+  }, []);
+
   const addBtnItemHandler = (item: IDataFood) => {
     const request = {
       foodId: item.foodId,
@@ -48,25 +55,12 @@ const Checkout = () => {
   const removeBtnItemHandler = (foodId: number) => {
     dispatch(deleteItem(foodId));
   };
-
-  useEffect(() => {
-    isLoggedIn();
-    if (!isAuth) {
-      router.push('/login');
-    } else {
-      setIsLoading(false);
-    }
-  }, [isAuth]);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
   return (
     <>
-      {isAuth ? (
+      {session ? (
         <section className="my-7 mb-10">
           <div className="container">
-            {cartItems.length === 0 && (
+            {cartItems?.length === 0 && (
               <Dialog open={isCart} modal={true}>
                 <DialogContent
                   className="flex flex-col items-start px-8"

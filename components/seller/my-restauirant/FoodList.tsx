@@ -12,6 +12,7 @@ import { HiDotsVertical } from 'react-icons/hi';
 import ResponsiveDialog from '../../shared/ResponsiveDialog';
 import FormFood from './FormFood';
 import { addRecommendationFood } from '@/repositories/restaurantRepository';
+import image from 'next/image';
 interface Props {
   isOpenEdit: boolean;
   token: string;
@@ -24,6 +25,8 @@ interface Props {
   deleteFoodHandler: (id: number) => void;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API;
+
 const FoodList = ({
   isOpenEdit,
   token,
@@ -34,8 +37,6 @@ const FoodList = ({
   updatedNewFood,
   deleteFoodHandler,
 }: Props) => {
-  const API_URL = process.env.NEXT_PUBLIC_API;
-
   const recommendationBtnHandler = async (foodId: number) => {
     const response = await addRecommendationFood(foodId, token);
   };

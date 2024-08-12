@@ -5,7 +5,10 @@ import Image from 'next/image';
 import React from 'react';
 import SearchBox from './SearchBox';
 
-export const HeroSection = () => {
+interface Props {
+  location: string;
+}
+export const HeroSection = ({ location }: Props) => {
   const isTablet = useMediaQuery('(min-width: 768px)');
   return (
     <section className=" mb-[75px] mt-3">
@@ -46,7 +49,7 @@ export const HeroSection = () => {
         </div>
       </div>
       <div className="container">
-        <SearchBox />
+        <SearchBox location={location} />
       </div>
     </section>
   );

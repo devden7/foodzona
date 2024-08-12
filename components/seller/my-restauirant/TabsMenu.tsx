@@ -13,32 +13,24 @@ import { toast } from '@/components/ui/use-toast';
 interface Props {
   token: string;
   dataMenu: IDataFood[];
-  setDataMenu: React.Dispatch<React.SetStateAction<IDataFood[]>>;
 }
-const TabsMenu = ({ token, dataMenu, setDataMenu }: Props) => {
+const TabsMenu = ({ token, dataMenu }: Props) => {
   const [idFood, setIdFood] = useState<number | null>(null);
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   const createNewFood = (data: IDataFood) => {
-    setDataMenu((prev) => [...prev, data]);
     setIsOpenAdd(false);
   };
 
   const updatedNewFood = (items: IDataFood) => {
-    setDataMenu((prev) => {
-      const newData = prev.map((item) =>
-        item.foodId === items.foodId ? { ...item, ...items } : item
-      );
-      return newData;
-    });
     setIsOpenEdit(false);
   };
 
   const deleteFoodHandler = async (foodId: number) => {
+    console.log(foodId, token);
     await deleteFoodRestaurant(foodId, token);
 
-    setDataMenu((prev) => prev.filter((item) => item.foodId !== foodId));
     toast({
       description: 'Berhasil menghapus makanan',
       duration: 3000,

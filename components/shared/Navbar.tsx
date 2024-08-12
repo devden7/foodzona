@@ -2,9 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { HiMenu, HiSearch, HiOutlineX } from 'react-icons/hi';
+import { usePathname } from 'next/navigation';
+import { HiMenu, HiOutlineX } from 'react-icons/hi';
 
 import {
   Drawer,
@@ -14,61 +13,25 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { navbarLists } from '@/constants';
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Button } from '../ui/button';
-import { useAuth } from '@/context/AuthContext';
 import NavbarForm from '../navbar/NavbarForm';
+import UserDropdown from '../navbar/UserDropdown';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
-  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const pathname = usePathname();
-  const [mediumScreen, setMediumScreen] = useState<number | undefined>(
-    undefined
-  );
-  const { isAuth, user, isLoggedIn, logout } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    isLoggedIn();
-  }, [isAuth]);
-
-  const sizeScreenHandler = () => {
-    setMediumScreen(window.innerWidth);
-  };
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      sizeScreenHandler();
-    }
-
-    window.addEventListener('resize', sizeScreenHandler);
-
-    return () => {
-      window.removeEventListener('resize', sizeScreenHandler);
-    };
-  }, []);
-
-  if (typeof mediumScreen === 'undefined') {
-    return null;
-  }
+  const isTab = useMediaQuery('(min-width: 768px)');
+  const session = useSession();
 
   const logoutBtnHandler = () => {
-    logout();
-    router.push('/login');
+    signOut({ callbackUrl: '/' });
   };
 
   return (
     <nav
-      className={`relative  border-b-2 border-slate-100 bg-white ${mediumScreen < 768 && pathname === '/login' ? 'hidden' : ''}`}
+      className={`relative  border-b-2 border-slate-100 bg-white ${!isTab && pathname === '/login' ? 'hidden' : ''}`}
     >
-      <NavbarForm />
+      <NavbarForm session={session.data} />
       <header className="container flex h-12 items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="md:hidden">
@@ -99,7 +62,7 @@ const Navbar = () => {
                 <div className="ml-10 flex flex-col gap-4 text-lg font-semibold text-green-600">
                   <Link href="/">Beranda</Link>
                   <Link href="/recommendations">Rekomendasi</Link>
-                  {!isAuth && pathname !== '/login' && (
+                  {session.data === null && pathname !== '/login' && (
                     <Link href="/login">Masuk/Daftar</Link>
                   )}
                 </div>
@@ -132,58 +95,11 @@ const Navbar = () => {
             );
           })}
         </div>
-        <div className="flex items-center gap-5">
-          <div className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-green-50">
-            <HiSearch color="green" size={25} />
-          </div>
-          {!isAuth && pathname !== '/login' && (
-            <div className="hidden rounded-full bg-green-50 p-2 font-bold text-green-700 md:block">
-              <Link href="/login">Masuk/Daftar</Link>
-            </div>
-          )}
-          <DropdownMenu open={isOpenDropdown} onOpenChange={setIsOpenDropdown}>
-            <DropdownMenuTrigger asChild>
-              {isAuth && (
-                <Button className="flex size-10 items-center justify-center rounded-full bg-red-500 outline-none hover:bg-red-500 focus-visible:ring-0 focus-visible:ring-offset-0">
-                  <span className="font-medium text-white">D</span>
-                </Button>
-              )}
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="absolute right-0 w-56">
-              <div className="mb-3 flex flex-col items-start gap-1 pl-2 pt-2 focus:bg-white">
-                <h4 className="font-semibold">{user.username}</h4>
-                <p className="text-xs text-black/60">{user.name}</p>
-              </div>
-              <DropdownMenuItem>
-                <Link
-                  href="/orders"
-                  className="size-full font-semibold"
-                  onClick={() => setIsOpenDropdown(false)}
-                >
-                  Orders
-                </Link>
-              </DropdownMenuItem>
-              {user.restaurant !== null && (
-                <DropdownMenuItem className="font-semibold">
-                  <Link
-                    href="/my-restaurant"
-                    onClick={() => setIsOpenDropdown(false)}
-                    className="size-full"
-                  >
-                    My Restaurant
-                  </Link>
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={logoutBtnHandler}
-                className="size-full cursor-pointer"
-              >
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <UserDropdown
+          pathname={pathname}
+          logoutBtnHandler={logoutBtnHandler}
+          session={session.data}
+        />
       </header>
     </nav>
   );

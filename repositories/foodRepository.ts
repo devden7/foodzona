@@ -1,3 +1,5 @@
+'use server';
+
 import { IResponse } from '@/model/accountModel';
 import { IReqFoodsListsCategory, IResponseGetFoods } from '@/model/foodModel';
 

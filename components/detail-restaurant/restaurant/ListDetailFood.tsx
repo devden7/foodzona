@@ -12,6 +12,9 @@ interface Props {
   yesBtnCartHandler: (item: IDataFood) => void;
   noBtnCartHandler: () => void;
 }
+
+const API_URL = process.env.NEXT_PUBLIC_API;
+
 const ListDetailFood = ({
   item,
   idFood,
@@ -21,7 +24,6 @@ const ListDetailFood = ({
   yesBtnCartHandler,
   noBtnCartHandler,
 }: Props) => {
-  const API_URL = process.env.NEXT_PUBLIC_API;
   return (
     <>
       {isNotValidCart && item.foodId === idFood && (

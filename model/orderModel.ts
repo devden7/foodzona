@@ -1,7 +1,7 @@
 import { IDataFood } from './foodModel';
 
 export interface IReqOrder {
-  token: string;
+  token: string | undefined;
   items: IDataFood[];
   calcPriceItem: number;
   totalQuantity: number;

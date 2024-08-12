@@ -1,22 +1,24 @@
 'use client';
-import { useAuth } from '@/context/AuthContext';
+
 import { IResponseGetFoods } from '@/model/foodModel';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { HiStar } from 'react-icons/hi';
 import { Button } from '../ui/button';
+import { Session } from 'next-auth';
 
 interface Props {
   data: IResponseGetFoods | undefined;
+  session: Session | null;
+  location: string;
 }
 
-const FoodListCity = ({ data }: Props) => {
-  const API_URL = process.env.NEXT_PUBLIC_API;
-  const { location, user } = useAuth();
+const API_URL = process.env.NEXT_PUBLIC_API;
 
+const FoodListCity = ({ data, session, location }: Props) => {
   const filterData = data?.foods.filter(
-    (item) => item.restaurantName !== user.restaurant
+    (item) => item.restaurantName !== session?.user.restaurant
   );
   return (
     <section className="relative sm:mt-24">

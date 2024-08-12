@@ -19,6 +19,7 @@ import {
   createFood,
   updateFoodRestaurant,
 } from '@/repositories/restaurantRepository';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   type: string;
@@ -34,6 +35,7 @@ const FormFood = ({
   createNewFood,
   updatedNewFood,
 }: Props) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formCreateFoodSchema>>({
     resolver: zodResolver(formCreateFoodSchema),
     defaultValues: {
@@ -87,6 +89,7 @@ const FormFood = ({
     });
 
     form.reset();
+    router.refresh();
   }
 
   const fileRef = form.register('image');

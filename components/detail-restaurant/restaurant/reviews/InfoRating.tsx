@@ -1,25 +1,22 @@
 'use client';
-import { useAuth } from '@/context/AuthContext';
 import { calcRating } from '@/lib/utils';
 import { dataReview } from '@/model/orderModel';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import { HiArrowSmLeft, HiStar } from 'react-icons/hi';
 
 interface Props {
   reviewsList: dataReview[] | undefined;
+  params: { city: string; id: string };
 }
-const InfoRating = ({ reviewsList }: Props) => {
-  const { location } = useAuth();
-  const params = useParams();
 
+const InfoRating = ({ reviewsList, params }: Props) => {
   const reviewNewest = reviewsList?.slice(-5);
   return (
     <section className="mb-8 mt-20 lg:mt-10">
       <div className="sm:container">
         <div className="mb-9 flex items-center gap-3 px-3 lg:px-0">
           <Link
-            href={`/${location?.toLocaleLowerCase()}/restaurant/${params.id}`}
+            href={`/${params.city?.toLocaleLowerCase()}/restaurant/${params.id}`}
           >
             <HiArrowSmLeft size={30} color="green" />
           </Link>

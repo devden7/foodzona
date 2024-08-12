@@ -1,11 +1,9 @@
-'use client';
-
 import RecommendationMenuSection from '@/components/shared/RecommendationMenuSection';
 import CategoriesMenuSection from '@/components/shared/CategoriesMenuSection';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import BannerSection from '@/components/detail-restaurant/restaurants/BannerSection';
 
-const Restaurants = () => {
+const Restaurants = ({ params }: { params: { city: string; id: string } }) => {
   return (
     <>
       <BannerSection />

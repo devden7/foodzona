@@ -1,63 +1,28 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-import { useAuth } from '@/context/AuthContext';
 import TabsMenu from '@/components/seller/my-restauirant/TabsMenu';
 import TabsHistoryOrder from '@/components/seller/my-restauirant/TabsHistoryOrder';
-import {
-  getOrdersRestaurant,
-  deliveryFood,
-  cancelFood,
-} from '@/repositories/orderRepository';
-import { IDataFood } from '@/model/foodModel';
+import { getOrdersRestaurant } from '@/repositories/orderRepository';
 import { getFoodRestaurant } from '@/repositories/restaurantRepository';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
+import { auth } from '@/auth';
 
-const MyRestaurant = () => {
-  const [dataOrderHistory, setDataOrderHistory] = useState<any>();
-  const [dataMenu, setDataMenu] = useState<IDataFood[]>([]);
-  const router = useRouter();
-  const { isAuth, user, isLoggedIn } = useAuth();
+const MyRestaurant = async () => {
+  const session = await auth();
+  if (!session) {
+    return redirect('/login');
+  }
+  const dataOrderHistory = await getOrdersRestaurant(session.user.token);
+  const dataMenu = await getFoodRestaurant(session.user.token);
 
-  const fetchData = async () => {
-    const resultsMenu = await getFoodRestaurant(user.token);
-    setDataMenu(resultsMenu.data.foods);
-    const resultsOrderHistory = await getOrdersRestaurant(user.token);
-    setDataOrderHistory(resultsOrderHistory.data);
-  };
-
-  useEffect(() => {
-    isLoggedIn();
-    if (!isAuth) {
-      router.push('/login');
-    } else if (user.restaurant === null) {
-      router.push('/');
-    } else {
-      if (user.token !== '') {
-        fetchData();
-      }
-    }
-  }, [isAuth, user.restaurant, user.token]);
-
-  const deliveryFoodBtnHandler = async (orderId: number) => {
-    const response = await deliveryFood(user.token, orderId);
-  };
-
-  const cancelFoodBtnHandler = async (orderId: number) => {
-    const response = await cancelFood(user.token, orderId);
-  };
   return (
     <>
-      {isAuth && user.restaurant !== null && (
+      {session && session.user.restaurant !== null && (
         <section className="mb-10 mt-5">
           <BreadCrumbSection
             pageName="seller"
-            restaurantName={user.restaurant}
+            restaurantName={session.user.restaurant}
           />
           <div className="container">
             <Tabs defaultValue="menu">
@@ -69,16 +34,14 @@ const MyRestaurant = () => {
               </div>
               <TabsContent value="menu">
                 <TabsMenu
-                  token={user.token}
-                  dataMenu={dataMenu}
-                  setDataMenu={setDataMenu}
+                  token={session.user.token}
+                  dataMenu={dataMenu.data.foods}
                 />
               </TabsContent>
               <TabsContent value="history-order">
                 <TabsHistoryOrder
-                  data={dataOrderHistory}
-                  deliveryFoodBtnHandler={deliveryFoodBtnHandler}
-                  cancelFoodBtnHandler={cancelFoodBtnHandler}
+                  data={dataOrderHistory.data}
+                  session={session}
                 />
               </TabsContent>
             </Tabs>

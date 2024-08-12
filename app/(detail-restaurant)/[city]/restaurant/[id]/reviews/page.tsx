@@ -1,47 +1,38 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { HiStar } from 'react-icons/hi';
 import { getFoodListsDetail } from '@/repositories/foodRepository';
-import { useParams } from 'next/navigation';
 import { dataReview } from '@/model/orderModel';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import InfoRating from '@/components/detail-restaurant/restaurant/reviews/InfoRating';
 import { convertIsoToDate } from '@/lib/utils';
-const ReviewsUserf = () => {
-  const [reviewsList, setReviewsList] = useState<dataReview[] | undefined>();
-  const [restaurantName, setRestaurantname] = useState<string | undefined>();
-  const params = useParams();
-  const getRestaurantReviews = async () => {
-    const response = await getFoodListsDetail(params.id as string);
-    setReviewsList(response.data.reviews);
-    setRestaurantname(response.data.restaurantName);
-  };
-  useEffect(() => {
-    getRestaurantReviews();
-  }, []);
+const ReviewsUserf = async ({
+  params,
+}: {
+  params: { city: string; id: string };
+}) => {
+  const data = await getFoodListsDetail(params.id);
+
   return (
     <>
       <BreadCrumbSection
         pageName="restaurant"
-        restaurantName={restaurantName}
+        restaurantName={data.data.restaurantName}
       />
-      {reviewsList !== undefined && reviewsList.length === 0 && (
+      {data.data.reviews !== undefined && data.data.reviews.length === 0 && (
         <div className="container flex size-96 items-center justify-center text-xl font-medium">
           <p>Tidak ada order</p>
         </div>
       )}
-      {reviewsList !== undefined && reviewsList.length > 0 && (
-        <InfoRating reviewsList={reviewsList} />
+      {data.data.reviews !== undefined && data.data.reviews.length > 0 && (
+        <InfoRating reviewsList={data.data.reviews} params={params} />
       )}
 
-      {reviewsList !== undefined && reviewsList.length > 0 && (
+      {data.data.reviews !== undefined && data.data.reviews.length > 0 && (
         <section className="mb-8 mt-10 lg:mt-10">
           <div className="px-3 sm:container sm:px-0">
             <h3 className="mb-5 ml-2 text-lg font-semibold">All Reviews</h3>
 
             <div className="flex flex-col gap-5">
-              {reviewsList?.map((review: dataReview) => (
+              {data.data.reviews?.map((review: dataReview) => (
                 <div className="p-2" key={review.reviewId}>
                   <div className="mb-5 flex items-center justify-between">
                     <div className="flex items-center gap-3">

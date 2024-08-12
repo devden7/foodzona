@@ -3,6 +3,8 @@ import { Badge } from '../ui/badge';
 import { HiChevronDown, HiLocationMarker } from 'react-icons/hi';
 import { Input } from '../ui/input';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { useAppDispatch } from '@/hooks/use-redux-hook';
+import { changeLocation } from '@/store/Location/LocationSlice';
 
 const dummyLocation = [
   { city: 'Jakarta', id: 0 },
@@ -24,17 +26,10 @@ interface Props {
   city: string | null | undefined;
   setIsOpen: (value: boolean) => void;
   setIsBlur: (value: boolean) => void;
-  changeLocation?: (city: string) => void;
 }
-const InputFormSearch = ({
-  city,
-  isBlur,
-  setIsOpen,
-  setIsBlur,
-  changeLocation,
-}: Props) => {
+const InputFormSearch = ({ city, isBlur, setIsOpen, setIsBlur }: Props) => {
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-
+  const dispatch = useAppDispatch();
   return (
     <Command>
       <Badge
@@ -64,7 +59,8 @@ const InputFormSearch = ({
                 <CommandItem
                   key={item.id}
                   onSelect={(value) => {
-                    changeLocation?.(value);
+                    console.log(value);
+                    dispatch(changeLocation(value));
                     setIsBlur(false);
                   }}
                 >

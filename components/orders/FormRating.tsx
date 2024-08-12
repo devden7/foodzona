@@ -16,11 +16,13 @@ import { z } from 'zod';
 import { Button } from '../ui/button';
 import { HiStar } from 'react-icons/hi';
 import { reviewFood } from '@/repositories/orderRepository';
+import { useRouter } from 'next/navigation';
 interface Props {
   orderId: number;
   token: string;
 }
 const FormRating = ({ orderId, token }: Props) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof reviewFoodForm>>({
     resolver: zodResolver(reviewFoodForm),
     defaultValues: {
@@ -35,7 +37,8 @@ const FormRating = ({ orderId, token }: Props) => {
   };
 
   async function onSubmit(values: z.infer<typeof reviewFoodForm>) {
-    const response = await reviewFood(values, orderId, token);
+    await reviewFood(values, orderId, token);
+    router.refresh();
   }
   return (
     <Form {...form}>

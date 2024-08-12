@@ -18,6 +18,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { formLoginSchema, formRegisterSchema } from '@/lib/validation';
 
+import { signIn, useSession } from 'next-auth/react';
+
 import {
   Form,
   FormControl,
@@ -34,14 +36,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { registerUser } from '@/repositories/accountRepository';
-import { useAuth } from '@/context/AuthContext';
 
 const Login = () => {
   const [isBtnLogin, setIsBtnLogin] = useState(false);
   const [isBtnRegister, setIsBtnRegister] = useState(false);
   const [isOpenLogin, setIsOpenLogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const { isAuth, login, isLoggedIn } = useAuth();
+  const { data: session } = useSession();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -63,7 +63,13 @@ const Login = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formLoginSchema>) {
-    login(values);
+    const requestLogin = await signIn('credentials', {
+      ...values,
+      callbackUrl: '/',
+      redirect: false,
+    });
+    console.log(requestLogin);
+    // login(values);
     router.push('/');
   }
 
@@ -83,21 +89,14 @@ const Login = () => {
   }
 
   useEffect(() => {
-    isLoggedIn();
-    if (isAuth) {
+    if (session) {
       router.push('/');
-    } else {
-      setIsLoading(false);
     }
-  }, [isAuth]);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  }, [session, router]);
 
   return (
     <>
-      {!isAuth ? (
+      {!session ? (
         <section>
           <div className="absolute right-0 top-12 -z-50 hidden h-screen w-full overflow-hidden md:block">
             <Image

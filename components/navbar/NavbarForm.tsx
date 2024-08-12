@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -16,17 +15,14 @@ import {
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { createRestaurant } from '@/repositories/restaurantRepository';
-import { useAuth } from '@/context/AuthContext';
 import { toast } from '../ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import ResponsiveDialog from '../shared/ResponsiveDialog';
+import { Session } from 'next-auth';
+import { signOut } from 'next-auth/react';
 
-const NavbarForm = () => {
+const NavbarForm = ({ session }: { session: Session | null }) => {
   const [isOpenCreateStore, setIsOpenCreateStore] = useState(false);
-
-  const { isAuth, user, logout } = useAuth();
-
-  const router = useRouter();
   const form = useForm<z.infer<typeof formCreateStoreSchema>>({
     resolver: zodResolver(formCreateStoreSchema),
     defaultValues: {
@@ -39,7 +35,7 @@ const NavbarForm = () => {
     const response = await createRestaurant({
       restaurantName: values.restaurantName,
       city: values.city,
-      token: user.token,
+      token: session?.user.token,
     });
 
     if (response.errors) {
@@ -56,16 +52,12 @@ const NavbarForm = () => {
       duration: 3000,
     });
     setIsOpenCreateStore(false);
-    logout();
-    setTimeout(() => {
-      router.push('/login');
-      // window.location.reload();
-    }, 2000);
+    signOut({ callbackUrl: '/login' });
     form.reset();
   }
   return (
     <>
-      {isAuth && user.restaurant === null && (
+      {session?.user && session?.user.restaurant === null && (
         <div className="container flex items-center justify-between bg-red-500 py-2">
           <span className="text-sm font-medium"> Ingin menjual makanan ?</span>
           <div>
