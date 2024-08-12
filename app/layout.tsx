@@ -6,8 +6,8 @@ import localFont from 'next/font/local';
 import Footer from '@/components/shared/Footer';
 import StickyCart from '@/components/shared/StickyCart';
 import { Toaster } from '@/components/ui/toaster';
-import { AuthContextProvider } from '@/context/AuthContext';
 import Providers from '@/store/Providers';
+import NextAuthProvider from '@/context/NextAuthProvider';
 
 export const metadata: Metadata = {
   title: 'Food Zona',
@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${maisonNeue.variable}`}>
-        <AuthContextProvider>
+        <NextAuthProvider>
           <Providers>
             <Navbar />
             <main>{children}</main>
@@ -47,7 +47,7 @@ export default function RootLayout({
             <Footer />
             <StickyCart />
           </Providers>
-        </AuthContextProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );
