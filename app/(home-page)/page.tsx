@@ -6,12 +6,12 @@ import { valueList } from '@/constants';
 import { Button } from '@/components/ui/button';
 import RecommendationMenuSection from '@/components/shared/RecommendationMenuSection';
 import CategoriesMenuSection from '@/components/shared/CategoriesMenuSection';
-import { getFoodLists } from '@/repositories/foodRepository';
 import { IResponseGetFoods } from '@/model/foodModel';
 import FoodListCity from '@/components/homePage/FoodListCitySection';
 import { HeroSection } from '@/components/homePage/HeroSection';
 import { useAppSelector } from '@/hooks/use-redux-hook';
 import { useSession } from 'next-auth/react';
+import { getFoodLists } from '@/repositories/FoodsRepository';
 
 export default function Home() {
   const [data, setData] = useState<IResponseGetFoods>();

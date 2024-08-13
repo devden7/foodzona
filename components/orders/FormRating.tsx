@@ -17,11 +17,14 @@ import { Button } from '../ui/button';
 import { HiStar } from 'react-icons/hi';
 import { reviewFood } from '@/repositories/orderRepository';
 import { useRouter } from 'next/navigation';
+import { toast } from '../ui/use-toast';
+import { ToastAction } from '../ui/toast';
 interface Props {
   orderId: number;
   token: string;
+  setIsRatingBtn: (value: boolean) => void;
 }
-const FormRating = ({ orderId, token }: Props) => {
+const FormRating = ({ orderId, token, setIsRatingBtn }: Props) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof reviewFoodForm>>({
     resolver: zodResolver(reviewFoodForm),
@@ -37,8 +40,22 @@ const FormRating = ({ orderId, token }: Props) => {
   };
 
   async function onSubmit(values: z.infer<typeof reviewFoodForm>) {
-    await reviewFood(values, orderId, token);
+    const response = await reviewFood(values, orderId, token);
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
     router.refresh();
+
+    toast({
+      description: 'Rating berhasil dikirimkan',
+      duration: 3000,
+    });
+    setIsRatingBtn(false);
   }
   return (
     <Form {...form}>

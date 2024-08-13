@@ -1,9 +1,9 @@
 import { HiStar } from 'react-icons/hi';
-import { getFoodListsDetail } from '@/repositories/foodRepository';
 import { dataReview } from '@/model/orderModel';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import InfoRating from '@/components/detail-restaurant/restaurant/reviews/InfoRating';
 import { convertIsoToDate } from '@/lib/utils';
+import { getFoodListsDetail } from '@/repositories/FoodsRepository';
 const ReviewsUserf = async ({
   params,
 }: {
@@ -19,7 +19,7 @@ const ReviewsUserf = async ({
       />
       {data.data.reviews !== undefined && data.data.reviews.length === 0 && (
         <div className="container flex size-96 items-center justify-center text-xl font-medium">
-          <p>Tidak ada order</p>
+          <p>Tidak ada Review</p>
         </div>
       )}
       {data.data.reviews !== undefined && data.data.reviews.length > 0 && (

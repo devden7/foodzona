@@ -68,7 +68,14 @@ const Login = () => {
       callbackUrl: '/',
       redirect: false,
     });
-    // login(values);
+    if (requestLogin?.error) {
+      return toast({
+        variant: 'destructive',
+        title: 'Username or password is invalid',
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
     router.push('/');
   }
 
@@ -193,7 +200,10 @@ const Login = () => {
                       <HiArrowSmLeft
                         size={25}
                         color="green"
-                        onClick={() => setIsBtnLogin(false)}
+                        onClick={() => {
+                          setIsBtnLogin(false);
+                          form.reset();
+                        }}
                         className="cursor-pointer"
                       />
                       <div className="flex items-center gap-3">

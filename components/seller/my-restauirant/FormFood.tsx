@@ -20,13 +20,14 @@ import {
   updateFoodRestaurant,
 } from '@/repositories/restaurantRepository';
 import { useRouter } from 'next/navigation';
+import { ToastAction } from '@/components/ui/toast';
 
 interface Props {
   type: string;
   token: string;
   data?: IDataFood;
-  createNewFood?: (data: IDataFood) => void;
-  updatedNewFood?: (data: IDataFood) => void;
+  createNewFood?: () => void;
+  updatedNewFood?: () => void;
 }
 const FormFood = ({
   type,
@@ -58,7 +59,19 @@ const FormFood = ({
       token,
       ...values,
     });
-    createNewFood?.(response.data.foods);
+
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
+
+    if (createNewFood) {
+      createNewFood();
+    }
   };
 
   const editFoodHanlder = async (values: {
@@ -73,7 +86,17 @@ const FormFood = ({
       foodId: data?.foodId,
       ...values,
     });
-    updatedNewFood?.(response.data.foods);
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
+    if (updatedNewFood) {
+      updatedNewFood();
+    }
   };
 
   async function onSubmit(values: z.infer<typeof formCreateFoodSchema>) {
@@ -84,7 +107,10 @@ const FormFood = ({
     }
 
     toast({
-      description: 'Berhasil mempublish makanan',
+      description:
+        type !== 'Edit'
+          ? 'Berhasil membuat makanan'
+          : 'Berhasil mengubah makanan',
       duration: 3000,
     });
 

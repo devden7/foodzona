@@ -41,7 +41,7 @@ const StickyCart = () => {
       });
       return setTimeout(() => dispatch(resetCart()), 500);
     }
-
+    router.refresh();
     toast({
       description: 'Order berhasil',
       duration: 3000,

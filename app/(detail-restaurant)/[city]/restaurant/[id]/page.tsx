@@ -1,8 +1,8 @@
-import { getFoodListsDetail } from '@/repositories/foodRepository';
 import BannerSection from '@/components/detail-restaurant/restaurant/BannerSection';
 import Reviews from '@/components/detail-restaurant/restaurant/Reviews';
 import ListFoodSection from '@/components/detail-restaurant/restaurant/ListFoodSection';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
+import { getFoodListsDetail } from '@/repositories/FoodsRepository';
 
 interface PropsParams {
   params: {
@@ -32,7 +32,7 @@ const DetailRestaurant = async ({ params }: PropsParams) => {
       <Reviews data={data.data} params={params} />
 
       <ListFoodSection
-        data={data.data}
+        dataItems={data.data}
         isRecommendationFood={isRecommendationFood}
       />
     </>

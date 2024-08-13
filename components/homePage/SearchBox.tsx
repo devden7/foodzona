@@ -9,6 +9,7 @@ import { HiLocationMarker, HiOutlineX } from 'react-icons/hi';
 import Link from 'next/link';
 import { changeLocation } from '@/store/Location/LocationSlice';
 import { useAppDispatch } from '@/hooks/use-redux-hook';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   location: string;
@@ -17,6 +18,8 @@ interface Props {
 const SearchBox = ({ location }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isBlur, setIsBlur] = useState(false);
+
+  const { data: session } = useSession();
 
   const dispatch = useAppDispatch();
 
@@ -74,7 +77,9 @@ const SearchBox = ({ location }: Props) => {
           </ScrollArea>
         </div>
       </ResponsiveDialog>
-      <div className="absolute left-1/2 top-[400px] z-50 w-[370px] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-3 shadow-md md:top-[480px] md:flex md:w-[400px] md:items-end md:justify-center md:gap-3  md:p-3 lg:top-[500px] lg:w-[500px] lg:py-7">
+      <div
+        className={`absolute left-1/2 ${session?.user.restaurant === null ? 'top-[450px] md:top-[530px]  lg:top-[550px]' : 'top-[400px] md:top-[480px]  lg:top-[500px]'} z-50 w-[370px] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-3 shadow-md  md:flex md:w-[400px] md:items-end md:justify-center md:gap-3  md:p-3 lg:w-[500px] lg:py-7`}
+      >
         <div>
           <p className="mb-3 text-sm text-slate-900 md:mt-2 md:text-base md:font-semibold">
             Lokasimu

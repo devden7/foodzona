@@ -5,6 +5,7 @@ import { Input } from '../ui/input';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { useAppDispatch } from '@/hooks/use-redux-hook';
 import { changeLocation } from '@/store/Location/LocationSlice';
+import { useEffect, useRef } from 'react';
 
 const dummyLocation = [
   { city: 'Jakarta', id: 0 },
@@ -30,8 +31,30 @@ interface Props {
 const InputFormSearch = ({ city, isBlur, setIsOpen, setIsBlur }: Props) => {
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const dispatch = useAppDispatch();
+  const searchInputRef = useRef(null);
+  const searchBoxRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchInputRef.current &&
+        searchBoxRef.current &&
+        !searchInputRef.current.contains(event.target) &&
+        !searchBoxRef.current.contains(event.target)
+      ) {
+        setIsBlur(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setIsBlur]);
+
+  useEffect(() => {});
   return (
-    <Command>
+    <Command ref={searchBoxRef}>
       <Badge
         variant="outline"
         className="mb-3 flex items-center justify-between lg:w-80"
@@ -39,6 +62,7 @@ const InputFormSearch = ({ city, isBlur, setIsOpen, setIsBlur }: Props) => {
         <div className="flex w-full items-center gap-2">
           <HiLocationMarker color="red" size={20} />
           <Input
+            ref={searchInputRef}
             type="text"
             placeholder="Ketik lokasimu"
             className=" rounded-full border-none border-slate-300 bg-transparent pl-3 placeholder:text-base placeholder:text-slate-800 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 lg:text-lg lg:placeholder:text-lg"
@@ -53,7 +77,11 @@ const InputFormSearch = ({ city, isBlur, setIsOpen, setIsBlur }: Props) => {
       </Badge>
       <CommandList className={`${isDesktop ? 'absolute top-14 size-80' : ''}`}>
         {isDesktop && isBlur && (
-          <CommandGroup heading="City" className="bg-white">
+          <CommandGroup
+            heading="City"
+            className="bg-white"
+            onBlur={() => setIsBlur(false)}
+          >
             {dummyLocation.map((item: any) => {
               return (
                 <CommandItem

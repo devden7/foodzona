@@ -1,9 +1,9 @@
 import HeroSection from '@/components/detail-restaurant/restaurants/id/HeroSection';
 import Image from 'next/image';
 import { HiStar } from 'react-icons/hi';
-import { getFoodLists } from '@/repositories/foodRepository';
 import Link from 'next/link';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
+import { getFoodLists } from '@/repositories/FoodsRepository';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -20,7 +20,6 @@ const Restaurants = async ({ params }: PropsParams) => {
   };
 
   const data = await getFoodLists(request);
-
   const filterData = data?.data.foods.filter((item) => item);
 
   return (

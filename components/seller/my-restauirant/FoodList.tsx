@@ -12,7 +12,9 @@ import { HiDotsVertical } from 'react-icons/hi';
 import ResponsiveDialog from '../../shared/ResponsiveDialog';
 import FormFood from './FormFood';
 import { addRecommendationFood } from '@/repositories/restaurantRepository';
-import image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { ToastAction } from '@/components/ui/toast';
+import { toast } from '@/components/ui/use-toast';
 interface Props {
   isOpenEdit: boolean;
   token: string;
@@ -20,7 +22,7 @@ interface Props {
   idFood: number | null;
 
   setIsOpenEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  updatedNewFood: (value: IDataFood) => void;
+  updatedNewFood: () => void;
   editBtnHandler: (id: number | null) => void;
   deleteFoodHandler: (id: number) => void;
 }
@@ -37,8 +39,23 @@ const FoodList = ({
   updatedNewFood,
   deleteFoodHandler,
 }: Props) => {
+  const router = useRouter();
   const recommendationBtnHandler = async (foodId: number) => {
     const response = await addRecommendationFood(foodId, token);
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
+    router.refresh();
+
+    toast({
+      description: 'Berhasil merekomendasikan makanan',
+      duration: 3000,
+    });
   };
   return (
     <div className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 md:last:border-b-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2">
@@ -96,7 +113,9 @@ const FoodList = ({
             {!item.isRecommendation && (
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => recommendationBtnHandler(item.foodId)}
+                onClick={() => {
+                  recommendationBtnHandler(item.foodId);
+                }}
               >
                 Rekomendasikan Makanan
               </DropdownMenuItem>

@@ -11,7 +11,6 @@ const OrdersPage = async () => {
     return redirect('/login');
   }
   const data = await getOrdersUser(session?.user.token);
-
   return (
     <>
       {session ? (

@@ -68,7 +68,10 @@ const FoodListCity = ({ data, session, location }: Props) => {
           ))}
         </div>
         <Button className="absolute left-1/2 w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5 xl:w-[15%]">
-          <Link href="/bandung/restaurants/near_me" className="size-full">
+          <Link
+            href={`/${location.toLocaleLowerCase()}/restaurants/near_me`}
+            className="size-full"
+          >
             Tampilkan semua resto
           </Link>
         </Button>

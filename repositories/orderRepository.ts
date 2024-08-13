@@ -1,4 +1,4 @@
-import { IResMessage } from '@/model/accountModel';
+import { IResMessage, IResponse } from '@/model/accountModel';
 import { IRatingReq, IReqOrder } from '@/model/orderModel';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
@@ -66,7 +66,7 @@ export const reviewFood = async (
   request: IRatingReq,
   orderId: number,
   token: string
-): Promise<IResMessage> => {
+): Promise<IResponse<IResMessage>> => {
   const response = await fetch(`${API_URL}api/review/${orderId}`, {
     method: 'POST',
     headers: {

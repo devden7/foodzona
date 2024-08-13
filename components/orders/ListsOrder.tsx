@@ -27,6 +27,11 @@ const ListsOrder = ({ data, session }: Props) => {
   };
   return (
     <>
+      {data.length === 0 && (
+        <div className="container flex size-96 items-center justify-center text-xl font-medium">
+          <p>Tidak ada Order</p>
+        </div>
+      )}
       {!isTab && (
         <div className="flex flex-col gap-3">
           {data.map((item: Order) => (
@@ -42,12 +47,13 @@ const ListsOrder = ({ data, session }: Props) => {
                     <FormRating
                       orderId={item.orderId}
                       token={session.user.token}
+                      setIsRatingBtn={setIsRatingBtn}
                     />
                   </div>
                 </ResponsiveDialog>
               )}
               <div className="relative rounded-t-2xl border border-b-0 border-gray-200 px-2 py-4 ">
-                {item.status === 'Berhasil' && (
+                {item.status === 'Berhasil' && !item.review && (
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
                       <div className="absolute right-[5%] top-[10%] z-50 flex cursor-pointer items-center gap-1 rounded-lg  p-1 text-sm font-medium text-black">
@@ -101,7 +107,7 @@ const ListsOrder = ({ data, session }: Props) => {
         </div>
       )}
 
-      {isTab && (
+      {isTab && data.length !== 0 && (
         <div className="table w-full">
           <table className="w-full border-separate border-spacing-y-5">
             <thead>
@@ -126,6 +132,7 @@ const ListsOrder = ({ data, session }: Props) => {
                         <FormRating
                           orderId={item.orderId}
                           token={session.user.token}
+                          setIsRatingBtn={setIsRatingBtn}
                         />
                       </div>
                     </ResponsiveDialog>
@@ -166,7 +173,7 @@ const ListsOrder = ({ data, session }: Props) => {
                   </td>
                   <td className="rounded-r-2xl border-y-[1.5px] border-r-[1.5px] px-3 py-5">
                     <div className="w-3">
-                      {item.status === 'Berhasil' && (
+                      {item.status === 'Berhasil' && !item.review && (
                         <DropdownMenu modal={false}>
                           <DropdownMenuTrigger asChild>
                             <div className=" z-50 flex cursor-pointer items-center">

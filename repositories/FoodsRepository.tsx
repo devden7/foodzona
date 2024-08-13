@@ -1,5 +1,3 @@
-'use server';
-
 import { IResponse } from '@/model/accountModel';
 import { IReqFoodsListsCategory, IResponseGetFoods } from '@/model/foodModel';
 
@@ -22,7 +20,9 @@ export const getFoodLists = async (
 export const getFoodListsDetail = async (
   restaurantName: string
 ): Promise<IResponse<IResponseGetFoods>> => {
-  const response = await fetch(`${API_URL}api/foods/${restaurantName}`);
+  const response = await fetch(`${API_URL}api/foods/${restaurantName}`, {
+    cache: 'no-store',
+  });
   const data = await response.json();
   return data;
 };

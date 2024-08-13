@@ -1,5 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { ToastAction } from '@/components/ui/toast';
+import { toast } from '@/components/ui/use-toast';
 import { Order } from '@/model/orderModel';
 import { cancelFood, deliveryFood } from '@/repositories/orderRepository';
 import { Session } from 'next-auth';
@@ -13,13 +15,38 @@ interface Props {
 const TabsHistoryOrder = ({ data, session }: Props) => {
   const router = useRouter();
   const deliveryFoodBtnHandler = async (orderId: number) => {
-    await deliveryFood(session.user.token, orderId);
+    const response = await deliveryFood(session.user.token, orderId);
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
     router.refresh();
+
+    toast({
+      description: 'Berhasil mengirim makanan',
+      duration: 3000,
+    });
   };
 
   const cancelFoodBtnHandler = async (orderId: number) => {
-    await cancelFood(session.user.token, orderId);
+    const response = await cancelFood(session.user.token, orderId);
+    if (response.errors) {
+      return toast({
+        variant: 'destructive',
+        title: response.errors,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        duration: 3000,
+      });
+    }
     router.refresh();
+    toast({
+      description: 'Makanan dibatalkan',
+      duration: 3000,
+    });
   };
   return (
     <>
