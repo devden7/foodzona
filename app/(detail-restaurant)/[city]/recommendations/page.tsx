@@ -1,50 +1,42 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { HiStar } from 'react-icons/hi';
-
-import { recommendationsLists } from '@/constants';
 import { Button } from '@/components/ui/button';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
+import { getFoodLists } from '@/repositories/FoodsRepository';
+import Link from 'next/link';
+import { auth } from '@/auth';
 
-const Recommendations = () => {
-  const [searchLocation, setSearchLocation] = useState('');
-  const [mediumScreen, setMediumScreen] = useState<number | undefined>(
-    undefined
+const API_URL = process.env.NEXT_PUBLIC_API;
+
+const Recommendations = async ({ params }: { params: { city: string } }) => {
+  const session = await auth();
+  const dataTerdekatList = await getFoodLists({
+    city: params.city,
+    category: 'near_me',
+    limit: 4,
+  });
+
+  const dataTerlarisList = await getFoodLists({
+    city: params.city,
+    category: 'best_seller',
+    limit: 4,
+  });
+
+  const dataTerfavoritList = await getFoodLists({
+    city: params.city,
+    category: 'most_loved',
+    limit: 4,
+  });
+  const filterDataTerdekat = dataTerdekatList.data.foods.filter(
+    (item) => item.restaurantName !== session?.user.restaurant
   );
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handlerSearchLocationDrawer = (value: any) => {
-    setSearchLocation(value.city);
-  };
-
-  const sizeScreenHandler = () => {
-    setMediumScreen(window.innerWidth);
-  };
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      sizeScreenHandler();
-    }
-
-    window.addEventListener('resize', sizeScreenHandler);
-
-    return () => {
-      window.removeEventListener('resize', sizeScreenHandler);
-    };
-  }, []);
-
-  if (typeof mediumScreen === 'undefined') {
-    return null;
-  }
-
-  const categoryRestourant = recommendationsLists.map((item: any) =>
-    item.category.map((category: any) => category.categories).join(', ')
+  const filterDataTerlaris = dataTerlarisList.data.foods.filter(
+    (item) => item.restaurantName !== session?.user.restaurant
   );
-
+  const filterDataTerfavorit = dataTerfavoritList.data.foods.filter(
+    (item) => item.restaurantName !== session?.user.restaurant
+  );
   return (
     <>
       <section className="mb-8 mt-16 lg:mt-3 2xl:mt-1">
@@ -57,7 +49,7 @@ const Recommendations = () => {
           >
             <Image
               className="object-cover"
-              src={`${mediumScreen >= 768 ? '/assets/recommendations-desktop-illustration.jpg' : '/assets/recommendations-mobile-illustration.jpg'}`}
+              src="/assets/recommendations-desktop-illustration.jpg"
               alt="image hero"
               fill
               quality={100}
@@ -100,33 +92,37 @@ const Recommendations = () => {
               Terdekat
             </h2>
           </div>
-
-          <div className="mb-10 flex flex-wrap items-center justify-center gap-4 2xl:justify-between">
-            {recommendationsLists.map((item, index) => (
+          {filterDataTerdekat.length === 0 && (
+            <div className="container flex size-96 items-center justify-center text-lg font-medium">
+              <p>Tidak ada makanan tersedia dikotamu</p>
+            </div>
+          )}
+          <div className="mb-10 flex flex-wrap gap-4 ">
+            {filterDataTerdekat.map((item) => (
               <div
-                key={item.id}
+                key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
                 <div className="relative h-40 w-48 overflow-hidden rounded-xl bg-purple-500 md:w-56 lg:h-[600px] lg:w-full">
                   <Image
-                    src={item.imageUrl}
-                    alt={item.label}
+                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                    alt={item.name}
                     fill
                     objectFit="cover"
                     quality={100}
                   />
                   <div className="absolute left-1/2 top-[85%] z-50 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-medium text-black lg:left-[80%] lg:top-[90%]">
                     <HiStar color="orange" size={20} />
-                    <p>{item.rating.toFixed(1)}</p>
+                    <p>{item.rating === null ? 0 : item.rating}</p>
                   </div>
                 </div>
                 <div className="size-full">
                   <h3 className="mb-3 line-clamp-2 font-semibold">
-                    {item.label}
+                    {item.name}
                   </h3>
                   <div className="flex max-h-96 flex-wrap gap-2">
                     <p className="line-clamp-2 text-xs text-black/70 lg:line-clamp-1 lg:text-sm">
-                      {categoryRestourant[index]}
+                      {item.category[0]}
                     </p>
                   </div>
                 </div>
@@ -135,7 +131,12 @@ const Recommendations = () => {
           </div>
           <div className="flex justify-center">
             <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
-              Tampilkan semua resto
+              <Link
+                href={`/${params.city.toLocaleLowerCase()}/restaurants/near_me`}
+                className="size-full"
+              >
+                Tampilkan semua resto
+              </Link>
             </Button>
           </div>
         </div>
@@ -156,33 +157,37 @@ const Recommendations = () => {
               Terlaris
             </h2>
           </div>
-
-          <div className="mb-10 flex flex-wrap items-center justify-center gap-4 2xl:justify-between">
-            {recommendationsLists.map((item, index) => (
+          {filterDataTerlaris.length === 0 && (
+            <div className="container flex size-96 items-center justify-center text-lg font-medium">
+              <p>Tidak ada makanan tersedia dikotamu</p>
+            </div>
+          )}
+          <div className="mb-10 flex flex-wrap gap-4">
+            {filterDataTerlaris.map((item) => (
               <div
-                key={item.id}
+                key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
                 <div className="relative h-40 w-48 overflow-hidden rounded-xl bg-purple-500 md:w-56 lg:h-[600px] lg:w-full">
                   <Image
-                    src={item.imageUrl}
-                    alt={item.label}
+                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                    alt={item.name}
                     fill
                     objectFit="cover"
                     quality={100}
                   />
                   <div className="absolute left-1/2 top-[85%] z-50 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-medium text-black lg:left-[80%] lg:top-[90%]">
                     <HiStar color="orange" size={20} />
-                    <p>{item.rating.toFixed(1)}</p>
+                    <p>{item.rating === null ? 0 : item.rating}</p>
                   </div>
                 </div>
                 <div className="size-full">
                   <h3 className="mb-3 line-clamp-2 font-semibold">
-                    {item.label}
+                    {item.name}
                   </h3>
                   <div className="flex max-h-96 flex-wrap gap-2">
                     <p className="line-clamp-2 text-xs text-black/70 lg:line-clamp-1 lg:text-sm">
-                      {categoryRestourant[index]}
+                      {item.category[0]}
                     </p>
                   </div>
                 </div>
@@ -191,7 +196,12 @@ const Recommendations = () => {
           </div>
           <div className="flex justify-center">
             <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
-              Tampilkan semua resto
+              <Link
+                href={`/${params.city.toLocaleLowerCase()}/restaurants/best_seller`}
+                className="size-full"
+              >
+                Tampilkan semua resto
+              </Link>
             </Button>
           </div>
         </div>
@@ -214,32 +224,37 @@ const Recommendations = () => {
             </h2>
           </div>
 
-          <div className="mb-10 flex flex-wrap items-center justify-center gap-4 2xl:justify-between">
-            {recommendationsLists.map((item, index) => (
+          {filterDataTerfavorit.length === 0 && (
+            <div className="container flex size-96 items-center justify-center text-lg font-medium">
+              <p>Tidak ada makanan tersedia dikotamu</p>
+            </div>
+          )}
+          <div className="mb-10 flex flex-wrap gap-4">
+            {filterDataTerfavorit.map((item) => (
               <div
-                key={item.id}
+                key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
                 <div className="relative h-40 w-48 overflow-hidden rounded-xl bg-purple-500 md:w-56 lg:h-[600px] lg:w-full">
                   <Image
-                    src={item.imageUrl}
-                    alt={item.label}
+                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                    alt={item.name}
                     fill
                     objectFit="cover"
                     quality={100}
                   />
                   <div className="absolute left-1/2 top-[85%] z-50 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-medium text-black lg:left-[80%] lg:top-[90%]">
                     <HiStar color="orange" size={20} />
-                    <p>{item.rating.toFixed(1)}</p>
+                    <p>{item.rating === null ? 0 : item.rating}</p>
                   </div>
                 </div>
                 <div className="size-full">
                   <h3 className="mb-3 line-clamp-2 font-semibold">
-                    {item.label}
+                    {item.name}
                   </h3>
                   <div className="flex max-h-96 flex-wrap gap-2">
                     <p className="line-clamp-2 text-xs text-black/70 lg:line-clamp-1 lg:text-sm">
-                      {categoryRestourant[index]}
+                      {item.category[0]}
                     </p>
                   </div>
                 </div>
@@ -248,7 +263,12 @@ const Recommendations = () => {
           </div>
           <div className="flex justify-center">
             <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
-              Tampilkan semua resto
+              <Link
+                href={`/${params.city.toLocaleLowerCase()}/restaurants/most_loved`}
+                className="size-full"
+              >
+                Tampilkan semua resto
+              </Link>
             </Button>
           </div>
         </div>

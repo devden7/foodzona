@@ -17,9 +17,11 @@ import NavbarForm from '../navbar/NavbarForm';
 import UserDropdown from '../navbar/UserDropdown';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { signOut, useSession } from 'next-auth/react';
+import { useAppSelector } from '@/hooks/use-redux-hook';
 
 const Navbar = () => {
   const pathname = usePathname();
+  const location = useAppSelector((state) => state.location.city);
   const isTab = useMediaQuery('(min-width: 768px)');
   const { data: session, update } = useSession();
 
@@ -61,7 +63,7 @@ const Navbar = () => {
                 </DrawerHeader>
                 <div className="ml-10 flex flex-col gap-4 text-lg font-semibold text-green-600">
                   <Link href="/">Beranda</Link>
-                  <Link href="/recommendations">Rekomendasi</Link>
+                  <Link href={`/${location}/recommendations`}>Rekomendasi</Link>
                   {!session && pathname !== '/login' && (
                     <Link href="/login">Masuk/Daftar</Link>
                   )}
@@ -83,10 +85,12 @@ const Navbar = () => {
             </Link>
           </div>
           {navbarLists.map((list) => {
-            const isActive = pathname === list.route;
+            const itemUrl =
+              list.route === '/' ? '/' : '/' + location + '/recommendations';
+            const isActive = pathname === itemUrl;
             return (
               <Link
-                href={list.route}
+                href={itemUrl}
                 className={`hidden md:block ${isActive ? 'border-b-4 border-red-500 px-7 py-[10px] font-bold text-slate-700' : 'font-semibold text-slate-600'}`}
                 key={list.label}
               >
