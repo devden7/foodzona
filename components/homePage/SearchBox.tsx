@@ -35,7 +35,11 @@ const SearchBox = ({ location, dataCity }: Props) => {
         <div className="flex h-[700px] flex-col items-start md:h-[500px]">
           <div className="my-3 flex w-full justify-between">
             <h3 className="px-5 text-lg font-medium">Pilih lokasimu</h3>
-            <HiOutlineX size={25} />
+            <HiOutlineX
+              size={25}
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer"
+            />
           </div>
           <div className=" mb-0 mt-3 flex w-full items-center justify-between gap-2 px-5">
             <InputFormSearch

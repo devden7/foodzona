@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import { getFoodLists } from '@/repositories/FoodsRepository';
 import { IResCityList } from '@/model/restaurantModel';
 import { getCityLists } from '@/repositories/restaurantRepository';
+import Link from 'next/link';
 
 export default function Home() {
   const [data, setData] = useState<IResponseGetFoods>();
@@ -51,7 +52,7 @@ export default function Home() {
             Belom ada ide? Mulai dari sini aja dulu
           </h2>
           <div className="mt-7">
-            <RecommendationMenuSection />
+            <RecommendationMenuSection location={location} type="homepage" />
           </div>
         </div>
       </section>
@@ -61,7 +62,7 @@ export default function Home() {
             Aneka kuliner menarik
           </h2>
           <div className="mb-12 mt-7">
-            <CategoriesMenuSection />
+            <CategoriesMenuSection type="homepage" location={location} />
           </div>
         </div>
       </section>
@@ -115,15 +116,13 @@ export default function Home() {
                   className="scale-105 transition-transform sm:scale-110"
                 >
                   <Button className="line-clamp-1 max-w-28 rounded-full border-2 border-slate-100 bg-transparent text-start font-bold text-green-700 hover:bg-slate-100">
-                    {item.city_name}
+                    <Link href={location + '/restaurants'}>
+                      {item.city_name}
+                    </Link>
                   </Button>
                 </div>
               ))}
             </div>
-
-            <Button className="absolute left-1/2 w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 md:w-1/4 lg:w-1/5 xl:w-[15%]">
-              Tampilkan semua Kota
-            </Button>
           </div>
         </div>
       </section>

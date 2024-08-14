@@ -83,7 +83,7 @@ const BreadCrumbSection = ({ pageName, restaurantName }: Props) => {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink
-              className="hover:text-green-700"
+              className="capitalize hover:text-green-700"
               href={`/${location?.toLocaleLowerCase()}`}
             >
               {location}
@@ -111,9 +111,12 @@ const BreadCrumbSection = ({ pageName, restaurantName }: Props) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="hover:text-green-700 ">
+              <BreadcrumbLink
+                className="capitalize hover:text-green-700"
+                href={`/${location}/restaurants`}
+              >
                 {location}
-              </BreadcrumbPage>
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

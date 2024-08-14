@@ -7,12 +7,16 @@ import { typeFoodLists } from '@/constants';
 import { Button } from '../ui/button';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
-const CategoriesMenuSection = () => {
+interface Props {
+  type: string;
+  location: string;
+}
+const CategoriesMenuSection = ({ location, type }: Props) => {
   const [isMoreBtn, setIsMoreBtn] = useState(false);
   const isMobile = useMediaQuery('(min-width: 640px)');
   const isTab = useMediaQuery('(min-width: 768px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-
+  const linkToCategory = type !== 'restaurants' ? location + '/' : '';
   const listFoodByScreen = isDesktop ? 5 : isTab ? 7 : isMobile ? 8 : 17;
   return (
     <>
@@ -20,7 +24,7 @@ const CategoriesMenuSection = () => {
         className={`relative grid grid-cols-3 gap-x-5 gap-y-8 overflow-hidden md:grid-cols-4 lg:grid-cols-6`}
       >
         {typeFoodLists.map((item, index) => (
-          <Link href={item.href} key={item.id}>
+          <Link href={linkToCategory + item.href} key={item.id}>
             <div
               className={`flex aspect-square cursor-pointer flex-col items-center justify-center text-sm font-semibold  transition-all duration-100 md:rounded-2xl md:border-2 md:border-slate-100 md:p-5 hover:md:bg-white hover:md:shadow-md ${index > listFoodByScreen && !isMoreBtn ? 'invisible absolute h-0 opacity-0' : 'visible opacity-100 '}`}
             >

@@ -1,12 +1,18 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { categoriesLists } from '@/constants';
-const RecommendationMenuSection = () => {
+
+interface Props {
+  location: string;
+  type: string;
+}
+const RecommendationMenuSection = ({ location, type }: Props) => {
+  const linkToCategory = type !== 'restaurants' ? location + '/' : '';
   return (
-    <div className="grid grid-cols-3 gap-x-5 gap-y-12 md:grid-cols-4 lg:grid-cols-6">
+    <div className="grid grid-cols-3 justify-start gap-3 md:max-w-[600px]">
       {categoriesLists.map((item) => (
-        <Link href={item.href} key={item.id}>
-          <div className="flex aspect-square cursor-pointer flex-col items-center justify-center  text-sm font-semibold md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md">
+        <Link href={linkToCategory + item.href} key={item.id}>
+          <div className="flex aspect-square cursor-pointer flex-col items-center justify-center text-sm  font-semibold md:max-w-40 md:rounded-2xl md:border-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md">
             <div className="relative size-full items-center justify-center rounded-2xl border-2  border-slate-100 transition active:bg-slate-50 md:size-1/2 md:border-0 md:transition md:duration-500 lg:size-[70%]">
               <Image
                 src={item.imageUrl}

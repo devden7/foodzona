@@ -1,33 +1,11 @@
 import HeroBanner from '@/components/shared/HeroBanner';
+import { listsParamsId } from '@/constants';
 import { notFound } from 'next/navigation';
 
 interface Props {
   paramsId: string;
 }
 const HeroSection = ({ paramsId }: Props) => {
-  const listsParamsId = [
-    'near_me',
-    'best_seller',
-    'most_loved',
-    'martabak',
-    'soto_bakso_sop',
-    'roti',
-    'chinese',
-    'burger_sandwich_steak',
-    'fastfood',
-    'japanese',
-    'snacks_jajanan',
-    'sate',
-    'pizza_pasta',
-    'bakmie',
-    'minuman',
-    'korean',
-    'seafood',
-    'coffee_shop',
-    'indian_food',
-    'middle_eastern',
-  ];
-
   const validParamsId = listsParamsId.includes(paramsId);
 
   if (!validParamsId) {

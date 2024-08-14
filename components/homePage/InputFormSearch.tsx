@@ -68,8 +68,10 @@ const InputFormSearch = ({
 
         <HiChevronDown color="grey" size={20} />
       </Badge>
-      <CommandList className={`${isDesktop ? 'absolute top-14 size-80' : ''}`}>
-        {isDesktop && isBlur && (
+      {isDesktop && isBlur && (
+        <CommandList
+          className={`${isDesktop ? 'absolute top-14 size-80' : ''}`}
+        >
           <CommandGroup
             heading="City"
             className="bg-white"
@@ -90,8 +92,8 @@ const InputFormSearch = ({
               );
             })}
           </CommandGroup>
-        )}
-      </CommandList>
+        </CommandList>
+      )}
     </Command>
   );
 };

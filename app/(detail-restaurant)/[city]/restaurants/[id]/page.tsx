@@ -4,6 +4,7 @@ import { HiStar } from 'react-icons/hi';
 import Link from 'next/link';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import { getFoodLists } from '@/repositories/FoodsRepository';
+import { auth } from '@/auth';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -16,11 +17,14 @@ interface PropsParams {
 const Restaurants = async ({ params }: PropsParams) => {
   const request = {
     city: params.city,
-    category: params.id as string,
+    category: params.id,
   };
 
   const data = await getFoodLists(request);
-  const filterData = data?.data.foods.filter((item) => item);
+  const session = await auth();
+  const filterData = data?.data.foods.filter(
+    (item) => item.restaurantName !== session?.user.restaurant
+  );
 
   return (
     <>
@@ -29,7 +33,13 @@ const Restaurants = async ({ params }: PropsParams) => {
         <BreadCrumbSection />
         <div className="container ">
           <h2 className="mb-3 text-xl font-semibold md:mb-5 md:text-3xl">
-            Terdekat
+            {params.id === 'near_me'
+              ? 'Terdekat'
+              : params.id === 'best_seller'
+                ? 'Terlaris'
+                : params.id === 'most_loved'
+                  ? 'Terfavorit'
+                  : ''}
           </h2>
           <div className="mb-10 flex flex-wrap items-center justify-start gap-4">
             {filterData?.length === 0 && (
