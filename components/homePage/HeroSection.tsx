@@ -4,11 +4,13 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import Image from 'next/image';
 import React from 'react';
 import SearchBox from './SearchBox';
+import { IResCityList } from '@/model/restaurantModel';
 
 interface Props {
   location: string;
+  dataCity: IResCityList[];
 }
-export const HeroSection = ({ location }: Props) => {
+export const HeroSection = ({ location, dataCity }: Props) => {
   const isTablet = useMediaQuery('(min-width: 768px)');
   return (
     <section className=" mb-[75px] mt-3">
@@ -49,7 +51,7 @@ export const HeroSection = ({ location }: Props) => {
         </div>
       </div>
       <div className="container">
-        <SearchBox location={location} />
+        <SearchBox location={location} dataCity={dataCity} />
       </div>
     </section>
   );

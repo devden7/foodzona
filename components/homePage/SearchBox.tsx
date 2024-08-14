@@ -10,33 +10,20 @@ import Link from 'next/link';
 import { changeLocation } from '@/store/Location/LocationSlice';
 import { useAppDispatch } from '@/hooks/use-redux-hook';
 import { useSession } from 'next-auth/react';
+import { IResCityList } from '@/model/restaurantModel';
 
 interface Props {
   location: string;
+  dataCity: IResCityList[];
 }
 
-const SearchBox = ({ location }: Props) => {
+const SearchBox = ({ location, dataCity }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isBlur, setIsBlur] = useState(false);
 
   const { data: session } = useSession();
 
   const dispatch = useAppDispatch();
-
-  const data = [
-    { city: 'Jakarta', id: 0 },
-    { city: 'Surabaya', id: 1 },
-    { city: 'Aceh', id: 2 },
-    { city: 'Papua', id: 3 },
-    { city: 'Samarinda', id: 4 },
-    { city: 'Bandung', id: 5 },
-    { city: 'Yogyakarta', id: 6 },
-    { city: 'Serang', id: 7 },
-    { city: 'Bekasi', id: 8 },
-    { city: 'Depok', id: 9 },
-    { city: 'Bogor', id: 10 },
-    { city: 'Tasikmalaya', id: 11 },
-  ];
   return (
     <div>
       <ResponsiveDialog
@@ -60,17 +47,17 @@ const SearchBox = ({ location }: Props) => {
           </div>
           <ScrollArea className="h-[550px] w-full">
             <div className=" flex flex-col gap-3">
-              {data.map((item) => (
+              {dataCity.map((item: IResCityList) => (
                 <div
-                  key={item.id}
+                  key={item.city_name}
                   className="flex cursor-pointer items-center gap-3 p-5 hover:bg-slate-100"
                   onClick={() => {
                     setIsOpen(false);
-                    dispatch(changeLocation(item.city));
+                    dispatch(changeLocation(item.city_name));
                   }}
                 >
                   <HiLocationMarker className="text-slate-900" size={20} />
-                  {item.city}
+                  {item.city_name}
                 </div>
               ))}
             </div>
@@ -91,6 +78,7 @@ const SearchBox = ({ location }: Props) => {
                 city={location}
                 setIsOpen={setIsOpen}
                 setIsBlur={setIsBlur}
+                dataCity={dataCity}
               />
             </div>
             <Button className="w-full rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg">

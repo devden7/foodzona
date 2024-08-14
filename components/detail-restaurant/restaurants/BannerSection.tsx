@@ -19,7 +19,7 @@ const BannerSection = () => {
 
           <div className="absolute left-[5%] top-[35%] z-50 gap-1 overflow-visible md:top-[20%] md:mt-10 2xl:left-[19%] ">
             <div className="flex flex-col gap-5 md:gap-0">
-              <p className="text-[27px] font-semibold md:mt-5 md:text-3xl lg:w-full lg:text-4xl">
+              <p className="text-[27px] font-semibold capitalize md:mt-5 md:text-3xl lg:w-full lg:text-4xl">
                 {location}
               </p>
               <p className="mb-3 max-w-[320px] text-sm md:mt-5 md:text-base lg:w-full lg:text-lg">

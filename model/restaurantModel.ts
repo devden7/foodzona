@@ -3,3 +3,7 @@ export interface IReqCreateRestaurant {
   city: string;
   token?: string;
 }
+
+export interface IResCityList {
+  city_name: string;
+}

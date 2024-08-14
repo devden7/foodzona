@@ -1,6 +1,6 @@
 import { IResponse } from '@/model/accountModel';
 import { IReqInsertFood, IResponseCreateFood } from '@/model/foodModel';
-import { IReqCreateRestaurant } from '@/model/restaurantModel';
+import { IReqCreateRestaurant, IResCityList } from '@/model/restaurantModel';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -94,4 +94,10 @@ export const addRecommendationFood = async (foodId: number, token: string) => {
   });
   const data = await response.json();
   return data;
+};
+
+export const getCityLists = async (): Promise<IResCityList[]> => {
+  const response = await fetch(`${API_URL}api/city`);
+  const data = await response.json();
+  return data.data;
 };

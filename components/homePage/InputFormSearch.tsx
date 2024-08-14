@@ -6,29 +6,22 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import { useAppDispatch } from '@/hooks/use-redux-hook';
 import { changeLocation } from '@/store/Location/LocationSlice';
 import { useEffect, useRef } from 'react';
-
-const dummyLocation = [
-  { city: 'Jakarta', id: 0 },
-  { city: 'Surabaya', id: 1 },
-  { city: 'Aceh', id: 2 },
-  { city: 'Papua', id: 3 },
-  { city: 'Samarinda', id: 4 },
-  { city: 'Bandung', id: 5 },
-  { city: 'Yogyakarta', id: 6 },
-  { city: 'Serang', id: 7 },
-  { city: 'Bekasi', id: 8 },
-  { city: 'Depok', id: 9 },
-  { city: 'Bogor', id: 10 },
-  { city: 'Tasikmalaya', id: 11 },
-];
+import { IResCityList } from '@/model/restaurantModel';
 
 interface Props {
   isBlur: boolean;
   city: string | null | undefined;
+  dataCity?: IResCityList[];
   setIsOpen: (value: boolean) => void;
   setIsBlur: (value: boolean) => void;
 }
-const InputFormSearch = ({ city, isBlur, setIsOpen, setIsBlur }: Props) => {
+const InputFormSearch = ({
+  city,
+  isBlur,
+  dataCity,
+  setIsOpen,
+  setIsBlur,
+}: Props) => {
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const dispatch = useAppDispatch();
   const searchInputRef = useRef(null);
@@ -65,7 +58,7 @@ const InputFormSearch = ({ city, isBlur, setIsOpen, setIsBlur }: Props) => {
             ref={searchInputRef}
             type="text"
             placeholder="Ketik lokasimu"
-            className=" rounded-full border-none border-slate-300 bg-transparent pl-3 placeholder:text-base placeholder:text-slate-800 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 lg:text-lg lg:placeholder:text-lg"
+            className="rounded-full border-none border-slate-300 bg-transparent pl-3 capitalize placeholder:text-base placeholder:text-slate-800 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 lg:text-lg lg:placeholder:text-lg"
             onClick={() => setIsOpen(true)}
             onFocus={() => setIsBlur(true)}
             value={!city ? '' : city}
@@ -82,16 +75,17 @@ const InputFormSearch = ({ city, isBlur, setIsOpen, setIsBlur }: Props) => {
             className="bg-white"
             onBlur={() => setIsBlur(false)}
           >
-            {dummyLocation.map((item: any) => {
+            {dataCity?.map((item: IResCityList) => {
               return (
                 <CommandItem
-                  key={item.id}
+                  key={item.city_name}
                   onSelect={(value) => {
                     dispatch(changeLocation(value));
                     setIsBlur(false);
                   }}
+                  className="capitalize"
                 >
-                  {item.city}
+                  {item.city_name}
                 </CommandItem>
               );
             })}

@@ -12,9 +12,12 @@ import { HeroSection } from '@/components/homePage/HeroSection';
 import { useAppSelector } from '@/hooks/use-redux-hook';
 import { useSession } from 'next-auth/react';
 import { getFoodLists } from '@/repositories/FoodsRepository';
+import { IResCityList } from '@/model/restaurantModel';
+import { getCityLists } from '@/repositories/restaurantRepository';
 
 export default function Home() {
   const [data, setData] = useState<IResponseGetFoods>();
+  const [dataCity, setDataCity] = useState<IResCityList[]>([]);
   const { data: session } = useSession();
   const location = useAppSelector((state) => state.location.city);
 
@@ -28,28 +31,19 @@ export default function Home() {
     setData(response.data);
   };
 
+  const getCityList = async () => {
+    const response = await getCityLists();
+    setDataCity(response);
+  };
+
   useEffect(() => {
     getFoodList();
+    getCityList();
   }, []);
-
-  const dummyLocation = [
-    { city: 'Jakarta', id: 0 },
-    { city: 'Surabaya', id: 1 },
-    { city: 'Aceh', id: 2 },
-    { city: 'Papua', id: 3 },
-    { city: 'Samarinda', id: 4 },
-    { city: 'Bandung', id: 5 },
-    { city: 'Yogyakarta', id: 6 },
-    { city: 'Serang', id: 7 },
-    { city: 'Bekasi', id: 8 },
-    { city: 'Depok', id: 9 },
-    { city: 'Bogor', id: 10 },
-    { city: 'Tasikmalaya', id: 11 },
-  ];
 
   return (
     <>
-      <HeroSection location={location} />
+      <HeroSection location={location} dataCity={dataCity} />
 
       <section className="relative mb-[75px]">
         <div className="container pt-12 2xl:w-[1200px]">
@@ -115,13 +109,13 @@ export default function Home() {
           </h2>
           <div className="mt-7">
             <div className="mb-10 grid grid-cols-2 justify-end gap-y-4 md:grid-cols-4 md:gap-y-5 lg:grid-cols-6 lg:gap-y-6">
-              {dummyLocation.map((item) => (
+              {dataCity.map((item: IResCityList) => (
                 <div
-                  key={item.id}
+                  key={item.city_name}
                   className="scale-105 transition-transform sm:scale-110"
                 >
                   <Button className="line-clamp-1 max-w-28 rounded-full border-2 border-slate-100 bg-transparent text-start font-bold text-green-700 hover:bg-slate-100">
-                    {item.city}
+                    {item.city_name}
                   </Button>
                 </div>
               ))}
