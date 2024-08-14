@@ -24,7 +24,7 @@ const Footer = () => {
     >
       {pathname !== '/login' && (
         <div>
-          <div className=" 2xl:container 2xl:w-[1200px]">
+          <div className="2xl:container 2xl:w-[1200px]">
             <div className="mb-5 flex items-center gap-3">
               <div>
                 <Image
@@ -52,27 +52,39 @@ const Footer = () => {
               GoFood.
             </p>
 
-            <div className="mb-[530px] flex gap-3  sm:mb-[560px] md:mb-5">
-              <Image
-                src="/assets/playstore.png"
-                alt="Playstore"
-                width={10}
-                height={10}
-                sizes="100vw"
-                quality={100}
-                className="h-auto w-[35%] md:w-[15%] lg:w-1/5"
-              />
-              <Image
-                src="/assets/appstore.png"
-                alt="AppStore"
-                width={10}
-                height={10}
-                sizes="100vw"
-                quality={100}
-                className="h-auto w-[35%] md:w-[15%] lg:w-1/5"
-              />
+            <div className="mb-5 flex w-full flex-col gap-5">
+              <div className="flex items-center gap-3">
+                <div className="w-40">
+                  <Image
+                    className="size-full object-contain"
+                    src="/assets/playstore.png"
+                    alt="Playstore"
+                    width={331}
+                    height={96}
+                    quality={100}
+                  />
+                </div>
+                <div className="w-40">
+                  <Image
+                    className="size-full object-contain"
+                    src="/assets/appstore.png"
+                    alt="AppStore"
+                    width={295}
+                    height={96}
+                    quality={100}
+                  />
+                </div>
+              </div>
+              <div className="mb-5 h-[500px] sm:top-72 sm:h-[520px] md:absolute md:left-[60%] md:top-8 md:h-[350px] lg:h-[460px]">
+                <Image
+                  className="h-full object-contain"
+                  src="/assets/gofood-footer.png"
+                  alt="Logo App"
+                  width={404}
+                  height={460}
+                />
+              </div>
             </div>
-
             <Select>
               <SelectTrigger className="mb-5 w-full rounded-full text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-3/4 md:max-w-[400px]">
                 <div className="flex items-center gap-3">
@@ -98,16 +110,6 @@ const Footer = () => {
               Tbk. Terdaftar pada Direktorat Jendral Kekayaan Intelektual
               Republik Indonesia.
             </p>
-          </div>
-          <div className="absolute inset-x-0 top-64 mb-5 h-[500px] sm:top-72 sm:h-[520px] md:left-[60%] md:top-8 md:h-[350px] lg:h-[470px]">
-            <Image
-              className="object-contain"
-              src="/assets/gofood-footer.png"
-              alt="Logo App"
-              fill
-              sizes="50vw"
-              quality={100}
-            />
           </div>
         </div>
       )}
