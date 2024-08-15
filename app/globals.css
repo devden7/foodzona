@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer utilities {
-  .helper-responsive {
-    @apply sm:bg-red-500 md:bg-green-500 lg:bg-blue-500 xl:bg-purple-500 2xl:bg-yellow-500;
-  }
-
   .remove-arrow::-webkit-inner-spin-button,
   .remove-arrow::-webkit-outer-spin-button {
     -webkit-appearance: none;
