@@ -38,7 +38,7 @@ const Checkout = () => {
     if (!session) {
       router.push('/login');
     }
-  }, []);
+  }, [router, session]);
 
   const addBtnItemHandler = (item: IDataFood) => {
     const request = {

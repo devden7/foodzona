@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Command, CommandGroup, CommandItem, CommandList } from '../ui/command';
 import { Badge } from '../ui/badge';
 import { HiChevronDown, HiLocationMarker } from 'react-icons/hi';

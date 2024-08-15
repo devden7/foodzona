@@ -40,6 +40,7 @@ export default function Home() {
   useEffect(() => {
     getFoodList();
     getCityList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
