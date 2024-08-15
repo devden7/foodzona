@@ -21,7 +21,6 @@ const OrdersPage = async () => {
           </div>
         </section>
       ) : null}
-      {data.length === 0 && <p className="text-center">Tidak ada order</p>}
     </>
   );
 };

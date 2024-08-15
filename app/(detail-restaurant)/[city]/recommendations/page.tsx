@@ -92,7 +92,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
             </h2>
           </div>
           {filterDataTerdekat.length === 0 && (
-            <div className="container flex size-96 items-center justify-center text-lg font-medium">
+            <div className="flex h-52 w-auto items-center justify-center font-medium lg:text-xl">
               <p>Tidak ada makanan tersedia dikotamu</p>
             </div>
           )}
@@ -129,16 +129,18 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
               </div>
             ))}
           </div>
-          <div className="flex justify-center">
-            <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
-              <Link
-                href={`/${params.city.toLocaleLowerCase()}/restaurants/near_me`}
-                className="size-full"
-              >
-                Tampilkan semua resto
-              </Link>
-            </Button>
-          </div>
+          {filterDataTerdekat.length !== 0 && (
+            <div className="flex justify-center">
+              <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
+                <Link
+                  href={`/${params.city.toLocaleLowerCase()}/restaurants/near_me`}
+                  className="size-full"
+                >
+                  Tampilkan semua resto
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
       </section>
       <section className="mb-10">
@@ -158,7 +160,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
             </h2>
           </div>
           {filterDataTerlaris.length === 0 && (
-            <div className="container flex size-96 items-center justify-center text-lg font-medium">
+            <div className="flex h-52 w-auto items-center justify-center font-medium  lg:text-xl">
               <p>Tidak ada makanan tersedia dikotamu</p>
             </div>
           )}
@@ -195,16 +197,18 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
               </div>
             ))}
           </div>
-          <div className="flex justify-center">
-            <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
-              <Link
-                href={`/${params.city.toLocaleLowerCase()}/restaurants/best_seller`}
-                className="size-full"
-              >
-                Tampilkan semua resto
-              </Link>
-            </Button>
-          </div>
+          {filterDataTerlaris.length !== 0 && (
+            <div className="flex justify-center">
+              <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
+                <Link
+                  href={`/${params.city.toLocaleLowerCase()}/restaurants/best_seller`}
+                  className="size-full"
+                >
+                  Tampilkan semua resto
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -226,7 +230,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
           </div>
 
           {filterDataTerfavorit.length === 0 && (
-            <div className="container flex size-96 items-center justify-center text-lg font-medium">
+            <div className="flex h-52 w-auto items-center justify-center font-medium lg:text-xl">
               <p>Tidak ada makanan tersedia dikotamu</p>
             </div>
           )}
@@ -263,16 +267,18 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
               </div>
             ))}
           </div>
-          <div className="flex justify-center">
-            <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
-              <Link
-                href={`/${params.city.toLocaleLowerCase()}/restaurants/most_loved`}
-                className="size-full"
-              >
-                Tampilkan semua resto
-              </Link>
-            </Button>
-          </div>
+          {filterDataTerfavorit.length !== 0 && (
+            <div className="flex justify-center">
+              <Button className=" w-full rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5  xl:w-1/5">
+                <Link
+                  href={`/${params.city.toLocaleLowerCase()}/restaurants/most_loved`}
+                  className="size-full"
+                >
+                  Tampilkan semua resto
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
       </section>
     </>

@@ -117,7 +117,10 @@ export default function Home() {
                   className="scale-105 transition-transform sm:scale-110"
                 >
                   <Button className="line-clamp-1 max-w-28 rounded-full border-2 border-slate-100 bg-transparent text-start font-bold text-green-700 hover:bg-slate-100">
-                    <Link href={location + '/restaurants'}>
+                    <Link
+                      href={location + '/restaurants'}
+                      className="capitalize"
+                    >
                       {item.city_name}
                     </Link>
                   </Button>

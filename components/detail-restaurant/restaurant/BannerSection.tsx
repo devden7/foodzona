@@ -1,6 +1,5 @@
 'use client';
 
-import { useMediaQuery } from '@/hooks/use-media-query';
 import { IDataFood } from '@/model/foodModel';
 import Image from 'next/image';
 
@@ -11,10 +10,9 @@ interface Props {
 const API_URL = process.env.NEXT_PUBLIC_API;
 
 const BannerSection = ({ isRecommendationFood, restaurantName }: Props) => {
-  const isDekstop = useMediaQuery('(min-width: 1024px)');
   return (
     <section className="mb-8 mt-4 lg:mt-3 2xl:mt-1">
-      <div className={`${isDekstop ? 'container' : ''}`}>
+      <div className={`${'container'}`}>
         <div className="flex gap-3 p-2 md:p-5 lg:p-0">
           <div className="relative size-16 overflow-hidden rounded-xl md:size-24">
             <Image

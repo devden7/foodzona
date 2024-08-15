@@ -1,4 +1,4 @@
-import { HiStar } from 'react-icons/hi';
+import { HiStar, HiUser } from 'react-icons/hi';
 import { dataReview } from '@/model/orderModel';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import InfoRating from '@/components/detail-restaurant/restaurant/reviews/InfoRating';
@@ -27,8 +27,8 @@ const ReviewsUserf = async ({
       )}
 
       {data.data.reviews !== undefined && data.data.reviews.length > 0 && (
-        <section className="mb-8 mt-10 lg:mt-10">
-          <div className="px-3 sm:container sm:px-0">
+        <section className="mb-8 mt-10">
+          <div className="px-3 sm:container">
             <h3 className="mb-5 ml-2 text-lg font-semibold">All Reviews</h3>
 
             <div className="flex flex-col gap-5">
@@ -36,9 +36,9 @@ const ReviewsUserf = async ({
                 <div className="p-2" key={review.reviewId}>
                   <div className="mb-5 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="size-10 rounded-full bg-green-500">
+                      <div className="size-10 rounded-full bg-gray-100">
                         <span className="flex size-full items-center justify-center font-medium text-white">
-                          PB
+                          <HiUser color="black" />
                         </span>
                       </div>
                       <div>

@@ -30,12 +30,12 @@ const FoodListCity = ({ data, session, location }: Props) => {
           Yuk, dicek koleksi makanan populer, favoritnya foodies lokal, dan
           penawaran terbaik kami di lokasimu!
         </p>
-        <div className="mb-10 flex flex-wrap items-center justify-start gap-4">
-          {filterData?.length === 0 && (
-            <p className="w-full text-center font-medium">
-              Belum ada restaurant yang tersedia di kotamu
-            </p>
-          )}
+        {filterData?.length === 0 && (
+          <p className="flex h-52 w-auto items-center justify-center font-medium lg:text-xl">
+            Belum ada restaurant yang tersedia di kotamu
+          </p>
+        )}
+        <div className="mb-10 flex w-full flex-wrap items-center justify-start gap-4">
           {filterData?.map((item) => (
             <Link
               href={`/${location}/restaurant/${item.restaurantName.toLowerCase().replace(/ /g, '-')}`}

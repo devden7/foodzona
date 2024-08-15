@@ -32,7 +32,7 @@ const SearchBox = ({ location, dataCity }: Props) => {
         closeBtn={true}
         type="homepage"
       >
-        <div className="flex h-[700px] flex-col items-start md:h-[500px]">
+        <div className="flex h-[650px] flex-col items-start md:h-[500px]">
           <div className="my-3 flex w-full justify-between">
             <h3 className="px-5 text-lg font-medium">Pilih lokasimu</h3>
             <HiOutlineX

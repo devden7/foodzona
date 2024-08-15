@@ -26,6 +26,7 @@ export interface Order {
   totalQuantity: number;
   username: string;
   review: { orderId: number } | null;
+  createAt: string;
 }
 
 export interface IRatingReq {

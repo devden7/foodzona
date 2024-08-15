@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { Session } from 'next-auth';
+import { convertIsoToDate } from '@/lib/utils';
 
 interface Props {
   data: Order[];
@@ -28,7 +29,7 @@ const ListsOrder = ({ data, session }: Props) => {
   return (
     <>
       {data.length === 0 && (
-        <div className="container flex size-96 items-center justify-center text-xl font-medium">
+        <div className="flex h-52 w-auto items-center justify-center text-xl font-medium">
           <p>Tidak ada Order</p>
         </div>
       )}
@@ -76,14 +77,14 @@ const ListsOrder = ({ data, session }: Props) => {
                 <h4 className="font-semibold text-black/70">
                   {item.restaurantName}, {item.restaurant.city_name}
                 </h4>
-                <p className="mb-2 text-xs">
-                  Sunday, 26 June -
+                <div className="flex items-center gap-2 text-sm">
+                  <p>{convertIsoToDate(item.createAt)}</p>
                   <span
                     className={`font-medium ${item.status === 'Berhasil' ? 'text-green-500' : item.status === 'Pending' ? 'text-yellow-500' : 'text-red-500'}`}
                   >
                     {item.status}
                   </span>
-                </p>
+                </div>
 
                 <div>
                   {item.orderItem.length === 0 && <p></p>}
@@ -142,14 +143,14 @@ const ListsOrder = ({ data, session }: Props) => {
                       <span className="mb-2 line-clamp-1 max-h-5 font-medium text-black/50">
                         {item.restaurantName}, {item.restaurant.city_name}
                       </span>
-                      <p className="mb-2 text-sm">
-                        Sunday, 26 June -
+                      <div className="flex items-center gap-2 text-sm">
+                        <p>{convertIsoToDate(item.createAt)}</p>
                         <span
                           className={`font-medium ${item.status === 'Berhasil' ? 'text-green-500' : item.status === 'Pending' ? 'text-yellow-500' : 'text-red-500'}`}
                         >
                           {item.status}
                         </span>
-                      </p>
+                      </div>
                     </div>
                   </td>
                   <td className="border-y-[1.5px] px-3  py-5">

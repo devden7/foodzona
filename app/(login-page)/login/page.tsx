@@ -178,7 +178,7 @@ const Login = () => {
                     kapanpun, dan dimanapun.
                   </p>
                   <Button
-                    className="w-full rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+                    className="mb-3 w-full rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
                     onClick={() => setIsBtnLogin(true)}
                   >
                     Masuk

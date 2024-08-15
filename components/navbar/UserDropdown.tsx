@@ -6,8 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
-import { HiSearch } from 'react-icons/hi';
-import { Button } from '../ui/button';
+import { HiSearch, HiUser } from 'react-icons/hi';
 import { useState } from 'react';
 import { Session } from 'next-auth';
 
@@ -31,9 +30,11 @@ const UserDropdown = ({ pathname, logoutBtnHandler, session }: Props) => {
       <DropdownMenu open={isOpenDropdown} onOpenChange={setIsOpenDropdown}>
         <DropdownMenuTrigger asChild>
           {session && (
-            <Button className="flex size-10 items-center justify-center rounded-full bg-red-500 outline-none hover:bg-red-500 focus-visible:ring-0 focus-visible:ring-offset-0">
-              <span className="font-medium text-white">D</span>
-            </Button>
+            <div className="size-10 rounded-full bg-gray-100">
+              <span className="flex size-full cursor-pointer items-center justify-center font-medium text-white">
+                <HiUser color="black" />
+              </span>
+            </div>
           )}
         </DropdownMenuTrigger>
         <DropdownMenuContent className="absolute right-0 w-56">

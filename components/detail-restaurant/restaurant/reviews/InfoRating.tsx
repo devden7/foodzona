@@ -12,7 +12,7 @@ interface Props {
 const InfoRating = ({ reviewsList, params }: Props) => {
   const reviewNewest = reviewsList?.slice(-5);
   return (
-    <section className="mb-8 mt-20 lg:mt-10">
+    <section className="mt-5">
       <div className="sm:container">
         <div className="mb-9 flex items-center gap-3 px-3 lg:px-0">
           <Link

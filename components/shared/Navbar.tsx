@@ -18,8 +18,10 @@ import UserDropdown from '../navbar/UserDropdown';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { signOut, useSession } from 'next-auth/react';
 import { useAppSelector } from '@/hooks/use-redux-hook';
+import { useState } from 'react';
 
 const Navbar = () => {
+  const [isNavMobile, setIsNavMobile] = useState(false);
   const pathname = usePathname();
   const location = useAppSelector((state) => state.location.city);
   const isTab = useMediaQuery('(min-width: 768px)');
@@ -37,35 +39,48 @@ const Navbar = () => {
       <header className="container flex h-12 items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="md:hidden">
-            <Drawer direction="left">
+            <Drawer
+              direction="left"
+              open={isNavMobile}
+              onOpenChange={setIsNavMobile}
+            >
               <DrawerTrigger>
-                <HiMenu size={20} className="cursor-pointer" />
+                <div className="size-7 pt-1">
+                  <HiMenu size={23} className="cursor-pointer pt-1" />
+                </div>
               </DrawerTrigger>
               <DrawerContent className="flex h-full items-start rounded-none">
-                <DrawerHeader className="relative mb-16 ml-5 mt-10 flex items-center gap-2 p-0">
-                  <DrawerClose>
-                    <HiOutlineX
-                      className="absolute -right-80 -top-5"
-                      size={25}
-                    />
-                  </DrawerClose>
-                  <div>
+                <DrawerHeader className="my-5 flex w-full items-center justify-between gap-2">
+                  <div className="flex items-center gap-3">
                     <Image
                       src="/assets/logo.png"
                       alt="Logo App"
                       width={25}
                       height={25}
                     />
+                    <Link href="/" className="text-xl font-bold tracking-wider">
+                      gofood
+                    </Link>
                   </div>
-                  <Link href="/" className="text-xl font-bold tracking-wider">
-                    gofood
-                  </Link>
+
+                  <DrawerClose>
+                    <HiOutlineX size={25} />
+                  </DrawerClose>
                 </DrawerHeader>
                 <div className="ml-10 flex flex-col gap-4 text-lg font-semibold text-green-600">
-                  <Link href="/">Beranda</Link>
-                  <Link href={`/${location}/recommendations`}>Rekomendasi</Link>
+                  <Link href="/" onClick={() => setIsNavMobile(false)}>
+                    Beranda
+                  </Link>
+                  <Link
+                    href={`/${location}/recommendations`}
+                    onClick={() => setIsNavMobile(false)}
+                  >
+                    Rekomendasi
+                  </Link>
                   {!session && pathname !== '/login' && (
-                    <Link href="/login">Masuk/Daftar</Link>
+                    <Link href="/login" onClick={() => setIsNavMobile(false)}>
+                      Masuk/Daftar
+                    </Link>
                   )}
                 </div>
               </DrawerContent>

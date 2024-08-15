@@ -80,7 +80,7 @@ const FoodList = ({
           src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
           alt={item.name}
           fill
-          sizes="100vw"
+          sizes="50vw"
           quality={90}
         />
         {item.isRecommendation && (
