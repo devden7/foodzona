@@ -16,7 +16,7 @@ export const HeroSection = ({ location, dataCity }: Props) => {
     <section className=" mb-[75px] mt-3">
       <div className="m-3 flex lg:m-0 lg:px-2 lg:py-1">
         <div
-          className="relative h-[360px] w-[450px] grow overflow-hidden rounded-[30px] bg-red-500 sm:w-[600px] md:h-[414px] md:w-[730px] lg:h-[441px]"
+          className="relative h-[360px] w-[450px] grow overflow-hidden rounded-[30px] sm:w-[600px] md:h-[414px] md:w-[730px] lg:h-[441px]"
           style={{
             zIndex: -1,
           }}

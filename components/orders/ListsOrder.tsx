@@ -87,7 +87,6 @@ const ListsOrder = ({ data, session }: Props) => {
                 </div>
 
                 <div>
-                  {item.orderItem.length === 0 && <p></p>}
                   {item.orderItem.map((order: any) => (
                     <p className="text-sm" key={order.orderItemId}>
                       {order.foodNameOrder}
@@ -140,7 +139,7 @@ const ListsOrder = ({ data, session }: Props) => {
                   )}
                   <td className="rounded-l-2xl border-y-[1.5px] border-l-[1.5px] px-3 py-5">
                     <div>
-                      <span className="mb-2 line-clamp-1 max-h-5 font-medium text-black/50">
+                      <span className="mb-2 line-clamp-1 max-h-7 font-medium text-black/50">
                         {item.restaurantName}, {item.restaurant.city_name}
                       </span>
                       <div className="flex items-center gap-2 text-sm">

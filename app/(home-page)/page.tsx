@@ -48,7 +48,7 @@ export default function Home() {
       <HeroSection location={location} dataCity={dataCity} />
 
       <section className="relative mb-[75px]">
-        <div className="container pt-12 2xl:w-[1200px]">
+        <div className="container pt-12 2xl:w-[1300px]">
           <h2 className="text-[21px] font-semibold md:text-center md:text-3xl">
             Belom ada ide? Mulai dari sini aja dulu
           </h2>
@@ -58,7 +58,7 @@ export default function Home() {
         </div>
       </section>
       <section className="relative">
-        <div className="container 2xl:w-[1200px]">
+        <div className="container 2xl:w-[1300px]">
           <h2 className="text-[21px] font-semibold md:text-center md:text-3xl">
             Aneka kuliner menarik
           </h2>
@@ -69,7 +69,7 @@ export default function Home() {
       </section>
       <FoodListCity data={data} session={session} location={location} />
       <section className="mb-[75px]">
-        <div className="container 2xl:w-[1200px]">
+        <div className="container 2xl:w-[1300px]">
           <h2 className="pt-14 text-[21px] font-semibold md:text-center md:text-3xl lg:pt-28">
             Kenapa pesan di GoFood?
           </h2>
@@ -105,7 +105,7 @@ export default function Home() {
         </div>
       </section>
       <section className="relative mb-[75px]">
-        <div className="container pt-8 lg:pt-0 2xl:w-[1200px]">
+        <div className="container pt-8 lg:pt-0 2xl:w-[1300px]">
           <h2 className="text-[21px] font-semibold md:text-center md:text-3xl">
             Kota-kota yang ada GoFood
           </h2>

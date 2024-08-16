@@ -29,9 +29,11 @@ const Restaurants = async ({ params }: PropsParams) => {
   return (
     <>
       <HeroSection paramsId={params.id as string} />
-      <section>
+      <div className="container mb-10 2xl:w-[1300px]">
         <BreadCrumbSection />
-        <div className="container ">
+      </div>
+      <section>
+        <div className="container 2xl:w-[1300px]">
           <h2 className="mb-3 text-xl font-semibold md:mb-5 md:text-3xl">
             {params.id === 'near_me'
               ? 'Terdekat'

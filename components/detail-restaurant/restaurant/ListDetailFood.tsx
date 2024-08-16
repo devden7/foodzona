@@ -13,7 +13,7 @@ const API_URL = process.env.NEXT_PUBLIC_API;
 const ListDetailFood = ({ item, cartBtnHandler }: Props) => {
   return (
     <>
-      <div className="relative h-48 w-full overflow-hidden rounded-xl bg-green-500 md:h-40 lg:h-56">
+      <div className="relative h-48 w-full overflow-hidden rounded-xl md:h-40 lg:h-56">
         <Image
           className="object-cover"
           src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}

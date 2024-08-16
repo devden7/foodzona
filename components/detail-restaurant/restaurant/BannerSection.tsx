@@ -12,7 +12,7 @@ const API_URL = process.env.NEXT_PUBLIC_API;
 const BannerSection = ({ isRecommendationFood, restaurantName }: Props) => {
   return (
     <section className="mb-8 mt-4 lg:mt-3 2xl:mt-1">
-      <div className={`${'container'}`}>
+      <div className="container">
         <div className="flex gap-3 p-2 md:p-5 lg:p-0">
           <div className="relative size-16 overflow-hidden rounded-xl md:size-24">
             <Image

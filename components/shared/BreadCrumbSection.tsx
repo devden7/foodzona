@@ -100,7 +100,7 @@ const BreadCrumbSection = ({ pageName, restaurantName }: Props) => {
     );
   }
   return (
-    <div className="container">
+    <>
       {pageName !== 'restaurant' && (
         <Breadcrumb className="my-5">
           <BreadcrumbList className="text-black">
@@ -121,7 +121,7 @@ const BreadCrumbSection = ({ pageName, restaurantName }: Props) => {
           </BreadcrumbList>
         </Breadcrumb>
       )}
-    </div>
+    </>
   );
 };
 export default BreadCrumbSection;

@@ -71,12 +71,10 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
         </div>
       </section>
       <div className="container mb-10 2xl:w-[1300px]">
-        <div className="mb-10 2xl:w-[1300px]">
-          <BreadCrumbSection pageName="recommendation" />
-        </div>
+        <BreadCrumbSection pageName="recommendation" />
       </div>
       <section className="mb-10 sm:mb-2">
-        <div className="container 2xl:w-[1200px]">
+        <div className="container 2xl:w-[1300px]">
           <div className="mb-10 flex items-center gap-2 ">
             <div className="w-10 md:w-16 ">
               <Image
@@ -144,7 +142,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
         </div>
       </section>
       <section className="mb-10">
-        <div className="container 2xl:w-[1200px]">
+        <div className="container 2xl:w-[1300px]">
           <div className="mb-10 flex items-center gap-2">
             <div className="w-10  md:w-16">
               <Image
@@ -213,7 +211,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
       </section>
 
       <section className="mb-10">
-        <div className="container 2xl:w-[1200px]">
+        <div className="container 2xl:w-[1300px]">
           <div className="mb-10 flex items-center gap-2">
             <div className="w-10  md:w-16">
               <Image

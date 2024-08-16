@@ -12,8 +12,10 @@ const Restaurants = () => {
       <BannerSection />
 
       <section className="mb-5">
-        <BreadCrumbSection />
-        <div className="container">
+        <div className="container mb-10 2xl:w-[1300px]">
+          <BreadCrumbSection />
+        </div>
+        <div className="container 2xl:w-[1300px]">
           <div>
             <h3 className="mb-1 text-lg font-semibold md:text-xl lg:text-2xl">
               Rekomendasi kami
@@ -28,7 +30,7 @@ const Restaurants = () => {
       </section>
 
       <section className="mb-20">
-        <div className="container">
+        <div className="container 2xl:w-[1300px]">
           <div>
             <h3 className="mb-1 text-lg font-semibold  md:text-xl lg:text-2xl">
               Aneka kuliner menarik

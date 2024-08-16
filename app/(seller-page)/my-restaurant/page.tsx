@@ -7,6 +7,7 @@ import { getOrdersRestaurant } from '@/repositories/orderRepository';
 import { getFoodRestaurant } from '@/repositories/restaurantRepository';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import { auth } from '@/auth';
+import Loading from './Loading';
 
 const MyRestaurant = async () => {
   const session = await auth();
@@ -16,15 +17,20 @@ const MyRestaurant = async () => {
   const dataOrderHistory = await getOrdersRestaurant(session.user.token);
   const dataMenu = await getFoodRestaurant(session.user.token);
 
+  const loading = true;
+
+  if (loading) return <Loading />;
   return (
     <>
       {session && session.user.restaurant !== null && (
         <section className="mb-10 mt-5">
-          <BreadCrumbSection
-            pageName="seller"
-            restaurantName={session.user.restaurant}
-          />
-          <div className="container">
+          <div className="container 2xl:w-[1300px]">
+            <BreadCrumbSection
+              pageName="seller"
+              restaurantName={session.user.restaurant}
+            />
+          </div>
+          <div className="container 2xl:w-[1300px]">
             <Tabs defaultValue="menu">
               <div className="flex justify-center">
                 <TabsList className="flex w-1/2 justify-center bg-white">
