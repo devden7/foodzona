@@ -47,10 +47,10 @@ const StickyCart = () => {
       duration: 3000,
     });
 
+    router.push('/orders');
     setTimeout(() => {
-      router.push('/orders');
       dispatch(resetCart());
-    }, 500);
+    }, 2000);
   };
 
   const handlerAuthBtn = () => {

@@ -7,7 +7,6 @@ import { getOrdersRestaurant } from '@/repositories/orderRepository';
 import { getFoodRestaurant } from '@/repositories/restaurantRepository';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import { auth } from '@/auth';
-import Loading from './Loading';
 
 const MyRestaurant = async () => {
   const session = await auth();
@@ -16,10 +15,6 @@ const MyRestaurant = async () => {
   }
   const dataOrderHistory = await getOrdersRestaurant(session.user.token);
   const dataMenu = await getFoodRestaurant(session.user.token);
-
-  const loading = true;
-
-  if (loading) return <Loading />;
   return (
     <>
       {session && session.user.restaurant !== null && (

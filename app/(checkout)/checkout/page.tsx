@@ -38,7 +38,8 @@ const Checkout = () => {
     if (!session) {
       router.push('/login');
     }
-  }, [router, session]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const addBtnItemHandler = (item: IDataFood) => {
     const request = {
@@ -153,12 +154,6 @@ const Checkout = () => {
                     Masih bisa nambah menu lain, ya.
                   </p>
                 </div>
-                <Button
-                  variant="outline"
-                  className="rounded-full border-green-700 text-green-700 hover:bg-green-200"
-                >
-                  Tambah
-                </Button>
               </div>
             </div>
 
