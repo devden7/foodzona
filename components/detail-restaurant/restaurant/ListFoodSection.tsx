@@ -37,12 +37,15 @@ const ListFoodSection = ({ dataItems, isRecommendationFood }: Props) => {
       setIsRestaurant(true);
       return;
     }
+
     const request = {
       foodId: item.foodId,
       name: item.name,
       description: item.description,
       price: item.price,
-      image: item.image,
+      public_id_img: item.public_id_img,
+      version_img: item.version_img,
+      format_img: item.format_img,
       restaurantName: item.restaurantName,
     };
     dispatch(addItem(request));
@@ -56,7 +59,9 @@ const ListFoodSection = ({ dataItems, isRecommendationFood }: Props) => {
       name: item.name,
       description: item.description,
       price: item.price,
-      image: item.image,
+      public_id_img: item.public_id_img,
+      version_img: item.version_img,
+      format_img: item.format_img,
       restaurantName: item.restaurantName,
     };
     dispatch(addItem(request));

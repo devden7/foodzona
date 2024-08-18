@@ -6,7 +6,8 @@ import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import { getFoodLists } from '@/repositories/FoodsRepository';
 import { auth } from '@/auth';
 
-const API_URL = process.env.NEXT_PUBLIC_API;
+const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_API;
+const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
 
 interface PropsParams {
   params: {
@@ -28,7 +29,7 @@ const Restaurants = async ({ params }: PropsParams) => {
 
   return (
     <>
-      <HeroSection paramsId={params.id as string} />
+      <HeroSection paramsId={params.id} />
       <div className="container mb-10 2xl:w-[1300px]">
         <BreadCrumbSection />
       </div>
@@ -58,7 +59,22 @@ const Restaurants = async ({ params }: PropsParams) => {
                 <div className="relative h-40 w-48 overflow-hidden rounded-xl md:w-56 lg:h-[600px] lg:w-full">
                   <Image
                     className="object-cover"
-                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                    src={
+                      item.public_id_img !== null &&
+                      item.version_img !== null &&
+                      item.format_img !== null &&
+                      IMAGE_URL !== undefined &&
+                      CLOUDINARY_NAME !== undefined
+                        ? IMAGE_URL +
+                          CLOUDINARY_NAME +
+                          '/v' +
+                          item.version_img +
+                          '/' +
+                          item.public_id_img +
+                          '.' +
+                          item.format_img
+                        : '/assets/no-image.jpeg'
+                    }
                     alt={item.name}
                     fill
                     sizes="50vw"

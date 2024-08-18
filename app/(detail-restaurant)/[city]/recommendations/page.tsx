@@ -7,7 +7,8 @@ import { getFoodLists } from '@/repositories/FoodsRepository';
 import Link from 'next/link';
 import { auth } from '@/auth';
 
-const API_URL = process.env.NEXT_PUBLIC_API;
+const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_API;
+const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
 
 const Recommendations = async ({ params }: { params: { city: string } }) => {
   const session = await auth();
@@ -98,12 +99,27 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
             {filterDataTerdekat.map((item) => (
               <div
                 key={item.foodId}
-                className="flex w-full gap-3 border-b-2 md:last:border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
+                className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 md:last:border-b-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
                 <div className="relative h-40 w-48 overflow-hidden rounded-xl md:w-56 lg:h-[600px] lg:w-full">
                   <Image
                     className="object-cover"
-                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                    src={
+                      item.public_id_img !== null &&
+                      item.version_img !== null &&
+                      item.format_img !== null &&
+                      IMAGE_URL !== undefined &&
+                      CLOUDINARY_NAME !== undefined
+                        ? IMAGE_URL +
+                          CLOUDINARY_NAME +
+                          '/v' +
+                          item.version_img +
+                          '/' +
+                          item.public_id_img +
+                          '.' +
+                          item.format_img
+                        : '/assets/no-image.jpeg'
+                    }
                     alt={item.name}
                     fill
                     sizes="50vw"
@@ -166,12 +182,27 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
             {filterDataTerlaris.map((item) => (
               <div
                 key={item.foodId}
-                className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:last:border-b-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
+                className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 md:last:border-b-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
                 <div className="relative h-40 w-48 overflow-hidden rounded-xl md:w-56 lg:h-[600px] lg:w-full">
                   <Image
                     className="object-cover"
-                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                    src={
+                      item.public_id_img !== null &&
+                      item.version_img !== null &&
+                      item.format_img !== null &&
+                      IMAGE_URL !== undefined &&
+                      CLOUDINARY_NAME !== undefined
+                        ? IMAGE_URL +
+                          CLOUDINARY_NAME +
+                          '/v' +
+                          item.version_img +
+                          '/' +
+                          item.public_id_img +
+                          '.' +
+                          item.format_img
+                        : '/assets/no-image.jpeg'
+                    }
                     alt={item.name}
                     fill
                     sizes="50vw"
@@ -236,12 +267,27 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
             {filterDataTerfavorit.map((item) => (
               <div
                 key={item.foodId}
-                className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:last:border-b-2 md:border-slate-100 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
+                className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 md:last:border-b-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
                 <div className="relative h-40 w-48 overflow-hidden rounded-xl md:w-56 lg:h-[600px] lg:w-full">
                   <Image
                     className="object-cover"
-                    src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                    src={
+                      item.public_id_img !== null &&
+                      item.version_img !== null &&
+                      item.format_img !== null &&
+                      IMAGE_URL !== undefined &&
+                      CLOUDINARY_NAME !== undefined
+                        ? IMAGE_URL +
+                          CLOUDINARY_NAME +
+                          '/v' +
+                          item.version_img +
+                          '/' +
+                          item.public_id_img +
+                          '.' +
+                          item.format_img
+                        : '/assets/no-image.jpeg'
+                    }
                     alt={item.name}
                     fill
                     sizes="50vw"

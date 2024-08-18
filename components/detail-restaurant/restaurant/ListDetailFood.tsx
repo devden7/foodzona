@@ -8,7 +8,8 @@ interface Props {
   cartBtnHandler: (item: IDataFood) => void;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API;
+const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_API;
+const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
 
 const ListDetailFood = ({ item, cartBtnHandler }: Props) => {
   return (
@@ -16,7 +17,22 @@ const ListDetailFood = ({ item, cartBtnHandler }: Props) => {
       <div className="relative h-48 w-full overflow-hidden rounded-xl md:h-40 lg:h-56">
         <Image
           className="object-cover"
-          src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+          src={
+            item.public_id_img !== null &&
+            item.version_img !== null &&
+            item.format_img !== null &&
+            IMAGE_URL !== undefined &&
+            CLOUDINARY_NAME !== undefined
+              ? IMAGE_URL +
+                CLOUDINARY_NAME +
+                '/v' +
+                item.version_img +
+                '/' +
+                item.public_id_img +
+                '.' +
+                item.format_img
+              : '/assets/no-image.jpeg'
+          }
           alt="makanan"
           fill
           sizes="50vw"

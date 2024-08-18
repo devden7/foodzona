@@ -6,7 +6,9 @@ export interface IDataFood {
   description: string;
   price: string | number;
   category: string;
-  image: string | null;
+  public_id_img: string | null;
+  format_img: string | null;
+  version_img: string | null;
   restaurantName: string;
   quantity: number;
   isRecommendation: boolean;

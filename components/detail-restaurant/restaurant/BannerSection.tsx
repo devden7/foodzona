@@ -7,7 +7,8 @@ interface Props {
   isRecommendationFood: IDataFood[] | undefined;
   restaurantName: string | undefined;
 }
-const API_URL = process.env.NEXT_PUBLIC_API;
+const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_API;
+const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
 
 const BannerSection = ({ isRecommendationFood, restaurantName }: Props) => {
   return (
@@ -16,7 +17,24 @@ const BannerSection = ({ isRecommendationFood, restaurantName }: Props) => {
         <div className="flex gap-3 p-2 md:p-5 lg:p-0">
           <div className="relative size-16 overflow-hidden rounded-xl md:size-24">
             <Image
-              src={`${isRecommendationFood !== undefined && isRecommendationFood.length > 0 && isRecommendationFood[0].image !== null ? API_URL + 'images/' + isRecommendationFood[0].image : '/assets/no-image.jpeg'}`}
+              src={
+                isRecommendationFood !== undefined &&
+                isRecommendationFood.length > 0 &&
+                isRecommendationFood[0].public_id_img !== null &&
+                isRecommendationFood[0].version_img !== null &&
+                isRecommendationFood[0].format_img !== null &&
+                IMAGE_URL !== undefined &&
+                CLOUDINARY_NAME !== undefined
+                  ? IMAGE_URL +
+                    CLOUDINARY_NAME +
+                    '/v' +
+                    isRecommendationFood[0].version_img +
+                    '/' +
+                    isRecommendationFood[0].public_id_img +
+                    '.' +
+                    isRecommendationFood[0].format_img
+                  : '/assets/no-image.jpeg'
+              }
               alt="Banner Restaurant"
               fill
               sizes="50vw"

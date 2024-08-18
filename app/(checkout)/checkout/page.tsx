@@ -23,7 +23,8 @@ import {
   HiPlusSm,
 } from 'react-icons/hi';
 
-const API_URL = process.env.NEXT_PUBLIC_API;
+const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_API;
+const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
 
 const Checkout = () => {
   const [isCart] = useState(true);
@@ -47,7 +48,9 @@ const Checkout = () => {
       name: item.name,
       description: item.description,
       price: item.price,
-      image: item.image,
+      public_id_img: item.public_id_img,
+      version_img: item.version_img,
+      format_img: item.format_img,
       restaurantName: item.restaurantName,
     };
     dispatch(addItem(request));
@@ -119,7 +122,22 @@ const Checkout = () => {
                     <div className="relative mb-4 size-24 overflow-hidden rounded-xl">
                       <Image
                         className="object-cover"
-                        src={`${item.image !== null ? API_URL + 'images/' + item.image : '/assets/no-image.jpeg'}`}
+                        src={
+                          item.public_id_img !== null &&
+                          item.version_img !== null &&
+                          item.format_img !== null &&
+                          IMAGE_URL !== undefined &&
+                          CLOUDINARY_NAME !== undefined
+                            ? IMAGE_URL +
+                              CLOUDINARY_NAME +
+                              '/v' +
+                              item.version_img +
+                              '/' +
+                              item.public_id_img +
+                              '.' +
+                              item.format_img
+                            : '/assets/no-image.jpeg'
+                        }
                         alt="makanan"
                         fill
                         sizes="50vw"

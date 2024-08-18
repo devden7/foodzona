@@ -17,18 +17,21 @@ import NavbarForm from '../navbar/NavbarForm';
 import UserDropdown from '../navbar/UserDropdown';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { signOut, useSession } from 'next-auth/react';
-import { useAppSelector } from '@/hooks/use-redux-hook';
+import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
 import { useState } from 'react';
+import { resetCart } from '@/store/Cart/CartSlice';
 
 const Navbar = () => {
   const [isNavMobile, setIsNavMobile] = useState(false);
   const pathname = usePathname();
   const location = useAppSelector((state) => state.location.city);
+  const dispatch = useAppDispatch();
   const isTab = useMediaQuery('(min-width: 768px)');
   const { data: session, update } = useSession();
 
   const logoutBtnHandler = () => {
     signOut({ callbackUrl: '/' });
+    dispatch(resetCart());
   };
 
   return (
