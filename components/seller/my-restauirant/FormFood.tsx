@@ -44,7 +44,7 @@ const FormFood = ({
       description: data?.description || '',
       price: Number(data?.price) || 0,
       category: data?.category[0] || '',
-      image: data?.image || '',
+      image: data?.public_id_img || '',
     },
   });
 
