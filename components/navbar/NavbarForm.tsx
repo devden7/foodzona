@@ -20,6 +20,7 @@ import { ToastAction } from '@/components/ui/toast';
 import ResponsiveDialog from '../shared/ResponsiveDialog';
 import { Session } from 'next-auth';
 import { UpdateSession } from 'next-auth/react';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 interface Props {
   session: Session | null;
@@ -27,6 +28,7 @@ interface Props {
 }
 const NavbarForm = ({ session, update }: Props) => {
   const [isOpenCreateStore, setIsOpenCreateStore] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formCreateStoreSchema>>({
     resolver: zodResolver(formCreateStoreSchema),
     defaultValues: {
@@ -36,6 +38,7 @@ const NavbarForm = ({ session, update }: Props) => {
   });
 
   async function onSubmit(values: z.infer<typeof formCreateStoreSchema>) {
+    setIsLoading(true);
     const response = await createRestaurant({
       restaurantName: values.restaurantName,
       city: values.city,
@@ -46,12 +49,14 @@ const NavbarForm = ({ session, update }: Props) => {
       restaurant: response.data.restaurantName,
     });
     if (response.errors) {
-      return toast({
+      toast({
         variant: 'destructive',
         title: response.errors,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
         duration: 3000,
       });
+      setIsLoading(false);
+      return;
     }
     toast({
       description:
@@ -59,6 +64,7 @@ const NavbarForm = ({ session, update }: Props) => {
       duration: 3000,
     });
     setIsOpenCreateStore(false);
+    setIsLoading(false);
     form.reset();
   }
   return (
@@ -135,7 +141,9 @@ const NavbarForm = ({ session, update }: Props) => {
                   <Button
                     type="submit"
                     className="w-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+                    disabled={isLoading}
                   >
+                    {isLoading && <LoadingSpinner />}
                     Kirim
                   </Button>
                 </form>

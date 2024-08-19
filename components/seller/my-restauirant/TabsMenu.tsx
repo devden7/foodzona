@@ -64,7 +64,11 @@ const TabsMenu = ({ token, dataMenu }: Props) => {
       </ResponsiveDialog>
 
       <div className="mb-10 flex flex-wrap items-center justify-start gap-4">
-        {dataMenu.length === 0 && <p>No Food</p>}
+        {dataMenu.length === 0 && (
+          <div className="flex h-52 w-full items-center justify-center font-medium lg:text-xl">
+            <p>Tidak ada makanan tersedia dikotamu</p>
+          </div>
+        )}
 
         {dataMenu.map((item: IDataFood) => (
           <FoodList

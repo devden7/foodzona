@@ -36,11 +36,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { registerUser } from '@/repositories/accountRepository';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
 const Login = () => {
   const [isBtnLogin, setIsBtnLogin] = useState(false);
   const [isBtnRegister, setIsBtnRegister] = useState(false);
   const [isOpenLogin, setIsOpenLogin] = useState(false);
+  const [isLoadingRegister, setIsLoadingRegister] = useState(false);
+  const [isLoadingLogin, setIsLoadingLogin] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
   const { toast } = useToast();
@@ -63,35 +66,43 @@ const Login = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formLoginSchema>) {
+    setIsLoadingLogin(true);
     const requestLogin = await signIn('credentials', {
       ...values,
       callbackUrl: '/',
       redirect: false,
     });
     if (requestLogin?.error) {
-      return toast({
+      toast({
         variant: 'destructive',
         title: 'Username or password is invalid',
         action: <ToastAction altText="Try again">Try again</ToastAction>,
         duration: 3000,
       });
+      setIsLoadingLogin(false);
+      return;
     }
+    setIsLoadingLogin(false);
     router.push('/');
   }
 
   async function onSubmitRegister(values: z.infer<typeof formRegisterSchema>) {
+    setIsLoadingRegister(true);
     const response = await registerUser(values);
     if (response.errors) {
-      return toast({
+      toast({
         variant: 'destructive',
         title: response.errors,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
         duration: 3000,
       });
+      setIsLoadingRegister(false);
+      return;
     }
-
+    setIsLoadingRegister(false);
     setIsBtnRegister(false);
     setIsBtnLogin(true);
+    formRegister.reset();
   }
 
   useEffect(() => {
@@ -268,7 +279,9 @@ const Login = () => {
                       <Button
                         type="submit"
                         className="w-full rounded-full bg-green-700 p-2 text-base  md:mb-4 md:p-5 lg:text-lg"
+                        disabled={isLoadingLogin}
                       >
+                        {isLoadingLogin && <LoadingSpinner />}
                         Lanjut
                       </Button>
                     </form>
@@ -283,7 +296,10 @@ const Login = () => {
                       <HiArrowSmLeft
                         size={25}
                         color="green"
-                        onClick={() => setIsBtnRegister(false)}
+                        onClick={() => {
+                          formRegister.reset();
+                          setIsBtnRegister(false);
+                        }}
                         className="cursor-pointer"
                       />
                       <div className="flex items-center gap-3">
@@ -366,8 +382,10 @@ const Login = () => {
                       />
                       <Button
                         type="submit"
-                        className="w-full rounded-full bg-green-700 p-2 text-base  md:mb-4 md:p-5 lg:text-lg"
+                        className="w-full rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+                        disabled={isLoadingRegister}
                       >
+                        {isLoadingRegister && <LoadingSpinner />}
                         Lanjut
                       </Button>
                     </form>

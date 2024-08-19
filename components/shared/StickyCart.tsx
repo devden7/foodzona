@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { HiShoppingBag } from 'react-icons/hi';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
 import { usePathname, useRouter } from 'next/navigation';
@@ -11,8 +11,10 @@ import { toast } from '../ui/use-toast';
 import { ToastAction } from '../ui/toast';
 import { resetCart } from '@/store/Cart/CartSlice';
 import { useSession } from 'next-auth/react';
+import LoadingSpinner from './LoadingSpinner';
 
 const StickyCart = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
@@ -27,6 +29,7 @@ const StickyCart = () => {
       calcPriceItem,
       items: cartItems,
     };
+    setIsLoading(true);
     const response = await createOrder({
       token: session?.user.token,
       ...request,
@@ -39,14 +42,15 @@ const StickyCart = () => {
         action: <ToastAction altText="Try again">Try again</ToastAction>,
         duration: 500,
       });
-      return setTimeout(() => dispatch(resetCart()), 500);
+      setIsLoading(false);
+      return setTimeout(() => dispatch(resetCart()), 5000);
     }
     router.refresh();
     toast({
       description: 'Order berhasil',
       duration: 3000,
     });
-
+    setIsLoading(false);
     router.push('/orders');
     setTimeout(() => {
       dispatch(resetCart());
@@ -58,7 +62,7 @@ const StickyCart = () => {
       router.push('/login');
       return toast({
         description: 'Silahkan untuk melakukan login',
-        duration: 3000,
+        duration: 5000,
       });
     }
   };
@@ -94,7 +98,9 @@ const StickyCart = () => {
                     type="submit"
                     onClick={submitOrderHandler}
                     className="size-full border-0 bg-transparent text-white outline-none hover:bg-transparent hover:text-white md:text-lg"
+                    disabled={isLoading}
                   >
+                    {isLoading && <LoadingSpinner />}
                     Beli
                   </Button>
                 )}

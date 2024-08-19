@@ -1,12 +1,15 @@
 'use client';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { ToastAction } from '@/components/ui/toast';
 import { toast } from '@/components/ui/use-toast';
+import { useMediaQuery } from '@/hooks/use-media-query';
 import { convertIsoToDate } from '@/lib/utils';
 import { Order } from '@/model/orderModel';
 import { cancelFood, deliveryFood } from '@/repositories/orderRepository';
 import { Session } from 'next-auth';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface Props {
   data: Order[];
@@ -14,16 +17,25 @@ interface Props {
 }
 
 const TabsHistoryOrder = ({ data, session }: Props) => {
+  const [isLoadingDelivery, setIsLoadingDelivery] = useState<number | null>(
+    null
+  );
+  const [isLoadingCancel, setIsLoadingCancel] = useState<number | null>(null);
   const router = useRouter();
+  const isTab = useMediaQuery('(min-width: 768px)');
+
   const deliveryFoodBtnHandler = async (orderId: number) => {
+    setIsLoadingDelivery(orderId);
     const response = await deliveryFood(session.user.token, orderId);
     if (response.errors) {
-      return toast({
+      toast({
         variant: 'destructive',
         title: response.errors,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
         duration: 3000,
       });
+      setIsLoadingDelivery(null);
+      return;
     }
     router.refresh();
 
@@ -31,18 +43,23 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
       description: 'Berhasil mengirim makanan',
       duration: 3000,
     });
+    setIsLoadingDelivery(null);
   };
 
   const cancelFoodBtnHandler = async (orderId: number) => {
+    setIsLoadingCancel(orderId);
     const response = await cancelFood(session.user.token, orderId);
     if (response.errors) {
-      return toast({
+      toast({
         variant: 'destructive',
         title: response.errors,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
         duration: 3000,
       });
+      setIsLoadingCancel(null);
+      return;
     }
+    setIsLoadingCancel(null);
     router.refresh();
     toast({
       description: 'Makanan dibatalkan',
@@ -51,60 +68,66 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
   };
   return (
     <>
-      <div className="flex flex-col gap-4 md:hidden">
-        {data?.map((item: Order) => (
-          <div key={item.orderId}>
-            <div className="rounded-t-2xl border border-b-0 border-gray-200 px-2 py-4">
-              <h4 className="font-semibold text-black/70">{item.username}</h4>
-              <div className="flex items-center gap-2 text-sm">
-                <p>{convertIsoToDate(item.createAt)}</p>
-                <span
-                  className={`font-medium ${item.status === 'Berhasil' ? 'text-green-500' : item.status === 'Pending' ? 'text-yellow-500' : 'text-red-500'}`}
-                >
-                  {item.status}
-                </span>
-              </div>
-
-              <div>
-                {item.orderItem.length === 0 && <p></p>}
-                {item.orderItem.map((order: any) => (
-                  <p className="text-sm" key={order.orderItemId}>
-                    {order.foodNameOrder}
-                  </p>
-                ))}
-              </div>
-            </div>
-            <div className="flex justify-between rounded-b-2xl border border-gray-200 px-2 py-4">
-              <div>
-                <p className="font-medium">IDR {item.totalPrice}</p>
-                <p className="text-xs font-medium text-black/80">
-                  {item.totalQuantity} items
-                </p>
-              </div>
-              {item.status === 'Pending' && (
-                <div>
-                  <Button
-                    className="mr-3"
-                    variant="outline"
-                    onClick={() => cancelFoodBtnHandler(item.orderId)}
+      {!isTab && (
+        <div className="flex flex-col gap-4">
+          {data?.map((item: Order) => (
+            <div key={item.orderId}>
+              <div className="rounded-t-2xl border border-b-0 border-gray-200 px-2 py-4">
+                <h4 className="font-semibold text-black/70">{item.username}</h4>
+                <div className="flex items-center gap-2 text-sm">
+                  <p>{convertIsoToDate(item.createAt)}</p>
+                  <span
+                    className={`font-medium ${item.status === 'Berhasil' ? 'text-green-500' : item.status === 'Pending' ? 'text-yellow-500' : 'text-red-500'}`}
                   >
-                    Batalkan
-                  </Button>
-                  <Button
-                    className=" bg-green-700"
-                    onClick={() => deliveryFoodBtnHandler(item.orderId)}
-                  >
-                    Kirim makanan
-                  </Button>
+                    {item.status}
+                  </span>
                 </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {data.length !== 0 && (
-        <div className="hidden md:table md:w-full">
+                <div className="flex gap-1">
+                  {item.orderItem.map((order: any, index) => (
+                    <p className="text-sm" key={order.orderItemId}>
+                      {order.foodNameOrder}
+                      {index < item.orderItem.length - 1 && <span> - </span>}
+                    </p>
+                  ))}
+                </div>
+              </div>
+              <div className="flex justify-between rounded-b-2xl border border-gray-200 px-2 py-4">
+                <div className="w-1/2">
+                  <p className="font-medium">IDR {item.totalPrice}</p>
+                  <p className="text-xs font-medium text-black/80">
+                    {item.totalQuantity} items
+                  </p>
+                </div>
+                {item.status === 'Pending' && (
+                  <div>
+                    <Button
+                      className="mb-3 mr-3"
+                      variant="outline"
+                      onClick={() => cancelFoodBtnHandler(item.orderId)}
+                      disabled={isLoadingCancel === item.orderId}
+                    >
+                      {isLoadingCancel === item.orderId && <LoadingSpinner />}
+                      Batalkan
+                    </Button>
+                    <Button
+                      className=" bg-green-700"
+                      onClick={() => deliveryFoodBtnHandler(item.orderId)}
+                      disabled={isLoadingDelivery === item.orderId}
+                    >
+                      {isLoadingDelivery === item.orderId && <LoadingSpinner />}
+                      Kirim makanan
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {isTab && data.length !== 0 && (
+        <div className="table w-full">
           <table className="md:w-full md:border-separate md:border-spacing-y-5">
             <thead>
               <tr className="text-left text-black/50">
@@ -133,13 +156,16 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
                     </div>
                   </td>
                   <td className="border-y-[1.5px] px-3  py-5">
-                    <div>
-                      {item.orderItem.map((order: any) => (
+                    <div className="flex gap-1">
+                      {item.orderItem.map((order: any, index: number) => (
                         <span
                           key={order.orderItemId}
                           className="line-clamp-2 max-w-96 text-sm "
                         >
                           {order.foodNameOrder}
+                          {index < item.orderItem.length - 1 && (
+                            <span> - </span>
+                          )}
                         </span>
                       ))}
                     </div>
@@ -156,16 +182,24 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
                     {item.status === 'Pending' && (
                       <div>
                         <Button
-                          className="mb-3 mr-3 xl:mb-0"
+                          className="mb-3 mr-3"
                           variant="outline"
                           onClick={() => cancelFoodBtnHandler(item.orderId)}
+                          disabled={isLoadingDelivery === item.orderId}
                         >
+                          {isLoadingCancel === item.orderId && (
+                            <LoadingSpinner />
+                          )}
                           Batalkan
                         </Button>
                         <Button
                           className=" bg-green-700"
                           onClick={() => deliveryFoodBtnHandler(item.orderId)}
+                          disabled={isLoadingDelivery === item.orderId}
                         >
+                          {isLoadingDelivery === item.orderId && (
+                            <LoadingSpinner />
+                          )}
                           Kirim makanan
                         </Button>
                       </div>

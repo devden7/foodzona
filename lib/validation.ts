@@ -31,7 +31,11 @@ export const formCreateFoodSchema = z.object({
     .any()
     .optional()
     .refine((file) => {
-      return file.length === 0 || imageFormat.includes(file[0]?.type);
+      return (
+        file !== null ||
+        file.length === 0 ||
+        imageFormat.includes(file[0]?.type)
+      );
     }, 'Only .jpg, .jpeg, and .png  formats are supported.'),
 });
 

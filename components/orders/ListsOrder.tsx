@@ -74,7 +74,7 @@ const ListsOrder = ({ data, session }: Props) => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 )}
-                <h4 className="font-semibold text-black/70">
+                <h4 className="font-semibold capitalize text-black/70">
                   {item.restaurantName}, {item.restaurant.city_name}
                 </h4>
                 <div className="flex items-center gap-2 text-sm">
@@ -86,10 +86,11 @@ const ListsOrder = ({ data, session }: Props) => {
                   </span>
                 </div>
 
-                <div>
-                  {item.orderItem.map((order: any) => (
+                <div className="flex gap-1">
+                  {item.orderItem.map((order: any, index: number) => (
                     <p className="text-sm" key={order.orderItemId}>
                       {order.foodNameOrder}
+                      {index < item.orderItem.length - 1 && <span> - </span>}
                     </p>
                   ))}
                 </div>
@@ -139,7 +140,7 @@ const ListsOrder = ({ data, session }: Props) => {
                   )}
                   <td className="rounded-l-2xl border-y-[1.5px] border-l-[1.5px] px-3 py-5">
                     <div>
-                      <span className="mb-2 line-clamp-1 max-h-7 font-medium text-black/50">
+                      <span className="mb-2 line-clamp-1 max-h-7 font-medium capitalize text-black/50">
                         {item.restaurantName}, {item.restaurant.city_name}
                       </span>
                       <div className="flex items-center gap-2 text-sm">
@@ -153,15 +154,19 @@ const ListsOrder = ({ data, session }: Props) => {
                     </div>
                   </td>
                   <td className="border-y-[1.5px] px-3  py-5">
-                    {item.orderItem.length === 0 && <p></p>}
-                    {item.orderItem.map((order: any) => (
-                      <span
-                        className="line-clamp-2 max-w-96 text-sm"
-                        key={order.orderItemId}
-                      >
-                        {order.foodNameOrder}
-                      </span>
-                    ))}
+                    <div className="flex gap-1">
+                      {item.orderItem.map((order: any, index: number) => (
+                        <span
+                          className="line-clamp-2 max-w-96 text-sm"
+                          key={order.orderItemId}
+                        >
+                          {order.foodNameOrder}
+                          {index < item.orderItem.length - 1 && (
+                            <span> - </span>
+                          )}
+                        </span>
+                      ))}
+                    </div>
                   </td>
                   <td className="border-y-[1.5px] px-3  py-5">
                     <div>

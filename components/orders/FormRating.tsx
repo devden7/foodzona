@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Form,
@@ -19,12 +19,14 @@ import { reviewFood } from '@/repositories/orderRepository';
 import { useRouter } from 'next/navigation';
 import { toast } from '../ui/use-toast';
 import { ToastAction } from '../ui/toast';
+import LoadingSpinner from '../shared/LoadingSpinner';
 interface Props {
   orderId: number;
   token: string;
   setIsRatingBtn: (value: boolean) => void;
 }
 const FormRating = ({ orderId, token, setIsRatingBtn }: Props) => {
+  const [isLoadingRating, setIsLoadingRating] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof reviewFoodForm>>({
     resolver: zodResolver(reviewFoodForm),
@@ -40,14 +42,17 @@ const FormRating = ({ orderId, token, setIsRatingBtn }: Props) => {
   };
 
   async function onSubmit(values: z.infer<typeof reviewFoodForm>) {
+    setIsLoadingRating(true);
     const response = await reviewFood(values, orderId, token);
     if (response.errors) {
-      return toast({
+      toast({
         variant: 'destructive',
         title: response.errors,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
         duration: 3000,
       });
+      setIsLoadingRating(false);
+      return;
     }
     router.refresh();
 
@@ -56,6 +61,7 @@ const FormRating = ({ orderId, token, setIsRatingBtn }: Props) => {
       duration: 3000,
     });
     setIsRatingBtn(false);
+    setIsLoadingRating(false);
   }
   return (
     <Form {...form}>
@@ -112,7 +118,9 @@ const FormRating = ({ orderId, token, setIsRatingBtn }: Props) => {
           <Button
             type="submit"
             className="w-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg"
+            disabled={isLoadingRating}
           >
+            {isLoadingRating && <LoadingSpinner />}
             beri rating
           </Button>
         </div>
