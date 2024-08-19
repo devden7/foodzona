@@ -6,9 +6,14 @@ import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import { getFoodLists } from '@/repositories/FoodsRepository';
 import Link from 'next/link';
 import { auth } from '@/auth';
+import { Metadata } from 'next';
 
 const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_API;
 const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+
+export const metadata: Metadata = {
+  title: 'Recommendation | Food Zona',
+};
 
 const Recommendations = async ({ params }: { params: { city: string } }) => {
   const session = await auth();

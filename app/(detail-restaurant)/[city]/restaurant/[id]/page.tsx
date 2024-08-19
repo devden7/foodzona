@@ -3,11 +3,20 @@ import Reviews from '@/components/detail-restaurant/restaurant/Reviews';
 import ListFoodSection from '@/components/detail-restaurant/restaurant/ListFoodSection';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import { getFoodListsDetail } from '@/repositories/FoodsRepository';
+import { Metadata } from 'next';
 
 interface PropsParams {
   params: {
     city: string;
     id: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: PropsParams): Promise<Metadata> {
+  return {
+    title: params.id + ' | Food Zona',
   };
 }
 

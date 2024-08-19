@@ -10,8 +10,9 @@ import Providers from '@/store/Providers';
 import NextAuthProvider from '@/context/NextAuthProvider';
 
 export const metadata: Metadata = {
-  title: 'Food Zona',
-  description: 'Cloning GoFood',
+  title: 'Home | Food Zona',
+  description:
+    'Choose from a comprehensive restaurant menu, add to your cart, and easily place your order.',
 };
 
 const maisonNeue = localFont({

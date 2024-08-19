@@ -4,6 +4,11 @@ import { redirect } from 'next/navigation';
 import { getOrdersUser } from '@/repositories/orderRepository';
 import ListsOrder from '@/components/orders/ListsOrder';
 import { auth } from '@/auth';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Orders History | Food Zona',
+};
 
 const OrdersPage = async () => {
   const session = await auth();

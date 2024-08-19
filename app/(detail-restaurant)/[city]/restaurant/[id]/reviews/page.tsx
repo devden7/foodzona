@@ -4,6 +4,22 @@ import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import InfoRating from '@/components/detail-restaurant/restaurant/reviews/InfoRating';
 import { convertIsoToDate } from '@/lib/utils';
 import { getFoodListsDetail } from '@/repositories/FoodsRepository';
+import { Metadata } from 'next';
+
+interface PropsParams {
+  params: {
+    id: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: PropsParams): Promise<Metadata> {
+  return {
+    title: 'Reviews - ' + params.id + ' | Food Zona',
+  };
+}
+
 const ReviewsUserf = async ({
   params,
 }: {

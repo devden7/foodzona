@@ -46,7 +46,7 @@ const Restaurants = async ({ params }: PropsParams) => {
           </h2>
           <div className="mb-10 flex flex-wrap items-center justify-start gap-4">
             {filterData?.length === 0 && (
-              <p className="w-full text-center font-medium">
+              <p className="flex h-52 w-full items-center justify-center text-base font-medium">
                 Belum ada restaurant yang tersedia di kotamu
               </p>
             )}

@@ -7,6 +7,11 @@ import { getOrdersRestaurant } from '@/repositories/orderRepository';
 import { getFoodRestaurant } from '@/repositories/restaurantRepository';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import { auth } from '@/auth';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My restaurant | Food Zona',
+};
 
 const MyRestaurant = async () => {
   const session = await auth();
