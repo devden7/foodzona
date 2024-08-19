@@ -97,7 +97,8 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
           )}
           <div className="mb-10 flex flex-wrap gap-4 ">
             {filterDataTerdekat.map((item) => (
-              <div
+              <Link
+                href={`/${params.city}/restaurant/${item.restaurantName.toLowerCase().replace(/ /g, '-')}`}
                 key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 md:last:border-b-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
@@ -140,7 +141,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           {filterDataTerdekat.length !== 0 && (
@@ -180,7 +181,8 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
           )}
           <div className="mb-10 flex flex-wrap gap-4">
             {filterDataTerlaris.map((item) => (
-              <div
+              <Link
+                href={`/${params.city}/restaurant/${item.restaurantName.toLowerCase().replace(/ /g, '-')}`}
                 key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 md:last:border-b-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
@@ -223,7 +225,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           {filterDataTerlaris.length !== 0 && (
@@ -265,7 +267,8 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
           )}
           <div className="mb-10 flex flex-wrap gap-4">
             {filterDataTerfavorit.map((item) => (
-              <div
+              <Link
+                href={`/${params.city}/restaurant/${item.restaurantName.toLowerCase().replace(/ /g, '-')}`}
                 key={item.foodId}
                 className="flex w-full gap-3 border-b-2 border-slate-100 p-3 last:border-b-0 md:w-2/5 md:rounded-2xl md:border-slate-100 md:last:border-b-2 hover:md:bg-white hover:md:shadow-md lg:h-[395px] lg:w-[22%] lg:flex-col lg:items-center lg:rounded-2xl lg:border-2 lg:p-2"
               >
@@ -308,7 +311,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           {filterDataTerfavorit.length !== 0 && (
