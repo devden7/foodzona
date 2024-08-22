@@ -5,6 +5,7 @@ import InfoRating from '@/components/detail-restaurant/restaurant/reviews/InfoRa
 import { convertIsoToDate } from '@/lib/utils';
 import { getFoodListsDetail } from '@/repositories/FoodsRepository';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 interface PropsParams {
   params: {
@@ -26,7 +27,10 @@ const ReviewsUserf = async ({
   params: { city: string; id: string };
 }) => {
   const data = await getFoodListsDetail(params.id);
-
+  if (data.errors) {
+    return notFound();
+  }
+  console.log(data);
   return (
     <>
       <BreadCrumbSection

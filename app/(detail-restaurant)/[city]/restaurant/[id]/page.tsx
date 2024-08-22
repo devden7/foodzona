@@ -4,6 +4,7 @@ import ListFoodSection from '@/components/detail-restaurant/restaurant/ListFoodS
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import { getFoodListsDetail } from '@/repositories/FoodsRepository';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 interface PropsParams {
   params: {
@@ -22,7 +23,10 @@ export async function generateMetadata({
 
 const DetailRestaurant = async ({ params }: PropsParams) => {
   const data = await getFoodListsDetail(params.id);
-
+  if (data.errors) {
+    return notFound();
+  }
+  console.log(data);
   const isRecommendationFood = data?.data.foods.filter(
     (item) => item.isRecommendation === true
   );
