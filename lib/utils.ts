@@ -36,3 +36,10 @@ export const calcRating = (arr: dataReview[] | undefined): string => {
   finalResult = `${splitResult[0]}.${takeDecimal}`;
   return finalResult;
 };
+
+export const formatCurrency = (value: number): string => {
+  console.log(value);
+  const convertValue = new Intl.NumberFormat('id-ID').format(value);
+  console.log(convertValue);
+  return convertValue;
+};

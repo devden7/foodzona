@@ -15,6 +15,7 @@ import { addRecommendationFood } from '@/repositories/restaurantRepository';
 import { useRouter } from 'next/navigation';
 import { ToastAction } from '@/components/ui/toast';
 import { toast } from '@/components/ui/use-toast';
+import { formatCurrency } from '@/lib/utils';
 
 interface Props {
   isOpenEdit: boolean;
@@ -148,7 +149,9 @@ const FoodList = ({
           </p>
         </div>
         <div>
-          <p className="text-lg font-medium">{item.price}</p>
+          <p className="text-lg font-medium">
+            {formatCurrency(Number(item.price))}
+          </p>
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-redux-hook';
+import { formatCurrency } from '@/lib/utils';
 import { IDataFood } from '@/model/foodModel';
 import { addItem, deleteItem } from '@/store/Cart/CartSlice';
 import { useSession } from 'next-auth/react';
@@ -116,7 +117,7 @@ const Checkout = () => {
               >
                 <div>
                   <p className="mb-3 font-semibold">{item.name}</p>
-                  <p>{item.price}</p>
+                  <p>{formatCurrency(Number(item.price))}</p>
                 </div>
                 <div>
                   <div className="relative mb-4 size-24 overflow-hidden rounded-xl">
@@ -180,7 +181,7 @@ const Checkout = () => {
 
             <div className="mb-2 flex justify-between">
               {<p>Harga</p>}
-              <p>{calcPriceItem}</p>
+              <p>{formatCurrency(calcPriceItem)}</p>
             </div>
             <div className="flex justify-between">
               <p className="mb-4">Biaya penanganan dan pengiriman</p>
@@ -188,7 +189,9 @@ const Checkout = () => {
             </div>
             <div className="flex justify-between  border-t-[1.5px] border-gray-200">
               <p className="text-sm font-semibold">Total pembayaran</p>
-              <p className="text-xl font-bold">{calcPriceItem + 11000}</p>
+              <p className="text-xl font-bold">
+                {formatCurrency(calcPriceItem + 11000)}
+              </p>
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ToastAction } from '@/components/ui/toast';
 import { toast } from '@/components/ui/use-toast';
 import { useMediaQuery } from '@/hooks/use-media-query';
-import { convertIsoToDate } from '@/lib/utils';
+import { convertIsoToDate, formatCurrency } from '@/lib/utils';
 import { Order } from '@/model/orderModel';
 import { cancelFood, deliveryFood } from '@/repositories/orderRepository';
 import { Session } from 'next-auth';
@@ -94,7 +94,9 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
               </div>
               <div className="flex justify-between rounded-b-2xl border border-gray-200 px-2 py-4">
                 <div className="w-1/2">
-                  <p className="font-medium">IDR {item.totalPrice}</p>
+                  <p className="font-medium">
+                    IDR {formatCurrency(item.totalPrice)}
+                  </p>
                   <p className="text-xs font-medium text-black/80">
                     {item.totalQuantity} items
                   </p>
@@ -172,7 +174,10 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
                   </td>
                   <td className="w-1/6 border-y-[1.5px] px-3  py-5">
                     <div>
-                      <span className="text-sm"> IDR {item.totalPrice}</span>
+                      <span className="text-sm">
+                        {' '}
+                        IDR {formatCurrency(item.totalPrice)}
+                      </span>
                       <p className="text-xs font-medium text-black/80 xl:text-sm">
                         {item.totalQuantity} items
                       </p>

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { formatCurrency } from '@/lib/utils';
 import { IDataFood } from '@/model/foodModel';
 import Image from 'next/image';
 import process from 'process';
@@ -44,7 +45,9 @@ const ItemRecommendationFood = ({ item, cartBtnHandler }: Props) => {
           </div>
         </div>
         <p className="font-semibold lg:text-lg">{item.name}</p>
-        <p className="font-semibold lg:text-lg">{item.price}</p>
+        <p className="font-semibold lg:text-lg">
+          {formatCurrency(Number(item.price))}
+        </p>
         <Button
           className="rounded-full border border-green-700 bg-white text-green-700 hover:bg-green-200 xl:mt-4"
           onClick={() => cartBtnHandler(item)}

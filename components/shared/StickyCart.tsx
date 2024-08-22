@@ -12,6 +12,7 @@ import { ToastAction } from '../ui/toast';
 import { resetCart } from '@/store/Cart/CartSlice';
 import { useSession } from 'next-auth/react';
 import LoadingSpinner from './LoadingSpinner';
+import { formatCurrency } from '@/lib/utils';
 
 const StickyCart = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +89,9 @@ const StickyCart = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-2 ">
-                      <p className="text-base">{calcPriceItem}</p>
+                      <p className="text-base">
+                        {formatCurrency(calcPriceItem)}
+                      </p>
                       <HiShoppingBag size={20} />
                     </div>
                   </Link>
