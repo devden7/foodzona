@@ -30,7 +30,6 @@ const ReviewsUserf = async ({
   if (data.errors) {
     return notFound();
   }
-  console.log(data);
   return (
     <>
       <BreadCrumbSection

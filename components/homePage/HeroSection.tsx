@@ -26,7 +26,6 @@ export const HeroSection = ({ location, dataCity }: Props) => {
             src={`${isTablet ? '/assets/hero.jpg' : '/assets/hero-mobile.jpg'}`}
             alt="logo hero"
             fill
-            quality={100}
             priority={true}
           />
 

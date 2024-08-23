@@ -24,14 +24,18 @@ const CategoriesMenuSection = ({ location, type }: Props) => {
         className={`relative grid grid-cols-3 gap-x-5 gap-y-8 overflow-hidden md:grid-cols-4 lg:grid-cols-6`}
       >
         {typeFoodLists.map((item, index) => (
-          <Link href={linkToCategory + item.href} key={item.id}>
+          <Link
+            href={linkToCategory + item.href}
+            key={item.id}
+            aria-label={item.label}
+          >
             <div
               className={`flex aspect-square cursor-pointer flex-col items-center justify-center text-sm font-semibold  transition-all duration-100 md:rounded-2xl md:border-2 md:border-slate-100 md:p-5 hover:md:bg-white hover:md:shadow-md ${index > listFoodByScreen && !isMoreBtn ? 'invisible absolute h-0 opacity-0' : 'visible opacity-100 '}`}
             >
               <div className="relative size-full items-center justify-center overflow-hidden rounded-full transition active:bg-slate-50">
                 <Image
                   src={item.imageUrl}
-                  alt={item.label}
+                  alt={item.label + ' Category'}
                   height={200}
                   width={200}
                   quality={100}

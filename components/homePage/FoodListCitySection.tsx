@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { HiStar } from 'react-icons/hi';
-import { Button } from '../ui/button';
 import { Session } from 'next-auth';
 
 interface Props {
@@ -25,11 +24,13 @@ const FoodListCity = ({ data, session, location }: Props) => {
     <section className="relative sm:mt-24">
       <div className="pl-4 2xl:container 2xl:w-[1200px]">
         <h2 className="mb-3 text-[21px] font-semibold md:text-center md:text-3xl">
-          Apa aja nih yang enak di kota kamu?
+          Apa aja nih yang enak di{' '}
+          <span className="capitalize">{location}</span>?
         </h2>
         <p className="text-sm md:mb-5 md:px-28 md:text-center md:text-[16px] lg:text-lg ">
           Yuk, dicek koleksi makanan populer, favoritnya foodies lokal, dan
-          penawaran terbaik kami di lokasimu!
+          penawaran terbaik kami di{' '}
+          <span className="capitalize">{location}</span>!
         </p>
         {filterData?.length === 0 && (
           <p className="flex h-52 w-auto items-center justify-center font-medium lg:text-xl">
@@ -65,7 +66,6 @@ const FoodListCity = ({ data, session, location }: Props) => {
                   alt={item.name}
                   fill
                   sizes="50vw"
-                  quality={90}
                 />
                 <div className="absolute left-1/2 top-[85%] z-50 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-medium text-black lg:left-[80%] lg:top-[90%]">
                   <HiStar color="orange" size={20} />
@@ -83,14 +83,14 @@ const FoodListCity = ({ data, session, location }: Props) => {
             </Link>
           ))}
         </div>
-        <Button className="absolute left-1/2 w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-50 text-base font-bold text-green-700 hover:bg-green-100 sm:mb-10 md:w-1/4 lg:w-1/5 xl:w-[15%]">
+        <div className="max-w-full">
           <Link
             href={`/${location.toLocaleLowerCase()}/restaurants/near_me`}
-            className="size-full"
+            className="mx-auto flex max-w-full justify-center rounded-full bg-green-50 p-2 text-base font-bold text-green-700 hover:bg-green-100 md:w-1/3 lg:w-1/4"
           >
             Tampilkan semua resto
           </Link>
-        </Button>
+        </div>
       </div>
     </section>
   );

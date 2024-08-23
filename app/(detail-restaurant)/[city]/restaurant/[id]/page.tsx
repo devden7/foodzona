@@ -26,7 +26,6 @@ const DetailRestaurant = async ({ params }: PropsParams) => {
   if (data.errors) {
     return notFound();
   }
-  console.log(data);
   const isRecommendationFood = data?.data.foods.filter(
     (item) => item.isRecommendation === true
   );

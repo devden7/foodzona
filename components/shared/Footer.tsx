@@ -86,7 +86,10 @@ const Footer = () => {
               </div>
             </div>
             <Select>
-              <SelectTrigger className="mb-5 w-full rounded-full text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-3/4 md:max-w-[400px]">
+              <SelectTrigger
+                className="mb-5 w-full rounded-full text-black focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-3/4 md:max-w-[400px]"
+                aria-label="change language"
+              >
                 <div className="flex items-center gap-3">
                   <HiOutlineTranslate color="red" size={15} />
                   <SelectValue placeholder="Bahasa Indonesia" />

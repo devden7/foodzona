@@ -16,7 +16,7 @@ const RecommendationMenuSection = ({ location, type }: Props) => {
             <div className="relative size-full items-center justify-center rounded-2xl border-2  border-slate-100 transition active:bg-slate-50 md:size-1/2 md:border-0 md:transition md:duration-500 lg:size-[70%]">
               <Image
                 src={item.imageUrl}
-                alt={item.label}
+                alt={item.label + ' Category'}
                 height={60}
                 width={60}
                 className="absolute  left-1/2 top-1/2 max-h-full max-w-full -translate-x-1/2 -translate-y-1/2"

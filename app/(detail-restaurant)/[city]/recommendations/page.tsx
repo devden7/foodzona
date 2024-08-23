@@ -166,7 +166,7 @@ const Recommendations = async ({ params }: { params: { city: string } }) => {
       <section className="mb-10">
         <div className="container 2xl:w-[1300px]">
           <div className="mb-10 flex items-center gap-2">
-            <div className="w-10  md:w-16">
+            <div className="w-10 md:w-16">
               <Image
                 src="/assets/categories_terlaris.png"
                 alt="terdekat"

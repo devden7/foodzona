@@ -86,7 +86,10 @@ const SearchBox = ({ location, dataCity }: Props) => {
               />
             </div>
             <Button className="w-full rounded-full bg-green-700 p-2 text-base md:mb-4 md:p-5 lg:text-lg">
-              <Link href={`${location?.toLocaleLowerCase()}/restaurants`}>
+              <Link
+                href={`${location?.toLocaleLowerCase()}/restaurants`}
+                className="p-2"
+              >
                 Explor
               </Link>
             </Button>

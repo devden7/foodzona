@@ -99,7 +99,6 @@ const FormFood = ({
         }
       }
     }
-    console.log(response);
     if (response.errors) {
       toast({
         variant: 'destructive',

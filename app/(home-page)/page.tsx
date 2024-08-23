@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { valueList } from '@/constants';
-import { Button } from '@/components/ui/button';
 import RecommendationMenuSection from '@/components/shared/RecommendationMenuSection';
 import CategoriesMenuSection from '@/components/shared/CategoriesMenuSection';
 import { IResponseGetFoods } from '@/model/foodModel';
@@ -15,10 +14,12 @@ import { getFoodLists } from '@/repositories/FoodsRepository';
 import { IResCityList } from '@/model/restaurantModel';
 import { getCityLists } from '@/repositories/restaurantRepository';
 import Link from 'next/link';
+import Loading from './loading';
 
 export default function Home() {
   const [data, setData] = useState<IResponseGetFoods>();
   const [dataCity, setDataCity] = useState<IResCityList[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { data: session } = useSession();
   const location = useAppSelector((state) => state.location.city);
 
@@ -29,19 +30,27 @@ export default function Home() {
       limit: 8,
     };
     const response = await getFoodLists(request);
-    setData(response.data);
+    return response.data;
   };
 
   const getCityList = async () => {
     const response = await getCityLists();
-    setDataCity(response);
+    return response;
   };
 
   useEffect(() => {
-    getFoodList();
-    getCityList();
+    setIsLoading(true);
+    Promise.all([getFoodList(), getCityList()]).then(
+      ([foodValues, cityValues]) => {
+        setData(foodValues);
+        setDataCity(cityValues);
+        setIsLoading(false);
+      }
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -116,14 +125,12 @@ export default function Home() {
                   key={item.city_name}
                   className="scale-105 transition-transform sm:scale-110"
                 >
-                  <Button className="line-clamp-1 max-w-28 rounded-full border-2 border-slate-100 bg-transparent text-start font-bold text-green-700 hover:bg-slate-100">
-                    <Link
-                      href={location + '/restaurants'}
-                      className="capitalize"
-                    >
-                      {item.city_name}
-                    </Link>
-                  </Button>
+                  <Link
+                    href={location + '/restaurants'}
+                    className="line-clamp-1 max-w-28 rounded-full border-2 border-slate-100 bg-transparent p-2 text-center text-sm font-bold capitalize text-green-700 hover:bg-slate-100"
+                  >
+                    {item.city_name}
+                  </Link>
                 </div>
               ))}
             </div>
