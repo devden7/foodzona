@@ -23,11 +23,7 @@ export interface IResponseGetFoods {
 
 export interface IReqInsertFood {
   foodId?: number;
-  foodName: string;
-  description: string;
-  price: number;
-  category: string;
-  image?: FileList | any;
+  data: FormData;
   token: string;
 }
 

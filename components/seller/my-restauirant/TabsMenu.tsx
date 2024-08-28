@@ -9,7 +9,6 @@ import FoodList from './FoodList';
 import { deleteFoodRestaurant } from '@/repositories/restaurantRepository';
 import ResponsiveDialog from '../../shared/ResponsiveDialog';
 import { toast } from '@/components/ui/use-toast';
-import { useRouter } from 'next/navigation';
 import { ToastAction } from '@/components/ui/toast';
 
 interface Props {
@@ -20,7 +19,6 @@ const TabsMenu = ({ token, dataMenu }: Props) => {
   const [idFood, setIdFood] = useState<number | null>(null);
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
-  const router = useRouter();
   const createNewFood = () => {
     setIsOpenAdd(false);
   };
@@ -39,7 +37,6 @@ const TabsMenu = ({ token, dataMenu }: Props) => {
         duration: 3000,
       });
     }
-    router.refresh();
     toast({
       description: 'Berhasil menghapus makanan',
       duration: 3000,

@@ -5,13 +5,14 @@ import Image from 'next/image';
 import React from 'react';
 import SearchBox from './SearchBox';
 import { IResCityList } from '@/model/restaurantModel';
+import { useAppSelector } from '@/hooks/use-redux-hook';
 
 interface Props {
-  location: string;
   dataCity: IResCityList[];
 }
-export const HeroSection = ({ location, dataCity }: Props) => {
+export const HeroSection = ({ dataCity }: Props) => {
   const isTablet = useMediaQuery('(min-width: 768px)');
+  const location = useAppSelector((state) => state.location.city);
   return (
     <section className=" mb-[75px] mt-3">
       <div className="m-3 flex lg:m-0 lg:px-2 lg:py-1">

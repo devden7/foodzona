@@ -8,7 +8,6 @@ import { convertIsoToDate, formatCurrency } from '@/lib/utils';
 import { Order } from '@/model/orderModel';
 import { cancelFood, deliveryFood } from '@/repositories/orderRepository';
 import { Session } from 'next-auth';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface Props {
@@ -21,7 +20,6 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
     null
   );
   const [isLoadingCancel, setIsLoadingCancel] = useState<number | null>(null);
-  const router = useRouter();
   const isTab = useMediaQuery('(min-width: 768px)');
 
   const deliveryFoodBtnHandler = async (orderId: number) => {
@@ -37,7 +35,6 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
       setIsLoadingDelivery(null);
       return;
     }
-    router.refresh();
 
     toast({
       description: 'Berhasil mengirim makanan',
@@ -60,7 +57,6 @@ const TabsHistoryOrder = ({ data, session }: Props) => {
       return;
     }
     setIsLoadingCancel(null);
-    router.refresh();
     toast({
       description: 'Makanan dibatalkan',
       duration: 3000,

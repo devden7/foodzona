@@ -6,16 +6,17 @@ import Image from 'next/image';
 import { typeFoodLists } from '@/constants';
 import { Button } from '../ui/button';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { useAppSelector } from '@/hooks/use-redux-hook';
 
 interface Props {
   type: string;
-  location: string;
 }
-const CategoriesMenuSection = ({ location, type }: Props) => {
+const CategoriesMenuSection = ({ type }: Props) => {
   const [isMoreBtn, setIsMoreBtn] = useState(false);
   const isMobile = useMediaQuery('(min-width: 640px)');
   const isTab = useMediaQuery('(min-width: 768px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const location = useAppSelector((state) => state.location.city);
   const linkToCategory = type !== 'restaurants' ? location + '/' : '';
   const listFoodByScreen = isDesktop ? 5 : isTab ? 7 : isMobile ? 8 : 17;
   return (

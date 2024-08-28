@@ -12,7 +12,6 @@ import { HiDotsVertical } from 'react-icons/hi';
 import ResponsiveDialog from '../../shared/ResponsiveDialog';
 import FormFood from './FormFood';
 import { addRecommendationFood } from '@/repositories/restaurantRepository';
-import { useRouter } from 'next/navigation';
 import { ToastAction } from '@/components/ui/toast';
 import { toast } from '@/components/ui/use-toast';
 import { formatCurrency } from '@/lib/utils';
@@ -41,7 +40,6 @@ const FoodList = ({
   updatedNewFood,
   deleteFoodHandler,
 }: Props) => {
-  const router = useRouter();
   const recommendationBtnHandler = async (foodId: number) => {
     const response = await addRecommendationFood(foodId, token);
     if (response.errors) {
@@ -52,7 +50,6 @@ const FoodList = ({
         duration: 3000,
       });
     }
-    router.refresh();
 
     toast({
       description: 'Berhasil merekomendasikan makanan',

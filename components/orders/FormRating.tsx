@@ -16,7 +16,6 @@ import { z } from 'zod';
 import { Button } from '../ui/button';
 import { HiStar } from 'react-icons/hi';
 import { reviewFood } from '@/repositories/orderRepository';
-import { useRouter } from 'next/navigation';
 import { toast } from '../ui/use-toast';
 import { ToastAction } from '../ui/toast';
 import LoadingSpinner from '../shared/LoadingSpinner';
@@ -27,7 +26,6 @@ interface Props {
 }
 const FormRating = ({ orderId, token, setIsRatingBtn }: Props) => {
   const [isLoadingRating, setIsLoadingRating] = useState(false);
-  const router = useRouter();
   const form = useForm<z.infer<typeof reviewFoodForm>>({
     resolver: zodResolver(reviewFoodForm),
     defaultValues: {
@@ -54,7 +52,6 @@ const FormRating = ({ orderId, token, setIsRatingBtn }: Props) => {
       setIsLoadingRating(false);
       return;
     }
-    router.refresh();
 
     toast({
       description: 'Rating berhasil dikirimkan',

@@ -1,5 +1,8 @@
+'use server';
+
 import { IResMessage, IResponse } from '@/model/accountModel';
 import { IRatingReq, IReqOrder } from '@/model/orderModel';
+import { revalidatePath } from 'next/cache';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -17,6 +20,7 @@ export const createOrder = async (request: IReqOrder) => {
     }),
   });
   const data = await response.json();
+  revalidatePath('/orders');
   return data;
 };
 
@@ -38,6 +42,8 @@ export const deliveryFood = async (token: string, orderId: number) => {
     },
   });
   const data = await response.json();
+
+  revalidatePath('my-restaurant');
   return data;
 };
 
@@ -49,6 +55,8 @@ export const cancelFood = async (token: string, orderId: number) => {
     },
   });
   const data = await response.json();
+
+  revalidatePath('/my-restaurant');
   return data;
 };
 
@@ -76,5 +84,7 @@ export const reviewFood = async (
     body: JSON.stringify(request),
   });
   const data = await response.json();
+
+  revalidatePath('/orders');
   return data;
 };

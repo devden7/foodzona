@@ -3,20 +3,32 @@
 import { IResponseGetFoods } from '@/model/foodModel';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { HiStar } from 'react-icons/hi';
-import { Session } from 'next-auth';
-
-interface Props {
-  data: IResponseGetFoods | undefined;
-  session: Session | null;
-  location: string;
-}
+import { getFoodLists } from '@/repositories/FoodsRepository';
+import { useSession } from 'next-auth/react';
+import { useAppSelector } from '@/hooks/use-redux-hook';
 
 const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_API;
 const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
 
-const FoodListCity = ({ data, session, location }: Props) => {
+const FoodListCity = () => {
+  const [data, setData] = useState<IResponseGetFoods>();
+  const { data: session } = useSession();
+  const location = useAppSelector((state) => state.location.city);
+  const getFoodList = async () => {
+    const request = {
+      city: location,
+      category: 'near_me',
+      limit: 8,
+    };
+    const response = await getFoodLists(request);
+    setData(response.data);
+  };
+
+  useEffect(() => {
+    getFoodList();
+  }, []);
   const filterData = data?.foods.filter(
     (item) => item.restaurantName !== session?.user.restaurant
   );

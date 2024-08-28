@@ -19,7 +19,6 @@ import {
   createFood,
   updateFoodRestaurant,
 } from '@/repositories/restaurantRepository';
-import { useRouter } from 'next/navigation';
 import { ToastAction } from '@/components/ui/toast';
 import { useState } from 'react';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
@@ -39,7 +38,6 @@ const FormFood = ({
   updatedNewFood,
 }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const form = useForm<z.infer<typeof formCreateFoodSchema>>({
     resolver: zodResolver(formCreateFoodSchema),
     defaultValues: {
@@ -57,9 +55,18 @@ const FormFood = ({
     category: string;
     image?: any;
   }) => {
+    const pickImage = values.image[0] !== undefined ? values.image[0] : '';
+    const formData = new FormData();
+
+    formData.append('foodName', values.foodName);
+    formData.append('description', values.description);
+    formData.append('price', values.price.toString());
+    formData.append('category', values.category);
+    formData.append('image', pickImage);
+
     const request = await createFood({
       token,
-      ...values,
+      data: formData,
     });
 
     return request;
@@ -72,10 +79,19 @@ const FormFood = ({
     category: string;
     image?: any;
   }) => {
+    const pickImage = values.image[0] !== undefined ? values.image[0] : '';
+    const formData = new FormData();
+
+    formData.append('foodName', values.foodName);
+    formData.append('description', values.description);
+    formData.append('price', values.price.toString());
+    formData.append('category', values.category);
+    formData.append('image', pickImage);
+
     const request = await updateFoodRestaurant({
       token,
       foodId: data?.foodId,
-      ...values,
+      data: formData,
     });
 
     return request;
@@ -120,7 +136,7 @@ const FormFood = ({
     });
     setIsLoading(false);
     form.reset();
-    router.refresh();
+    // router.refresh();
   }
 
   const fileRef = form.register('image');

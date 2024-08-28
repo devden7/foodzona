@@ -1,12 +1,15 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { categoriesLists } from '@/constants';
+import { useAppSelector } from '@/hooks/use-redux-hook';
 
 interface Props {
-  location: string;
   type: string;
 }
-const RecommendationMenuSection = ({ location, type }: Props) => {
+const RecommendationMenuSection = ({ type }: Props) => {
+  const location = useAppSelector((state) => state.location.city);
   const linkToCategory = type !== 'restaurants' ? location + '/' : '';
   return (
     <div className="grid grid-cols-3 justify-start gap-3 md:max-w-[600px]">

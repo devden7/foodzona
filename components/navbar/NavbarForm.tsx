@@ -72,7 +72,6 @@ const NavbarForm = ({ session, update }: Props) => {
       {session?.user && session?.user.restaurant === null && (
         <div className="container flex items-center justify-between bg-red-500 py-2">
           <span className="text-sm font-medium text-white">
-            {' '}
             Buka restaurant kamu sendiri!
           </span>
           <div>

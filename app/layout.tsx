@@ -6,8 +6,9 @@ import localFont from 'next/font/local';
 import Footer from '@/components/shared/Footer';
 import StickyCart from '@/components/shared/StickyCart';
 import { Toaster } from '@/components/ui/toaster';
-import Providers from '@/store/Providers';
-import NextAuthProvider from '@/context/NextAuthProvider';
+import ReduxProvider from '@/provider/ReduxProvider';
+import NextAuthProvider from '@/provider/NextAuthProvider';
+import TanStackProvider from '@/provider/TanStackProvider';
 
 export const metadata: Metadata = {
   title: 'Home | Food Zona',
@@ -40,15 +41,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${maisonNeue.variable}`}>
-        <NextAuthProvider>
-          <Providers>
-            <Navbar />
-            <main>{children}</main>
-            <Toaster />
-            <Footer />
-            <StickyCart />
-          </Providers>
-        </NextAuthProvider>
+        <TanStackProvider>
+          <NextAuthProvider>
+            <ReduxProvider>
+              <Navbar />
+              <main>{children}</main>
+              <Toaster />
+              <Footer />
+              <StickyCart />
+            </ReduxProvider>
+          </NextAuthProvider>
+        </TanStackProvider>
       </body>
     </html>
   );

@@ -1,6 +1,9 @@
+'use server';
+
 import { IResponse } from '@/model/accountModel';
 import { IReqInsertFood, IResponseCreateFood } from '@/model/foodModel';
 import { IReqCreateRestaurant, IResCityList } from '@/model/restaurantModel';
+import { revalidatePath } from 'next/cache';
 
 const API_URL = process.env.NEXT_PUBLIC_API;
 
@@ -16,29 +19,22 @@ export const createRestaurant = async (
     body: JSON.stringify(request),
   });
   const data = await response.json();
+  revalidatePath('/');
   return data;
 };
 
 export const createFood = async (
   request: IReqInsertFood
 ): Promise<IResponse<IResponseCreateFood>> => {
-  const pickImage = request.image[0] !== undefined ? request.image[0] : '';
-  const formData = new FormData();
-
-  formData.append('foodName', request.foodName);
-  formData.append('description', request.description);
-  formData.append('price', request.price.toString());
-  formData.append('category', request.category);
-  formData.append('image', pickImage);
-
   const response = await fetch(`${API_URL}api/create-food`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${request.token}`,
     },
-    body: formData,
+    body: request.data,
   });
   const data = await response.json();
+  revalidatePath('/my-restaurant');
   return data;
 };
 
@@ -54,23 +50,15 @@ export const getFoodRestaurant = async (token: string) => {
 };
 
 export const updateFoodRestaurant = async (request: IReqInsertFood) => {
-  const pickImage = request.image[0] !== undefined ? request.image[0] : '';
-  const formData = new FormData();
-
-  formData.append('foodName', request.foodName);
-  formData.append('description', request.description);
-  formData.append('price', request.price.toString());
-  formData.append('category', request.category);
-  formData.append('image', pickImage);
-
   const response = await fetch(`${API_URL}api/update/${request.foodId}`, {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${request.token}`,
     },
-    body: formData,
+    body: request.data,
   });
   const data = await response.json();
+  revalidatePath('/my-restaurant');
   return data;
 };
 
@@ -82,6 +70,7 @@ export const deleteFoodRestaurant = async (foodId: number, token: string) => {
     },
   });
   const data = await response.json();
+  revalidatePath('/my-restaurant');
   return data;
 };
 
@@ -93,6 +82,7 @@ export const addRecommendationFood = async (foodId: number, token: string) => {
     },
   });
   const data = await response.json();
+  revalidatePath('my-restaurant');
   return data;
 };
 
