@@ -3,10 +3,8 @@ import RecommendationMenuSection from '@/components/shared/RecommendationMenuSec
 import CategoriesMenuSection from '@/components/shared/CategoriesMenuSection';
 import BreadCrumbSection from '@/components/shared/BreadCrumbSection';
 import BannerSection from '@/components/detail-restaurant/restaurants/BannerSection';
-import { useAppSelector } from '@/hooks/use-redux-hook';
 
 const Restaurants = () => {
-  const location = useAppSelector((state) => state.location.city);
   return (
     <>
       <BannerSection />
@@ -24,7 +22,7 @@ const Restaurants = () => {
               Ini ini nih jalan pintas menuju nikmat.
             </p>
 
-            <RecommendationMenuSection location={location} type="restaurants" />
+            <RecommendationMenuSection type="restaurants" />
           </div>
         </div>
       </section>
@@ -39,7 +37,7 @@ const Restaurants = () => {
               Liat-liat aja dulu siapa tau jadi ngidam.
             </p>
 
-            <CategoriesMenuSection type="restaurants" location={location} />
+            <CategoriesMenuSection type="restaurants" />
           </div>
         </div>
       </section>
