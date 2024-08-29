@@ -1,35 +1,41 @@
 'use client';
 
-import { IResponseGetFoods } from '@/model/foodModel';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
 import { HiStar } from 'react-icons/hi';
 import { getFoodLists } from '@/repositories/FoodsRepository';
 import { useSession } from 'next-auth/react';
 import { useAppSelector } from '@/hooks/use-redux-hook';
+import { useQuery } from '@tanstack/react-query';
 
 const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_API;
 const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
 
 const FoodListCity = () => {
-  const [data, setData] = useState<IResponseGetFoods>();
-  const { data: session } = useSession();
+  // const [data, setData] = useState<IResponseGetFoods>();
   const location = useAppSelector((state) => state.location.city);
-  const getFoodList = async () => {
-    const request = {
-      city: location,
-      category: 'near_me',
-      limit: 8,
-    };
-    const response = await getFoodLists(request);
-    setData(response.data);
-  };
 
-  useEffect(() => {
-    getFoodList();
-  }, []);
-  const filterData = data?.foods.filter(
+  const { data: session } = useSession();
+  const { data } = useQuery({
+    queryKey: [
+      'foods',
+      {
+        config: {
+          city: location,
+          category: 'near_me',
+          limit: 8,
+        },
+      },
+    ],
+    queryFn: () =>
+      getFoodLists({
+        city: location,
+        category: 'near_me',
+        limit: 8,
+      }),
+  });
+
+  const filterData = data?.data.foods.filter(
     (item) => item.restaurantName !== session?.user.restaurant
   );
   return (
